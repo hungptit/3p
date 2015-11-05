@@ -2,18 +2,18 @@
 #  Build emacs related packages  *
 # ********************************
 #!/bin/bash
-PROJECTS_FOLDER=$PWD
-SRC_FOLDER=$PROJECTS_FOLDER/src/
+EXTERNAL_FOLDER=$PWD
+SRC_FOLDER=$EXTERNAL_FOLDER/src/
 NCPUS=$(grep -c ^processor /proc/cpuinfo)
 BUILD_OPTS=-j$((NCPUS+1))
-EMACS_PREFIX=$PROJECTS_FOLDER/emacs
+EMACS_PREFIX=$EXTERNAL_FOLDER/emacs
 mkdir -p $EMACS_PREFIX
 
 # Build Emacs
-# EMACS_FOLDER=$PROJECTS_FOLDER/emacs
+# EMACS_FOLDER=$EXTERNAL_FOLDER/emacs
 # EMACS_LINK=git://git.savannah.gnu.org/emacs.git
 # EMACS_PREFIX=$EXTERNAL_FOLDER/emacs
-# cd $PROJECTS_FOLDER
+# cd $EXTERNAL_FOLDER
 # if [ ! -d $EMACS_FOLDER ]; then
 #     git clone $EMACS_LINK
 # fi

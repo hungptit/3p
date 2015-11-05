@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Setup required variables
-PROJECTS_FOLDER=$(pwd)
-SRC_FOLDER=$PROJECTS_FOLDER/src
+EXTERNAL_FOLDER=$(pwd)
+SRC_FOLDER=$EXTERNAL_FOLDER/src
 TMP_FOLDER=/tmp/build/
 
 mkdir -p $TMP_FOLDER
@@ -11,22 +11,22 @@ mkdir -p $SRC_FOLDER
 NCPUS=$(grep -c ^processor /proc/cpuinfo)
 BUILD_OPTS=-j$((NCPUS+1))
 
-CMAKE_PREFIX=$PROJECTS_FOLDER/cmake
+CMAKE_PREFIX=$EXTERNAL_FOLDER/cmake
 CMAKE=$CMAKE_PREFIX/bin/cmake
-CLANG=$PROJECTS_FOLDER/llvm/bin/clang
-CLANGPP=$PROJECTS_FOLDER/llvm/bin/clang++
+CLANG=$EXTERNAL_FOLDER/llvm/bin/clang
+CLANGPP=$EXTERNAL_FOLDER/llvm/bin/clang++
 CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE:STRING=Release"
 CMAKE_USE_CLANG="-DCMAKE_CXX_COMPILER=${CLANGPP} -DCMAKE_C_COMPILER=${CLANG}"
 
-GIT_PREFIX=$PROJECTS_FOLDER/git
+GIT_PREFIX=$EXTERNAL_FOLDER/git
 GIT=$GIT_PREFIX/bin/git
 
-BOOST_PREFIX=$PROJECTS_FOLDER/boost
+BOOST_PREFIX=$EXTERNAL_FOLDER/boost
 
 # Install doxygen
 DOXYGEN_FOLDER=$SRC_FOLDER/doxygen
 DOXYGEN_LINK=https://github.com/doxygen/doxygen.git
-DOXYGEN_PREFIX=$PROJECTS_FOLDER/doxygen
+DOXYGEN_PREFIX=$EXTERNAL_FOLDER/doxygen
 DOXYGEN_BUILD_FOLDER=$DOXYGEN_FOLDER/build
 
 cd $SRC_FOLDER
@@ -47,9 +47,9 @@ make install
 
 # Cereal
 CEREAL_GIT=https://github.com/USCiLab/cereal
-CEREAL_PREFIX=$PROJECTS_FOLDER/cereal
+CEREAL_PREFIX=$EXTERNAL_FOLDER/cereal
 if [ ! -d $CEREAL_PREFIX ]; then
-    cd $PROJECTS_FOLDER
+    cd $EXTERNAL_FOLDER
     $GIT clone $CEREAL_GIT
 fi
 
@@ -58,10 +58,10 @@ git pull
 
 # Rapidjson
 RAPIDJSON_GIT=https://github.com/miloyip/rapidjson
-RAPIDJSON_PREFIX=$PROJECTS_FOLDER/rapidjson
+RAPIDJSON_PREFIX=$EXTERNAL_FOLDER/rapidjson
 
 if [ ! -d $RAPIDJSON_PREFIX ]; then
-    cd $PROJECTS_FOLDER
+    cd $EXTERNAL_FOLDER
     $GIT clone $RAPIDJSON_GIT
 fi
 
@@ -70,8 +70,8 @@ git pull
 
 # Install splog
 SPLOG_GIT=https://github.com/gabime/spdlog.git
-SPLOG_PREFIX=$PROJECTS_FOLDER/spdlog
-cd $PROJECTS_FOLDER
+SPLOG_PREFIX=$EXTERNAL_FOLDER/spdlog
+cd $EXTERNAL_FOLDER
 if [ ! -d $SPLOG_PREFIX ]; then
     git clone $SPLOG_GIT
 fi
@@ -81,7 +81,7 @@ git pull
 
 # Get TBB
 TBB_LINK=https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb43_20150316oss_src.tgz
-TBB_PREFIX=$PROJECTS_FOLDER/tbb
+TBB_PREFIX=$EXTERNAL_FOLDER/tbb
 TBB_FILE=tbb43_20150316oss_src.tgz
 
 if [ ! -f $TBB_FILE ]; then
@@ -90,7 +90,7 @@ fi
 
 # Install TBB
 TBB_LINK=https://www.threadingbuildingblocks.org/sites/default/files/software_releases/linux/tbb43_20150316oss_lin.tgz
-TBB_PREFIX=$PROJECTS_FOLDER/tbb
+TBB_PREFIX=$EXTERNAL_FOLDER/tbb
 TBB_FILE=tbb43_20150316oss_lin.tgz
 
 if [ ! -f $TBB_FILE ]; then
@@ -104,10 +104,10 @@ mv tbb43_20150316oss $TBB_PREFIX
 # Get EIGEN
 EIGEN_FOLDER=$SRC_FOLDER/eigen
 EIGEN_BUILD_FOLDER=$SRC_FOLDER/eigen/build
-EIGEN_PREFIX=$PROJECTS_FOLDER/eigen
+EIGEN_PREFIX=$EXTERNAL_FOLDER/eigen
 
 MERCURIAL_VERSION=3.2.4
-MERCURIAL_PREFIX=$PROJECTS_FOLDER/mercurial
+MERCURIAL_PREFIX=$EXTERNAL_FOLDER/mercurial
 MERCURIAL=$MERCURIAL_PREFIX-$MERCURIAL_VERSION/hg
 
 cd $SRC_FOLDER
@@ -131,7 +131,7 @@ make install $BUILD_OPTS
 CPPFORMAT_GIT=https://github.com/cppformat/cppformat.git
 CPPFORMAT_FOLDER=$SRC_FOLDER/cppformat
 CPPFORMAT_BUILD_FOLDER=$CPPFORMAT_FOLDER/cmake-build
-CPPFORMAT_PREFIX=$PROJECTS_FOLDER/cppformat
+CPPFORMAT_PREFIX=$EXTERNAL_FOLDER/cppformat
 
 cd $SRC_FOLDER
 if [ ! -d $CPPFORMAT_FOLDER ]; then
@@ -151,7 +151,7 @@ make install
 # Get libevent
 LIBEVENT_GIT=git://levent.git.sourceforge.net/gitroot/levent/libevent
 LIBEVENT_FOLDER=$SRC_FOLDER/libevent
-LIBEVENT_PREFIX=$PROJECTS_FOLDER/libevent
+LIBEVENT_PREFIX=$EXTERNAL_FOLDER/libevent
 cd $SRC_FOLDER
 if [ ! -d $LIBEVENT_FOLDER ]; then
     cd $SRC_FOLDER
@@ -168,7 +168,7 @@ make install
 # Get memcached
 MEMCACHED_GIT=git://github.com/memcached/memcached.git
 MEMCACHED_FOLDER=$SRC_FOLDER/memcached
-MEMCACHED_PREFIX=$PROJECTS_FOLDER/memcached
+MEMCACHED_PREFIX=$EXTERNAL_FOLDER/memcached
 if [ ! -d $MEMCACHED_FOLDER ]; then
     cd $SRC_FOLDER
     git clone $MEMCACHED_GIT
@@ -186,7 +186,7 @@ make install
 LIBMEMCACHED_LINK=https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz
 LIBMEMCACHED_FILE=libmemcached-1.0.18.tar.gz
 LIBMEMCACHED_FOLDER=$SRC_FOLDER/libmemcached-1.0.18
-LIBMEMCACHED_PREFIX=$PROJECTS_FOLDER/libmemcached
+LIBMEMCACHED_PREFIX=$EXTERNAL_FOLDER/libmemcached
 
 if [ ! -f $LIBMEMCACHED_FILE ]; then
     cd $SRC_FOLDER
@@ -203,7 +203,7 @@ make install
 ZLIB_FILE=zlib-1.2.8
 ZLIB_GIT=https://github.com/madler/zlib.git
 ZLIB_SRC=$SRC_FOLDER/zlib
-ZLIB_PREFIX=$PROJECTS_FOLDER/zlib
+ZLIB_PREFIX=$EXTERNAL_FOLDER/zlib
 
 # Check our the source code if neccessary
 if [ ! -d $ZLIB_SRC ]; then
@@ -222,7 +222,7 @@ cd $SRC_FOLDER
 # HDF5_FILE=hdf5-1.8.10
 # HDF5_GIT=https://gitorious.org/hdf5/hdf5-v18.git
 # HDF5_SRC=$SRC_FOLDER/hdf5-v18
-# HDF5_PREFIX=$PROJECTS_FOLDER/hdf5
+# HDF5_PREFIX=$EXTERNAL_FOLDER/hdf5
 
 # if [ ! -d $HDF5_SRC  ]; then
 #     git clone $HDF5_GIT

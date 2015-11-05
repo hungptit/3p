@@ -1,4 +1,5 @@
 #!/bin/bash
+# Setup build environment
 EXTERNAL_FOLDER=$PWD
 SRC_FOLDER=$EXTERNAL_FOLDER/src
 TMP_FOLDER=/tmp/build/
@@ -9,19 +10,31 @@ mkdir -p $SRC_FOLDER
 NCPUS=$(grep -c ^processor /proc/cpuinfo)
 BUILD_OPTS=-j$((NCPUS+1))
 
+# Setup clang
 CLANG=$EXTERNAL_FOLDER/llvm/bin/clang
 CLANGPP=$EXTERNAL_FOLDER/llvm/bin/clang++
+if [ ! -f $CLANGPP ]; then
+    # Fall back to gcc if we do not have clang installed.
+    CLANG=gcc
+    CLANGPP=g++
+fi
 
+# Setup CMake
 CMAKE_PREFIX=$EXTERNAL_FOLDER/cmake
 CMAKE=$CMAKE_PREFIX/bin/cmake
-CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE:STRING=Release"
-CMAKE_USE_CLANG="-DCMAKE_CXX_COMPILER=${CLANGPP} -DCMAKE_C_COMPILER=${CLANG}"
-BOOST_PREFIX=$EXTERNAL_FOLDER/boost
+echo $CMAKE
+if [ ! -f $CMAKE ]; then
+    # Use system CMake if we could not find the customized CMake.
+    CMAKE=cmake
+fi
 
-CLANG=$EXTERNAL_FOLDER/llvm/bin/clang
-CLANGPP=$EXTERNAL_FOLDER/llvm/bin/clang++
-CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE:STRING=Release"
-CMAKE_USE_CLANG="-DCMAKE_CXX_COMPILER=${CLANGPP} -DCMAKE_C_COMPILER=${CLANG}"
+# Setup git
+GIT_PREFIX=$EXTERNAL_FOLDER/git
+GIT=$GIT_PREFIX/bin/git
+if [ ! -f $GIT ]; then
+    # Use system CMake if we could not find the customized CMake.
+    GIT=git
+fi
 
 # LevelDB
 LEVELDB_GIT=https://github.com/google/leveldb
@@ -29,7 +42,7 @@ LEVELDB_PREFIX=$EXTERNAL_FOLDER/leveldb
 
 if [ ! -d $LEVELDB_PREFIX ]; then
     cd $EXTERNAL_FOLDER
-    git clone $LEVELDB_GIT
+    $GIT clone $LEVELDB_GIT
 fi
 
 cd $LEVELDB_PREFIX
@@ -53,7 +66,7 @@ svn update
 rm -rf $GTEST_SRC_FOLDER
 mkdir -p $GTEST_SRC_FOLDER
 cd $GTEST_SRC_FOLDER
-$CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$GTEST_PREFIX -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_TESTING:BOOL=OFF $GTEST_FOLDER
+$CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$GTEST_PREFIX $CMAKE_RELEASE_BUILD $GTEST_FOLDER
 make $BUILD_OPTS
 
 # We need to install gtest manually.
@@ -91,13 +104,14 @@ BENCHMARK_PREFIX=$EXTERNAL_FOLDER/benchmark
 
 if [ ! -d $BENCHMARK_SRC ]; then
     cd $SRC_FOLDER
-    git clone $BENCHMARK_GIT
+    $GIT clone $BENCHMARK_GIT
 fi
 
+rm -rf $BENCHMARK_BUILD
 mkdir $BENCHMARK_BUILD
 cd $BENCHMARK_BUILD
-$CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$BENCHMARK_PREFIX -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_TESTING:BOOL=OFF $CMAKE_USE_CLANG $BENCHMARK_SRC
 
-# Require C++11 support.
+# Use gcc to make sure that we can build in old systems.
+$CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$BENCHMARK_PREFIX $CMAKE_RELEASE_BUILD $BENCHMARK_SRC
 make $BUILD_OPTS
 rm -rf $BENCHMARK_BUILD

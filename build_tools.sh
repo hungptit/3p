@@ -1,6 +1,7 @@
 #!/bin/bash
-PROJECTS_FOLDER=$(pwd)
-SRC_FOLDER=$PROJECTS_FOLDER/src
+# Setup build environment
+EXTERNAL_FOLDER=$PWD
+SRC_FOLDER=$EXTERNAL_FOLDER/src
 TMP_FOLDER=/tmp/build/
 
 mkdir -p $TMP_FOLDER
@@ -9,40 +10,34 @@ mkdir -p $SRC_FOLDER
 NCPUS=$(grep -c ^processor /proc/cpuinfo)
 BUILD_OPTS=-j$((NCPUS+1))
 
-CMAKE_PREFIX=$PROJECTS_FOLDER/cmake
-CMAKE=$CMAKE_PREFIX/bin/cmake
-CLANG=$PROJECTS_FOLDER/llvm/bin/clang
-CLANGPP=$PROJECTS_FOLDER/llvm/bin/clang++
-CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE:STRING=Release"
-CMAKE_USE_CLANG="-DCMAKE_CXX_COMPILER=${CLANGPP} -DCMAKE_C_COMPILER=${CLANG}"
-
-GIT_PREFIX=$PROJECTS_FOLDER/git
-GIT=$GIT_PREFIX/bin/git
-
-BOOST_PREFIX=$PROJECTS_FOLDER/boost
-
-# Build git
-GIT_FOLDER=$SRC_FOLDER/git
-GIT_BUILD_FOLDER=$GIT_FOLDER/build
-cd $SRC_FOLDER
-if [ ! -d $GIT_FOLDER ]; then
-    git clone https://github.com/git/git.git # assume we have git installed in our machine.
+# Setup clang
+CLANG=$EXTERNAL_FOLDER/llvm/bin/clang
+CLANGPP=$EXTERNAL_FOLDER/llvm/bin/clang++
+if [ ! -f $CLANGPP ]; then
+    # Fall back to gcc if we do not have clang installed.
+    CLANG=gcc
+    CLANGPP=g++
 fi
 
-# Pull the latest version
-cd $GIT_FOLDER
-git pull
-make configure
-./configure --prefix=$GIT_PREFIX
-make $BUILD_OPTS PROFILE=BUILD
-rm -f $GIT_PREFIX
-make profile-fast-install $BUILD_OPTS
+# Setup CMake
+CMAKE_PREFIX=$EXTERNAL_FOLDER/cmake
+CMAKE=$CMAKE_PREFIX/bin/cmake
+if [ ! -f $CMAKE ]; then
+    # Use system CMake if we could not find the customized CMake.
+    CMAKE=cmake
+fi
+
+# Setup git
+GIT_PREFIX=$EXTERNAL_FOLDER/git
+GIT=$GIT_PREFIX/bin/git
+if [ ! -f $GIT ]; then
+    # Use system CMake if we could not find the customized CMake.
+    GIT=git
+fi
 
 # Build CMake
-CMAKE_PREFIX=$PROJECTS_FOLDER/cmake
 CMAKE_SRC=$SRC_FOLDER/cmake
 CMAKE_BUILD_FOLDER=$CMAKE_SRC/build
-CMAKE=$CMAKE_PREFIX/bin/cmake
 cd $SRC_FOLDER
 if [ ! -d $CMAKE_SRC ]; then
     $GIT clone git://cmake.org/cmake.git
@@ -64,7 +59,7 @@ make install
 cd $SRC_FOLDER
 MERCURIAL_VERSION=3.2.4
 MERCURIAL_FILE=mercurial-3.2.4.tar.gz
-MERCURIAL_PREFIX=$PROJECTS_FOLDER/mercurial
+MERCURIAL_PREFIX=$EXTERNAL_FOLDER/mercurial
 MERCURIAL=$MERCURIAL_PREFIX-$MERCURIAL_VERSION/hg
 
 cd $SRC_FOLDER
@@ -72,14 +67,14 @@ if [ ! -f $MERCURIAL_FILE ]; then
     wget http://mercurial.selenic.com/release/mercurial-3.2.4.tar.gz;
 fi
 
-tar -xf $SRC_FOLDER/$MERCURIAL_FILE -C $PROJECTS_FOLDER
+tar -xf $SRC_FOLDER/$MERCURIAL_FILE -C $EXTERNAL_FOLDER
 cd $MERCURIAL_PREFIX-$MERCURIAL_VERSION
 make local $BUILD_OPTS
 
 # sqlitebrowser
 SQLITEBROWSER_GIT=https://github.com/sqlitebrowser/sqlitebrowser
 SQLITEBROWSER_FOLDER=$SRC_FOLDER/sqlitebrowser
-SQLITEBROWSER_PREFIX=$PROJECTS_FOLDER/sqlitebrowser
+SQLITEBROWSER_PREFIX=$EXTERNAL_FOLDER/sqlitebrowser
 SQLITEBROWSER_BUILD_FOLDER=$TMP_FOLDER/sqlitebrowser
 
 cd $SRC_FOLDER
@@ -91,8 +86,25 @@ git pull
 
 mkdir -p $SQLITEBROWSER_BUILD_FOLDER
 cd $SQLITEBROWSER_BUILD_FOLDER
-$CMAKE ../ -DCMAKE_INSTALL_PREFIX=$SQLITEBROWSER_PREFIX $CMAKE_RELEASE_BUILD $CMAKE_USE_CLANG 
+$CMAKE $SQLITEBROWSER_FOLDER -DCMAKE_INSTALL_PREFIX=$SQLITEBROWSER_PREFIX $CMAKE_RELEASE_BUILD $CMAKE_USE_CLANG 
 make $BUILD_OPTS
 rm -rf $SQLITEBROWSER_PREFIX
 make install
 rm -rf $SQLITEBROWSER_BUILD_FOLDER
+
+# Build git
+GIT_FOLDER=$SRC_FOLDER/git
+GIT_BUILD_FOLDER=$GIT_FOLDER/build
+cd $SRC_FOLDER
+if [ ! -d $GIT_FOLDER ]; then
+    git clone https://github.com/git/git.git # assume we have git installed in our machine.
+fi
+
+# Pull the latest version
+cd $GIT_FOLDER
+git pull
+make configure
+./configure --prefix=$GIT_PREFIX
+make $BUILD_OPTS PROFILE=BUILD
+rm -f $GIT_PREFIX
+make profile-fast-install $BUILD_OPTS
