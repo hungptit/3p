@@ -212,3 +212,13 @@ if [ ! -d $JSON_SNATCHER_FOLDER ]; then
 fi
 cd $JSON_SNATCHER_FOLDER
 git pull
+
+# Doxymacs
+DOXYMACS_GIT=https://github.com/emacsattic/doxymacs.git
+DOXYMACS_FOLDER=$EMACS_PREFIX/doxymacs
+if [ ! -d $DOXYMACS_FOLDER ]; then
+    cd $EMACS_PREFIX
+    git clone $DOXYMACS_GIT
+fi
+cd $DOXYMACS_FOLDER
+git pull
