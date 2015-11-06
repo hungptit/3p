@@ -3,6 +3,7 @@
 # ********************************
 #!/bin/bash
 PROJECTS_FOLDER=$PWD
+SRC_FOLDER=$PWD/src/
 NCPUS=$(grep -c ^processor /proc/cpuinfo)
 BUILD_OPTS=-j$((NCPUS+1))
 EMACS_PREFIX=$PROJECTS_FOLDER/emacs
@@ -215,10 +216,15 @@ git pull
 
 # Doxymacs
 DOXYMACS_GIT=https://github.com/emacsattic/doxymacs.git
-DOXYMACS_FOLDER=$EMACS_PREFIX/doxymacs
-if [ ! -d $DOXYMACS_FOLDER ]; then
-    cd $EMACS_PREFIX
+DOXYMACS_SRC=$SRC_FOLDER/doxymacs
+DOXYMACS_PREFIX=$EMACS_PREFIX/doxymacs
+if [ ! -d $DOXYMACS_SRC ]; then
+    cd $SRC_FOLDER
     git clone $DOXYMACS_GIT
 fi
-cd $DOXYMACS_FOLDER
+cd $DOXYMACS_SRC
 git pull
+./bootstrap
+./configure --prefix=$DOXYMACS_PREFIX
+make -j5
+make install
