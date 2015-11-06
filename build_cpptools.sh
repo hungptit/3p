@@ -1,7 +1,5 @@
 #!/bin/bash
-
-# Setup required variables
-EXTERNAL_FOLDER=$(pwd)
+EXTERNAL_FOLDER=$PWD
 SRC_FOLDER=$EXTERNAL_FOLDER/src
 TMP_FOLDER=/tmp/build/
 
@@ -11,17 +9,32 @@ mkdir -p $SRC_FOLDER
 NCPUS=$(grep -c ^processor /proc/cpuinfo)
 BUILD_OPTS=-j$((NCPUS+1))
 
-CMAKE_PREFIX=$EXTERNAL_FOLDER/cmake
-CMAKE=$CMAKE_PREFIX/bin/cmake
+# Setup clang
 CLANG=$EXTERNAL_FOLDER/llvm/bin/clang
 CLANGPP=$EXTERNAL_FOLDER/llvm/bin/clang++
+if [ ! -f $CLANGPP ]; then
+    # Fall back to gcc if we do not have clang installed.
+    CLANG=gcc
+    CLANGPP=g++
+fi
+
+# Setup CMake
+CMAKE_PREFIX=$EXTERNAL_FOLDER/cmake
+CMAKE=$CMAKE_PREFIX/bin/cmake
+if [ ! -f $CMAKE ]; then
+    # Use system CMake if we could not find the customized CMake.
+    CMAKE=cmake
+fi
 CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE:STRING=Release"
 CMAKE_USE_CLANG="-DCMAKE_CXX_COMPILER=${CLANGPP} -DCMAKE_C_COMPILER=${CLANG}"
 
+# Setup git
 GIT_PREFIX=$EXTERNAL_FOLDER/git
 GIT=$GIT_PREFIX/bin/git
-
-BOOST_PREFIX=$EXTERNAL_FOLDER/boost
+if [ ! -f $GIT ]; then
+    # Use system CMake if we could not find the customized CMake.
+    GIT=git
+fi
 
 # Install doxygen
 DOXYGEN_FOLDER=$SRC_FOLDER/doxygen
@@ -182,7 +195,7 @@ make $BUILD_OPTS
 rm -rf $MEMCACHED_PREFIX
 make install
 
-# Get libmemcached -> TODO: Fix this build
+# Get libmemcached
 LIBMEMCACHED_LINK=https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz
 LIBMEMCACHED_FILE=libmemcached-1.0.18.tar.gz
 LIBMEMCACHED_FOLDER=$SRC_FOLDER/libmemcached-1.0.18
@@ -205,8 +218,8 @@ ZLIB_GIT=https://github.com/madler/zlib.git
 ZLIB_SRC=$SRC_FOLDER/zlib
 ZLIB_PREFIX=$EXTERNAL_FOLDER/zlib
 
-# Check our the source code if neccessary
 if [ ! -d $ZLIB_SRC ]; then
+    cd $SRC_FOLDER
     git clone $ZLIB_GIT
 fi
 
