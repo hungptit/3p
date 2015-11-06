@@ -1,4 +1,4 @@
-This is a collection of scripts that I use daily for both works and personal interrests.
+This is a collection of scripts that automatically build tools and packages for my daily work.
 ========================================================================================
 
 # Emacs #
