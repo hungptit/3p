@@ -3,9 +3,7 @@ This is a collection of scripts that automatically build tools and packages for 
 
 # Emacs #
 
-## Build_emacs_bin.sh will build commands required by Emacs packages such as **the_silver_seracher** etc. Below are steps: ##
-
-## Update the environment variables and path. Below is the sample from my **.cshrc.mine** ##
+First we need to run **build_emacs_bin.sh** to get all commands required by Emacs packages such as **the_silver_seracher** etc. After that we need to update the environment variables and path. Below is the sample from my **.cshrc.mine**.
 
 `set LLVM_DIR = /local/projects/3p/llvm/bin
 set EMACS_DIR = /local/projects/3p/emacs/bin
@@ -22,9 +20,7 @@ set SQLITEBROWSER_DIR = /local/projects/3p/sqlitebrowser/bin
 set DOXYMACS_DIR = /local/projects/3p/emacs/doxymacs/bin
 set path = ($LLVM_DIR $AG_DIR $CASH_DIR $ST_GIT $DOXYGEN_DIR $JAVA_HOME $NODE_FOLDER $CMAKE_DIR $SQLITEBROWSER_DIR $DOXYMACS_DIR $path)`
 
-## Run build_emacs.sh ##
-
-## Update your .emacs to use installed extension ##
+After your path is updated (using source command or open a new terminal) we can run **build_emacs.sh** to install useful Emacs extensions such has Helm mode, auto-complete, and CEDET etc. Then remember to update the **.emacs** file to use all installed Emacs extensions. This is an example of my **.emacs**
 
 `(setq emacs-setup-root-path (file-name-as-directory "/local/projects/3p/emacs/"))
 (load-file (concat emacs-setup-root-path "setup_cedet.el"))
@@ -32,7 +28,6 @@ set path = ($LLVM_DIR $AG_DIR $CASH_DIR $ST_GIT $DOXYGEN_DIR $JAVA_HOME $NODE_FO
 (load-file (concat emacs-setup-root-path "setup_helm.el"))
 (load-file (concat emacs-setup-root-path "extra_features.el"))
 `
-
 # Basic tools #
 build_tools.sh will build all required tools for C++ development including git, CMake etc.
 
