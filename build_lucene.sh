@@ -54,7 +54,12 @@ git pull
 rm -rf $LucenePlusPlus_PREFIX $LucenePlusPlus_SRC_FOLDER
 mkdir -p $LucenePlusPlus_SRC_FOLDER
 cd $LucenePlusPlus_SRC_FOLDER
-$CMAKE ../ -DCMAKE_INSTALL_PREFIX=$LucenePlusPlus_PREFIX -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER=clang++ -DBoost_INCLUDE_DIR=$BOOST_PREFIX/include
-# $CMAKE ../ -DCMAKE_INSTALL_PREFIX=$LucenePlusPlus_PREFIX -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER=clang++ -DLUCENE_USE_STATIC_BOOST_LIBS=true
+
+# Un comment this to use customized boost libraries.
+# $CMAKE ../ -DCMAKE_INSTALL_PREFIX=$LucenePlusPlus_PREFIX -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER=clang++ -DBoost_INCLUDE_DIR=$BOOST_PREFIX/include
+
+# Un comment this line if system boost is installed
+$CMAKE ../ -DCMAKE_INSTALL_PREFIX=$LucenePlusPlus_PREFIX -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER=clang++ -DLUCENE_USE_STATIC_BOOST_LIBS=true
+
 make $BUILD_OPTS
 make install

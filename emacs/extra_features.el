@@ -69,11 +69,11 @@
 ;; (setq magit-auto-revert-mode nil)
 ;; (setq magit-last-seen-setup-instructions "1.4.0")
 
-;; Clang format
-(load-file "/local/projects/3p/llvm/share/clang/clang-format.el")
+;; ;; Clang format
+;; (load-file "/local/projects/3p/llvm/share/clang/clang-format.el")
 
-;; ;; clang-format
-(global-set-key [C-M-tab] 'clang-format-region)
+;; ;; ;; clang-format
+;; (global-set-key [C-M-tab] 'clang-format-region)
 
 ;; ;; irony-mode
 ;; (add-to-list 'load-path (concat emacs-setup-root-path "irony-mode/"))
