@@ -1,5 +1,4 @@
 #!/bin/bash
-# Setup build environment
 EXTERNAL_FOLDER=$PWD
 SRC_FOLDER=$EXTERNAL_FOLDER/src
 TMP_FOLDER=/tmp/build/
@@ -40,7 +39,7 @@ fi
 # Get Poco
 POCO_FOLDER=$SRC_FOLDER/poco
 POCO_PREFIX=$EXTERNAL_FOLDER/poco
-POCO_BUILD_FOLDER=$TMP_FOLDER/build_cmake_bin
+POCO_BUILD_FOLDER=$TMP_FOLDER/poco
 
 cd $SRC_FOLDER
 if [ ! -d $POCO_FOLDER ]; then

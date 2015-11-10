@@ -42,24 +42,24 @@ BOOST_PREFIX=$EXTERNAL_FOLDER/boost
 LucenePlusPlus_GIT=https://github.com/luceneplusplus/LucenePlusPlus.git
 LucenePlusPlus_FOLDER=$SRC_FOLDER/LucenePlusPlus
 LucenePlusPlus_PREFIX=$EXTERNAL_FOLDER/LucenePlusPlus
-LucenePlusPlus_SRC_FOLDER=$LucenePlusPlus_FOLDER/build
+LucenePlusPlus_BUILD=$TMP_FOLDER/lucene
 
 cd $SRC_FOLDER
 if [ ! -d $LucenePlusPlus_FOLDER ]; then
     git clone $LucenePlusPlus_GIT
 fi
 cd $LucenePlusPlus_FOLDER
-git fetch
-git pull
-rm -rf $LucenePlusPlus_PREFIX $LucenePlusPlus_SRC_FOLDER
-mkdir -p $LucenePlusPlus_SRC_FOLDER
-cd $LucenePlusPlus_SRC_FOLDER
+$GIT fetch
+$GIT pull
+rm -rf $LucenePlusPlus_BUILD
+mkdir -p $LucenePlusPlus_BUILD
+cd $LucenePlusPlus_BUILD
 
 # Un comment this to use customized boost libraries.
-# $CMAKE ../ -DCMAKE_INSTALL_PREFIX=$LucenePlusPlus_PREFIX -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER=clang++ -DBoost_INCLUDE_DIR=$BOOST_PREFIX/include
-
+# $CMAKE $LucenePlusPlus_FOLDER -DCMAKE_INSTALL_PREFIX=$LucenePlusPlus_PREFIX $CMAKE_RELEASE_BUILD $CMAKE_USE_CLANG -DBoost_INCLUDE_DIR=$BOOST_PREFIX/include
 # Un comment this line if system boost is installed
-$CMAKE ../ -DCMAKE_INSTALL_PREFIX=$LucenePlusPlus_PREFIX -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER=clang++ -DLUCENE_USE_STATIC_BOOST_LIBS=true
+$CMAKE $LucenePlusPlus_FOLDER -DCMAKE_INSTALL_PREFIX=$LucenePlusPlus_PREFIX $CMAKE_RELEASE_BUILD $CMAKE_USE_CLANG -DLUCENE_USE_STATIC_BOOST_LIBS=true
 
 make $BUILD_OPTS
+rm -rf $LucenePlusPlus_PREFIX
 make install

@@ -50,6 +50,7 @@ git pull
 # Build CMake
 mkdir -p $CMAKE_BUILD_FOLDER
 cd $CMAKE_BUILD_FOLDER
+$GIT checkout v3.3.2
 ../configure --prefix=$CMAKE_PREFIX --no-qt-gui
 make $BUILD_OPTS 
 rm $CMAKE_PREFIX                # Cleanup previously installed CMake
