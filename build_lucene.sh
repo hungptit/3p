@@ -63,3 +63,4 @@ $CMAKE $LucenePlusPlus_FOLDER -DCMAKE_INSTALL_PREFIX=$LucenePlusPlus_PREFIX $CMA
 make $BUILD_OPTS
 rm -rf $LucenePlusPlus_PREFIX
 make install
+rm -rf $LucenePlusPlus_BUILD
