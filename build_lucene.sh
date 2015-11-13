@@ -64,3 +64,8 @@ make $BUILD_OPTS
 rm -rf $LucenePlusPlus_PREFIX
 make install
 rm -rf $LucenePlusPlus_BUILD
+
+# TODO: Try this approach
+# export CMAKE_INCLUDE_PATH=/path/to/mkl/include
+# export CMAKE_LIBRARY_PATH=/path/to/mkl/lib/intel64:/path/to/mkl/compiler/lib/intel64
+# export LD_LIBRARY_PATH=$CMAKE_LIBRARY_PATH:$LD_LIBRARY_PATH
