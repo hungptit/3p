@@ -36,6 +36,24 @@ if [ ! -f $GIT ]; then
     GIT=git
 fi
 
+# Setup Snappy
+SNAPPY_LINK=https://github.com/google/snappy.git
+SNAPPY_PREFIX=$EXTERNAL_FOLDER/snappy
+SNAPPY_SRC=$SRC_FOLDER/snappy
+SNAPPY_BUILD=$TMP_FOLDER/snappy
+
+if [ ! -d $SNAPPY_SRC ]; then
+    cd $SRC_FOLDER
+    $GIT clone $SNAPPY_LINK
+fi
+
+cd $SNAPPY_SRC
+$GIT pull
+sh autogen.sh
+./configure --prefix=$SNAPPY_PREFIX CXXFLAGS="$CXXFLAGS -O4 -Wall"
+make -j5
+make install
+
 # LevelDB
 LEVELDB_GIT=https://github.com/google/leveldb
 LEVELDB_PREFIX=$EXTERNAL_FOLDER/leveldb
@@ -92,7 +110,7 @@ fi
 cd $SPARSEHASH_FOLDER
 svn update
 
-./configure --prefix=$SPARSEHASH_PREFIX CXXFLAGS="-O4 -Wall"
+./configure --prefix=$SPARSEHASH_PREFIX
 make $BUILD_OPTS
 make install
 

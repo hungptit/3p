@@ -56,9 +56,9 @@ mkdir -p $LucenePlusPlus_BUILD
 cd $LucenePlusPlus_BUILD
 
 # Un comment this to use customized boost libraries.
-# $CMAKE $LucenePlusPlus_FOLDER -DCMAKE_INSTALL_PREFIX=$LucenePlusPlus_PREFIX $CMAKE_RELEASE_BUILD $CMAKE_USE_CLANG -DBoost_INCLUDE_DIR=$BOOST_PREFIX/include
+$CMAKE $LucenePlusPlus_FOLDER -DCMAKE_INSTALL_PREFIX=$LucenePlusPlus_PREFIX $CMAKE_RELEASE_BUILD $CMAKE_USE_CLANG -DBoost_INCLUDE_DIR=$BOOST_PREFIX/include
 # Un comment this line if system boost is installed
-$CMAKE $LucenePlusPlus_FOLDER -DCMAKE_INSTALL_PREFIX=$LucenePlusPlus_PREFIX $CMAKE_RELEASE_BUILD $CMAKE_USE_CLANG -DLUCENE_USE_STATIC_BOOST_LIBS=true
+# $CMAKE $LucenePlusPlus_FOLDER -DCMAKE_INSTALL_PREFIX=$LucenePlusPlus_PREFIX $CMAKE_RELEASE_BUILD $CMAKE_USE_CLANG -DLUCENE_USE_STATIC_BOOST_LIBS=true
 
 make $BUILD_OPTS
 rm -rf $LucenePlusPlus_PREFIX
