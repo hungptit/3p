@@ -234,7 +234,7 @@ rm -rf $ZLIB_PREFIX
 make install
 cd $SRC_FOLDER
 
-# # Build HDF5
+# Build HDF5
 # HDF5_FILE=hdf5-1.8.10
 # HDF5_GIT=https://gitorious.org/hdf5/hdf5-v18.git
 # HDF5_SRC=$SRC_FOLDER/hdf5-v18
@@ -254,3 +254,42 @@ cd $SRC_FOLDER
 # rm -rf $HDF5_PREFIX
 # make install
 
+# Build bzip2
+BZIP2_FILE=bzip2-1.0.6.tar.gz
+BZIP2_LINK=http://www.bzip.org/1.0.6/${BZIP2_FILE}
+BZIP2_SRC=$SRC_FOLDER/bzip2-1.0.6
+BZIP2_BUILD=$TMP_FOLDER/bzip2
+BZIP2_PREFIX=$EXTERNAL_FOLDER/bzip2
+
+cd $SRC_FOLDER
+if [ ! -f $BZIP2_FILE ]; then
+    wget $BZIP2_LINK
+fi
+
+if [ ! -d $BZIP2_SRC ]; then
+    tar xf $BZIP2_FILE
+fi
+
+cd $BZIP2_SRC
+make clean
+make $BUILD_OPTS CC=$CLANG CXX=$CLANGPP CFLAGS="-O4 -Wall" CXXFLAGS="-O4 -Wall" 
+rm -rf $BZIP2_PREFIX
+make install PREFIX=$BZIP2_PREFIX
+
+# Build zlib
+ZLIB_GIT=https://github.com/madler/zlib
+ZLIB_SRC=$SRC_FOLDER/zlib
+ZLIB_PREFIX=$EXTERNAL_FOLDER/zlib
+
+if [ ! -d $ZLIB_SRC ]; then
+    cd $SRC_FOLDER
+    git clone $ZLIB_GIT
+fi
+
+cd $ZLIB_SRC
+git pull
+make clean
+./configure --prefix=$ZLIB_PREFIX CC=$CLANG CXX=$CLANGPP CFLAGS="-O4 -Wall" CXXFLAGS="-O4 -Wall" 
+make $BUILD_OPTS
+rm -rf $ZLIB_PREFIX
+make install 
