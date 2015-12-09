@@ -14,8 +14,8 @@
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
 (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
 
-(when (executable-find "curl")
-  (setq helm-google-suggest-use-curl-p t))
+;; (when (executable-find "curl")
+;;   (setq helm-google-suggest-use-curl-p t))
 
 (setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
       helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
@@ -25,7 +25,7 @@
 
 (helm-mode 1)
 (helm-autoresize-mode 1)
-;; (setq helm-M-x-fuzzy-match t)
+(setq helm-M-x-fuzzy-match t)
 
 ;; helm-ag
 (add-to-list 'load-path (concat emacs-setup-root-path "emacs-helm-ag/"))
@@ -46,3 +46,28 @@
 (require 'projectile)
 (require 'helm-projectile)
 (projectile-global-mode)
+(setq projectile-completion-system 'helm)
+
+;; Other helm packages
+(require 'helm-eshell)
+
+;; Useful keys
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-x C-m") 'helm-M-x)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+(global-set-key (kbd "C-x b") 'helm-mini)
+(global-set-key (kbd "C-x C-b") 'helm-buffers-list)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(global-set-key (kbd "C-h f") 'helm-apropos)
+(global-set-key (kbd "C-h r") 'helm-info-emacs)
+(global-set-key (kbd "C-h C-l") 'helm-locate-library)
+(define-key minibuffer-local-map (kbd "C-c C-l") 'helm-minibuffer-history)
+
+;; shell history.
+(define-key shell-mode-map (kbd "C-c C-l") 'helm-comint-input-ring)
+
+;; use helm to list eshell history
+(add-hook 'eshell-mode-hook
+          #'(lambda ()
+              (substitute-key-definition 'eshell-list-history 'helm-eshell-history eshell-mode-map)))
+(substitute-key-definition 'find-tag 'helm-etags-select global-map)
