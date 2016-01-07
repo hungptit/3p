@@ -44,7 +44,7 @@
 ;; projectile
 (add-to-list 'load-path (concat emacs-setup-root-path "projectile"))
 (require 'projectile)
-(require 'helm-projectile)
+;;(require 'helm-projectile)
 (projectile-global-mode)
 (setq projectile-completion-system 'helm)
 

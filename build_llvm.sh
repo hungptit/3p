@@ -10,12 +10,12 @@ NCPUS=$(grep -c ^processor /proc/cpuinfo)
 BUILD_OPTS=-j$((NCPUS+1))
 
 # Comment these lines to use the 
-CLANG=$EXTERNAL_FOLDER/llvm/bin/clang
-CLANGPP=$EXTERNAL_FOLDER/llvm/bin/clang++
-if [ ! -f $CLANGPP ]; then
+CC=$EXTERNAL_FOLDER/llvm/bin/clang
+CXX=$EXTERNAL_FOLDER/llvm/bin/clang++
+if [ ! -f $CXX ]; then
     # Fall back to gcc if we do not have clang installed.
-    CLANG=clang
-    CLANGPP=clang++
+    CC=gcc
+    CXX=g++
 fi
 
 CMAKE_PREFIX=$EXTERNAL_FOLDER/cmake
@@ -26,7 +26,7 @@ fi
 
 # Specify build type and other related parameters.
 CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE:STRING=Release"
-CMAKE_USE_CLANG="-DCMAKE_CXX_COMPILER=${CLANGPP} -DCMAKE_C_COMPILER=${CLANG}"
+CMAKE_USE_CLANG="-DCMAKE_CXX_COMPILER=${CXX} -DCMAKE_C_COMPILER=${CC}"
 
 # Install clang
 LLVM_FOLDER=$SRC_FOLDER/llvm

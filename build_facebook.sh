@@ -22,7 +22,6 @@ fi
 CMAKE_PREFIX=$EXTERNAL_FOLDER/cmake
 CMAKE=$CMAKE_PREFIX/bin/cmake
 if [ ! -f $CMAKE ]; then
-    # Use system CMake if we could not find the customized CMake.
     CMAKE=cmake
 fi
 CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE:STRING=Release"
@@ -32,7 +31,6 @@ CMAKE_USE_CLANG="-DCMAKE_CXX_COMPILER=${CLANGPP} -DCMAKE_C_COMPILER=${CLANG}"
 GIT_PREFIX=$EXTERNAL_FOLDER/git
 GIT=$GIT_PREFIX/bin/git
 if [ ! -f $GIT ]; then
-    # Use system CMake if we could not find the customized CMake.
     GIT=git
 fi
 
@@ -50,3 +48,36 @@ $GIT pull
 # git checkout rocksdb-3.13
 make DEBUG_LEVEL=0 $BUILD_OPTS static_lib CC=$CLANG CXX=$CLANGPP
 # make all $BUILD_OPTS
+
+# Get folly
+FOLLY_GIT=https://github.com/facebook/folly
+FOLLY_PREFIX=$EXTERNAL_FOLDER/folly
+
+if [ ! -d $FOLLY_PREFIX ]; then
+    cd $EXTERNAL_FOLDER
+    $GIT clone $FOLLY_GIT
+fi
+
+# get jemalloc
+JEMALLOC_GIT=https://github.com/jemalloc/jemalloc.git
+JEMALLOC_PREFIX=$EXTERNAL_FOLDER/jemalloc
+JEMALLOC_SRC=$SRC_FOLDER/jemalloc
+JEMALLOC_BUILD=$SRC_FOLDER/jemalloc
+
+if [ ! -d $JEMALLOC_SRC ]; then
+    cd $SRC_FOLDER
+    $GIT clone $JEMALLOC_GIT
+fi
+
+cd $JEMALLOC_SRC
+git pull
+
+# Build jemalloc
+sh autogen.sh
+cd $JEMALLOC_BUILD
+$JEMALLOC_SRC/configure --prefix=$JEMALLOC_PREFIX
+make build_lib_static build_doc $BUILD_OPTS 
+rm -rf $JEMALLOC_PREFIX
+make install
+
+
