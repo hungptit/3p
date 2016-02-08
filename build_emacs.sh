@@ -249,3 +249,28 @@ git pull
 ./configure --prefix=$DOXYMACS_PREFIX
 make -j5
 make install
+
+# flycheck in its dependencies
+FLYCHECK_GIT=https://github.com/flycheck/flycheck.git
+FLYCHECK_FOLDER=$EMACS_PREFIX/flycheck
+cd $EMACS_PREFIX
+if [ ! -d $FLYCHECK_FOLDER ]; then
+    git clone $FLYCHECK_GIT
+fi
+cd $FLYCHECK_FOLDER
+git pull
+
+# Download let-alist to flycheck folder.
+LET_ALIST_LINK=http://elpa.gnu.org/packages/let-alist-1.0.4.el
+wget $LET_ALIST_LINK
+mv let-alist-1.0.4.el let-alist.el
+
+# seq
+SEQ_GIT=https://github.com/NicolasPetton/seq.el
+SEQ_FOLDER=$EMACS_PREFIX/seq
+cd $EMACS_PREFIX
+if [ ! -d $SEQ_FOLDER ]; then
+    git clone $SEQ_GIT seq
+fi
+cd $SEQ_FOLDER
+git pull

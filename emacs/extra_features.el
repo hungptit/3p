@@ -128,3 +128,8 @@
 (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+;; Enable flycheck
+(add-to-list 'load-path (concat emacs-setup-root-path "flycheck"))
+(add-to-list 'load-path (concat emacs-setup-root-path "seq"))
+(require 'flycheck)
