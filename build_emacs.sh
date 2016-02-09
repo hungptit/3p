@@ -125,6 +125,27 @@ cd $GITMODES_FOLDER
 git pull
 make -k
 
+# Install dash
+DASH_GIT=https://github.com/magnars/dash.el
+DASH_FOLDER=$EMACS_PREFIX/dash
+cd $EMACS_PREFIX
+if [ ! -d $DASH_FOLDER ]; then
+    git clone $DASH_GIT dash
+fi
+cd $DASH_FOLDER
+git pull
+
+# Install with-editor
+WITH_EDITOR_GIT=https://github.com/magit/with-editor
+WITH_EDITOR_FOLDER=$EMACS_PREFIX/with-editor
+cd $EMACS_PREFIX
+if [ ! -d $WITH_EDITOR_FOLDER ]; then
+    git clone $WITH_EDITOR_GIT with-editor
+fi
+cd $WITH_EDITOR_FOLDER
+git pull
+make -j3
+
 # magit
 MAGIT_GIT=git://github.com/magit/magit.git
 MAGIT_FOLDER=$EMACS_PREFIX/magit
