@@ -109,3 +109,23 @@ make configure
 make $BUILD_OPTS PROFILE=BUILD
 rm -f $GIT_PREFIX
 make profile-fast-install $BUILD_OPTS
+
+# Build global
+GLOBAL_LINK=http://tamacom.com/global/
+GLOBAL_FILE=global-6.5.2
+GLOBAL_SRC=$SRC_FOLDER/global
+GLOBAL_PREFIX=$EXTERNAL_FOLDER/global
+
+cd $SRC_FOLDER
+if [ ! -f $GLOBAL_FILE.tar.gz ]; then
+    wget $GLOBAL_LINK/$GLOBAL_FILE.tar.gz
+fi
+
+# Pull the latest version
+tar xf $GLOBAL_FILE.tar.gz
+cd $GLOBAL_FILE
+make configure
+./configure --prefix=$GLOBAL_PREFIX CFLAGS="-O4"
+make $BUILD_OPTS
+rm -rf $GLOBAL_PREFIX
+make install

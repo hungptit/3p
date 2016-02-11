@@ -274,3 +274,13 @@ if [ ! -d $SEQ_FOLDER ]; then
 fi
 cd $SEQ_FOLDER
 git pull
+
+# gtags related packages
+HELM_GTAGS_LINK=https://github.com/syohex/emacs-helm-gtags
+HELM_GTAGS_FOLDER=$EMACS_PREFIX/emacs-helm-gtags
+cd $EMACS_PREFIX
+if [ ! -d $HELM_GTAGS_FOLDER ]; then
+    git clone $HELM_GTAGS_LINK
+fi
+cd $HELM_GTAGS_FOLDER
+git pull
