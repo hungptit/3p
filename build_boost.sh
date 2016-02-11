@@ -39,6 +39,7 @@ fi
 # Build boost from git source
 BOOST_GIT=https://github.com/boostorg/boost.git
 BOOST_SRC=$SRC_FOLDER/boost
+BOOST_PREFIX=$EXTERNAL_FOLDER/boost
 cd $SRC_FOLDER
 if [ ! -d $BOOST_SRC ]; then
     git clone --recursive $BOOST_GIT
