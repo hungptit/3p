@@ -1,9 +1,5 @@
-;; Custom faces
+;;; Code: 
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  '(semantic-decoration-on-unknown-includes ((((class color) (background light)) (:background "#ffF0F0")))))
 
 ;; Set cursor and mouse-pointer colours
@@ -33,15 +29,6 @@
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
 
-;; Enable backup files.
-;; (setq make-backup-files 1)
-
-;; Enable versioning with default values (keep five last versions, I think!)
-;; (setq version-control t)
-
-;; Save all backup file in this directory.
-;; (setq backup-directory-alist (quote ((".*" . "/local/projects/3p/emacs/.emacs_backups/"))))
-
 ;; MATLAB
 (autoload 'matlab-eei-connect "matlab-eei"
   "Connects Emacs to MATLAB's external editor interface.")
@@ -57,23 +44,6 @@
   (setq fill-column 108)
   (imenu-add-to-menubar "Find"))		; where auto-fill should wrap
 (add-hook 'matlab-mode-hook 'my-matlab-mode-hook)
-
-;; dash
-;; (add-to-list 'load-path (concat emacs-setup-root-path "dash.el"))
-;; (require 'dash)
-
-;; Magit
-;; (add-to-list 'load-path (concat emacs-setup-root-path "git-modes"))
-;; (add-to-list 'load-path (concat emacs-setup-root-path "magit"))
-;; (require 'magit)
-;; (setq magit-auto-revert-mode nil)
-;; (setq magit-last-seen-setup-instructions "1.4.0")
-
-;; ;; Clang format
-;; (load-file "/local/projects/3p/llvm/share/clang/clang-format.el")
-
-;; ;; ;; clang-format
-;; (global-set-key [C-M-tab] 'clang-format-region)
 
 ;; ;; irony-mode
 ;; (add-to-list 'load-path (concat emacs-setup-root-path "irony-mode/"))
@@ -133,8 +103,3 @@
 (add-to-list 'load-path (concat emacs-setup-root-path "flycheck"))
 (add-to-list 'load-path (concat emacs-setup-root-path "seq"))
 (require 'flycheck)
-
-;; Enable quickrun
-;; (add-to-list 'load-path (concat emacs-setup-root-path "emacs-quickrun"))
-;; (require 'quickrun)
-
