@@ -18,6 +18,9 @@ if [ ! -f $CLANGPP ]; then
     CLANGPP=g++
 fi
 
+# CLANG=gcc
+# CLANGPP=g++
+
 # Setup CMake
 CMAKE_PREFIX=$EXTERNAL_FOLDER/cmake
 CMAKE=$CMAKE_PREFIX/bin/cmake
@@ -45,8 +48,8 @@ fi
 
 cd $ROCKSDB_PREFIX
 $GIT pull
-# git checkout rocksdb-3.13
-make DEBUG_LEVEL=0 $BUILD_OPTS static_lib CC=$CLANG CXX=$CLANGPP
+make clean
+make DEBUG_LEVEL=0 $BUILD_OPTS static_lib EXTRA_CXXFLAGS="-O4" EXTRA_CFLAGS="-O4" CC=$CLANG CXX=$CLANGPP
 # make all $BUILD_OPTS
 
 # Get folly

@@ -133,3 +133,8 @@
 (add-to-list 'load-path (concat emacs-setup-root-path "flycheck"))
 (add-to-list 'load-path (concat emacs-setup-root-path "seq"))
 (require 'flycheck)
+
+;; Enable quickrun
+;; (add-to-list 'load-path (concat emacs-setup-root-path "emacs-quickrun"))
+;; (require 'quickrun)
+
