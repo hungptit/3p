@@ -71,3 +71,7 @@
           #'(lambda ()
               (substitute-key-definition 'eshell-list-history 'helm-eshell-history eshell-mode-map)))
 (substitute-key-definition 'find-tag 'helm-etags-select global-map)
+
+;; helm-gtags
+(add-to-list 'load-path (concat emacs-setup-root-path "emacs-helm-gtags/"))
+(require 'helm-gtags)

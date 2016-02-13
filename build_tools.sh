@@ -45,12 +45,13 @@ fi
 
 # Pull the latest version
 cd $CMAKE_SRC
+$GIT checkout master
 git pull
 
 # Build CMake
 mkdir -p $CMAKE_BUILD_FOLDER
 cd $CMAKE_BUILD_FOLDER
-$GIT checkout v3.3.2
+# $GIT checkout v3.3.2
 ../configure --prefix=$CMAKE_PREFIX --no-qt-gui
 make $BUILD_OPTS 
 rm $CMAKE_PREFIX                # Cleanup previously installed CMake
@@ -106,29 +107,9 @@ cd $GIT_FOLDER
 git pull
 make configure
 ./configure --prefix=$GIT_PREFIX
-make $BUILD_OPTS PROFILE=BUILD
-rm -f $GIT_PREFIX
-make profile-fast-install $BUILD_OPTS
-
-# Build global
-GLOBAL_LINK=http://tamacom.com/global/
-GLOBAL_FILE=global-6.5.2
-GLOBAL_SRC=$SRC_FOLDER/global
-GLOBAL_PREFIX=$EXTERNAL_FOLDER/global
-
-cd $SRC_FOLDER
-if [ ! -f $GLOBAL_FILE.tar.gz ]; then
-    wget $GLOBAL_LINK/$GLOBAL_FILE.tar.gz
-fi
-
-# Pull the latest version
-tar xf $GLOBAL_FILE.tar.gz
-cd $GLOBAL_FILE
-make configure
-./configure --prefix=$GLOBAL_PREFIX CFLAGS="-O4"
-make $BUILD_OPTS
-rm -rf $GLOBAL_PREFIX
-make install
+# make $BUILD_OPTS PROFILE=BUILD
+# rm -f $GIT_PREFIX
+# make profile-fast-install $BUILD_OPTS
 
 # Build lz4
 LZ4_GIT=https://github.com/Cyan4973/lz4
