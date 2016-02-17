@@ -357,4 +357,3 @@ if [ ! -d $ZENBURN_FOLDER ]; then
 fi
 cd $ZENBURN_FOLDER
 $GIT pull
-
