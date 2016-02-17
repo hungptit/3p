@@ -102,3 +102,12 @@
 (add-to-list 'load-path (concat emacs-setup-root-path "flycheck"))
 (add-to-list 'load-path (concat emacs-setup-root-path "seq"))
 (require 'flycheck)
+
+;; rainbow-delimiters
+(add-to-list 'load-path (concat emacs-setup-root-path "rainbow-delimiters"))
+(require 'rainbow-delimiters)
+
+;; undo-tree
+(add-to-list 'load-path (concat emacs-setup-root-path "undo-tree"))
+(require 'undo-tree)
+(global-undo-tree-mode)

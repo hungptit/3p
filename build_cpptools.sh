@@ -44,11 +44,11 @@ DOXYGEN_BUILD_FOLDER=$TMP_FOLDER/doxygen
 
 cd $SRC_FOLDER
 if [ ! -d $DOXYGEN_SRC ]; then
-    git clone $DOXYGEN_LINK
+    $GIT clone $DOXYGEN_LINK
 fi
 
 cd $DOXYGEN_SRC
-git pull
+$GIT pull
 
 mkdir $DOXYGEN_BUILD_FOLDER
 cd $DOXYGEN_BUILD_FOLDER
@@ -68,7 +68,7 @@ if [ ! -d $CEREAL_PREFIX ]; then
 fi
 
 cd $CEREAL_PREFIX
-git pull
+$GIT pull
 
 # Rapidjson
 RAPIDJSON_GIT=https://github.com/miloyip/rapidjson
@@ -87,11 +87,11 @@ SPLOG_GIT=https://github.com/gabime/spdlog.git
 SPLOG_PREFIX=$EXTERNAL_FOLDER/spdlog
 cd $EXTERNAL_FOLDER
 if [ ! -d $SPLOG_PREFIX ]; then
-    git clone $SPLOG_GIT
+    $GIT clone $SPLOG_GIT
 fi
 cd $SPLOG_PREFIX
-git fetch 
-git pull
+$GIT fetch 
+$GIT pull
 
 # Get TBB
 TBB_LINK=https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb43_20150316oss_src.tgz
@@ -174,7 +174,7 @@ if [ ! -d $LIBEVENT_FOLDER ]; then
     git clone $LIBEVENT_GIT
 fi
 cd $LIBEVENT_FOLDER
-git pull
+$GIT pull
 ./autogen.sh
 ./configure --prefix=$LIBEVENT_PREFIX
 make $BUILD_OPTS
@@ -191,7 +191,7 @@ if [ ! -d $MEMCACHED_FOLDER ]; then
 fi
 
 cd $MEMCACHED_FOLDER
-git pull
+$GIT pull
 ./autogen.sh
 ./configure --prefix=$MEMCACHED_PREFIX --with-libevent=$LIBEVENT_PREFIX
 make $BUILD_OPTS
@@ -223,7 +223,7 @@ ZLIB_PREFIX=$EXTERNAL_FOLDER/zlib
 
 if [ ! -d $ZLIB_SRC ]; then
     cd $SRC_FOLDER
-    git clone $ZLIB_GIT
+    $GIT clone $ZLIB_GIT
 fi
 
 cd $ZLIB_SRC
