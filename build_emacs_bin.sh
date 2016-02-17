@@ -91,14 +91,40 @@ fi
 cd $CASK_FOLDER
 git pull
 
-# # stgit
-# STGIT_FILE=stgit-0.17.tar.gz
-# STGIT_GIT_LINK=http://download.gna.org/stgit/$STGIT_FILE
-# STGIT_FOLDER=$EMACS_PREFIX/stgit
-# cd $SRC_FOLDER
-# if [ ! -f $STGIT_FILE ]; then
-#     wget $STGIT_GIT_LINK
-# fi
-# tar -xf $STGIT_FILE -C $EMACS_PREFIX
-# cd stgit-0.17
-# make prefix=$STGIT_FOLDER install
+# ctags
+CTAGS_LINK=https://github.com/universal-ctags/ctags.git
+CTAGS_SRC=$SRC_FOLDER/ctags
+CTAGS_PREFIX=$EXTERNAL_FOLDER/ctags
+CTAGS_BUILD=$TMP_FOLDER/ctags
+cd $SRC_FOLDER
+if [ ! -d $CTAGS_SRC ]; then
+    $GIT clone $CTAGS_LINK
+fi
+cd $CTAGS_SRC
+git checkout master
+git pull
+./autogen.sh
+./configure --prefix=$CTAGS_PREFIX EXTRA_CFLAGS="-O4 -Wall" EXTRA_CPPFLAGS="-O4"
+make $BUILD_OPTS
+rm -rf $CTAGS_PREFIX
+make install
+
+# Build global
+GLOBAL_LINK=http://tamacom.com/global/
+GLOBAL_FILE=global-6.5.2
+GLOBAL_SRC=$SRC_FOLDER/global
+GLOBAL_PREFIX=$EXTERNAL_FOLDER/global
+
+cd $SRC_FOLDER
+if [ ! -f $GLOBAL_FILE.tar.gz ]; then
+    wget $GLOBAL_LINK/$GLOBAL_FILE.tar.gz
+fi
+
+# Pull the latest version
+tar xf $GLOBAL_FILE.tar.gz
+cd $GLOBAL_FILE
+make configure
+./configure --prefix=$GLOBAL_PREFIX CFLAGS="-O4 -Wall"
+make $BUILD_OPTS
+rm -rf $GLOBAL_PREFIX
+make install
