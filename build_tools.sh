@@ -45,13 +45,15 @@ fi
 
 # Pull the latest version
 cd $CMAKE_SRC
+git checkout master
 git pull
 
 # Build CMake
 mkdir -p $CMAKE_BUILD_FOLDER
 cd $CMAKE_BUILD_FOLDER
-$GIT checkout v3.3.2
-../configure --prefix=$CMAKE_PREFIX --no-qt-gui
+# $GIT checkout v3.3.2
+# ../configure --prefix=$CMAKE_PREFIX --no-qt-gui
+../configure --prefix=$CMAKE_PREFIX
 make $BUILD_OPTS 
 rm $CMAKE_PREFIX                # Cleanup previously installed CMake
 make install

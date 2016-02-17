@@ -1,4 +1,3 @@
-;;; Code: 
 (custom-set-faces
  '(semantic-decoration-on-unknown-includes ((((class color) (background light)) (:background "#ffF0F0")))))
 
