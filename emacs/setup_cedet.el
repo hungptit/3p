@@ -74,3 +74,6 @@
 (defun my-semantic-hook ()
   (imenu-add-to-menubar "TAGS"))
 (add-hook 'semantic-init-hooks 'my-semantic-hook)
+
+(provide 'setup_cedet)
+;;; setup_cedet ends here

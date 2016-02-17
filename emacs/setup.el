@@ -18,7 +18,6 @@
 
 ;; Time
 (display-time-mode 1)
-(electric-pair-mode 1)
 
 ;; Disable the menubar and toolbar
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
@@ -66,3 +65,6 @@
 (add-to-list 'load-path (concat emacs-setup-root-path "emacs-async/"))
 (when (require 'dired-aux)
   (require 'dired-async))
+
+(provide 'setup) 
+;;; setup.el ends here

@@ -7,3 +7,5 @@
 (add-to-list 'load-path (concat emacs-setup-root-path "magit/lisp"))
 (require 'magit)
 
+(provide 'setup_magit)
+;;; setup_magit ends here

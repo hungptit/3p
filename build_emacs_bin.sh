@@ -45,20 +45,20 @@ EMACS_PREFIX=$EXTERNAL_FOLDER/emacs
 mkdir -p $EMACS_PREFIX
 
 # Build Emacs
-# EMACS_FOLDER=$EXTERNAL_FOLDER/emacs
-# EMACS_LINK=git://git.savannah.gnu.org/emacs.git
-# EMACS_PREFIX=$EXTERNAL_FOLDER/emacs
-# cd $EXTERNAL_FOLDER
-# if [ ! -d $EMACS_FOLDER ]; then
-#     git clone $EMACS_LINK
-# fi
+EMACS_SRC=$SRC_FOLDER/emacs
+EMACS_LINK=git://git.savannah.gnu.org/emacs.git
+EMACS_PREFIX=$EXTERNAL_FOLDER/emacs
+cd $SRC_FOLDER
+if [ ! -d $EMACS_SRC ]; then
+    git clone $EMACS_LINK
+fi
 
-# # Now enter emacs source folder and build
-# cd $EMACS_FOLDER
-# git checkout master
-# git pull
-# ./configure --prefix=$EMACS_PREFIX --with-x
-# make $BUILD_OPTS
+# Now enter emacs source folder and build
+cd $EMACS_SRC
+git checkout master
+git pull
+./configure --prefix=$EMACS_PREFIX --with-x
+make $BUILD_OPTS
 # make install
 
 # Build silver searcher

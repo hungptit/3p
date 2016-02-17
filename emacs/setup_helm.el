@@ -1,4 +1,4 @@
-;; Setup helm: 
+;;; setup helm --- Provide basic setup for Emacs helm mode. 
 ;; Reference: https://github.com/tuhdo/tuhdo.github.io/blob/master/share/helm.org 
 (add-to-list 'load-path (concat emacs-setup-root-path "helm/"))
 (require 'helm)
@@ -75,3 +75,6 @@
 ;; helm-gtags
 (add-to-list 'load-path (concat emacs-setup-root-path "emacs-helm-gtags/"))
 (require 'helm-gtags)
+
+(provide 'setup_helm)
+;;; setup_helm ends here

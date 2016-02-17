@@ -1,21 +1,26 @@
-(custom-set-faces
- '(semantic-decoration-on-unknown-includes ((((class color) (background light)) (:background "#ffF0F0")))))
+;; (custom-set-faces
+;;  '(semantic-decoration-on-unknown-includes ((((class color) (background light)) (:background "#ffF0F0")))))
 
-;; Set cursor and mouse-pointer colours
-(set-cursor-color "red")
-(set-mouse-color "goldenrod")
+;; ;; Set cursor and mouse-pointer colours
+;; (set-cursor-color "red")
+;; (set-mouse-color "goldenrod")
 
-;; Set region background colour
-(set-face-background 'region "blue")
+;; ;; Set region background colour
+;; (set-face-background 'region "blue")
 
-;; Set emacs background colour
-(set-background-color "black")
-(set-foreground-color "white")
+;; ;; Set emacs background colour
+;; (set-background-color "black")
+;; (set-foreground-color "white")
 
-;; Set fonts
+;; ;; Set fonts
 ;; (set-default-font "-bitstream-Bitstream Vera Sans Mono-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1")
 (set-default-font "Bitstream Vera Sans Mono:pixelsize=20:foundry=Bits:weight=normal:slant=normal:width=normal:scalable=true")
-(put 'upcase-region 'disabled nil)
+;; (put 'upcase-region 'disabled nil)
+
+;; Enable zenburn
+(add-to-list 'load-path (concat emacs-setup-root-path "zenburn-emacs"))
+(require 'zenburn-theme)
+(load-theme 'zenburn t)
 
 ;; CMake
 (flymake-mode 1)
@@ -111,3 +116,13 @@
 (add-to-list 'load-path (concat emacs-setup-root-path "undo-tree"))
 (require 'undo-tree)
 (global-undo-tree-mode)
+
+;; smartparens
+(add-to-list 'load-path (concat emacs-setup-root-path "smartparens"))
+(require 'smartparens)
+(show-smartparens-global-mode t)
+(add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
+(add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
+
+(provide 'extra_features) 
+;;; extra_features.el ends here

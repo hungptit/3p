@@ -337,3 +337,24 @@ if [ ! -d $UNDOTREE_FOLDER ]; then
 fi
 cd $UNDOTREE_FOLDER
 $GIT pull
+
+# smartparens
+SMARTPARENS_GIT=https://github.com/Fuco1/smartparens.git
+SMARTPARENS_FOLDER=$EMACS_PREFIX/smartparens
+cd $EMACS_PREFIX
+if [ ! -d $SMARTPARENS_FOLDER ]; then
+    $GIT clone $SMARTPARENS_GIT
+fi
+cd $SMARTPARENS_FOLDER
+$GIT pull
+
+# zenburn theme
+ZENBURN_GIT=https://github.com/bbatsov/zenburn-emacs.git
+ZENBURN_FOLDER=$EMACS_PREFIX/zenburn-emacs
+cd $EMACS_PREFIX
+if [ ! -d $ZENBURN_FOLDER ]; then
+    $GIT clone $ZENBURN_GIT
+fi
+cd $ZENBURN_FOLDER
+$GIT pull
+
