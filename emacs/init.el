@@ -13,4 +13,4 @@
 ;; (require 'setup_magit)
 
 (provide 'init)
-;;; init.el ends here.
+;;; init.el ends here
