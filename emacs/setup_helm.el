@@ -44,7 +44,7 @@
 ;; projectile
 (add-to-list 'load-path (concat emacs-setup-root-path "projectile"))
 (require 'projectile)
-;;(require 'helm-projectile)
+;; (require 'helm-projectile)
 (projectile-global-mode)
 (setq projectile-completion-system 'helm)
 
@@ -73,8 +73,12 @@
 (substitute-key-definition 'find-tag 'helm-etags-select global-map)
 
 ;; helm-gtags
-(add-to-list 'load-path (concat emacs-setup-root-path "emacs-helm-gtags/"))
+(add-to-list 'load-path (concat emacs-setup-root-path "emacs-helm-gtags"))
 (require 'helm-gtags)
+
+;; helm-projectile
+(add-to-list 'load-path (concat emacs-setup-root-path "helm-projectile"))
+(require 'helm-projectile)
 
 (provide 'setup_helm)
 ;;; setup_helm ends here

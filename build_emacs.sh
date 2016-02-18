@@ -357,3 +357,13 @@ if [ ! -d $ZENBURN_FOLDER ]; then
 fi
 cd $ZENBURN_FOLDER
 $GIT pull
+
+# helm-projectile
+HELM_PROJECTILE_GIT=https://github.com/bbatsov/helm-projectile.git
+HELM_PROJECTILE_FOLDER=$EMACS_PREFIX/helm-projectile
+cd $EMACS_PREFIX
+if [ ! -d $HELM_PROJECTILE_FOLDER ]; then
+    $GIT clone $HELM_PROJECTILE_GIT
+fi
+cd $HELM_PROJECTILE_FOLDER
+$GIT pull
