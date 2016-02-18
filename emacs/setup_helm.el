@@ -77,8 +77,8 @@
 (require 'helm-gtags)
 
 ;; helm-projectile
-(add-to-list 'load-path (concat emacs-setup-root-path "helm-projectile"))
-(require 'helm-projectile)
+;; (add-to-list 'load-path (concat emacs-setup-root-path "helm-projectile"))
+;; (require 'helm-projectile)
 
 (provide 'setup_helm)
 ;;; setup_helm ends here
