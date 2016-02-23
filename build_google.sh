@@ -36,100 +36,112 @@ if [ ! -f $GIT ]; then
     GIT=git
 fi
 
-# Setup Snappy
-SNAPPY_LINK=https://github.com/google/snappy.git
-SNAPPY_PREFIX=$EXTERNAL_FOLDER/snappy
-SNAPPY_SRC=$SRC_FOLDER/snappy
-SNAPPY_BUILD=$TMP_FOLDER/snappy
+build_snappy() {
+    SNAPPY_LINK=https://github.com/google/snappy.git
+    SNAPPY_PREFIX=$EXTERNAL_FOLDER/snappy
+    SNAPPY_SRC=$SRC_FOLDER/snappy
+    SNAPPY_BUILD=$TMP_FOLDER/snappy
 
-if [ ! -d $SNAPPY_SRC ]; then
+    if [ ! -d $SNAPPY_SRC ]; then
+        cd $SRC_FOLDER
+        $GIT clone $SNAPPY_LINK
+    fi
+
+    cd $SNAPPY_SRC
+    $GIT pull
+    sh autogen.sh
+    ./configure --prefix=$SNAPPY_PREFIX CXXFLAGS="$CXXFLAGS -O4 -Wall"
+    make -j5
+    make install
+}
+
+build_leveldb() {
+    LEVELDB_GIT=https://github.com/google/leveldb
+    LEVELDB_PREFIX=$EXTERNAL_FOLDER/leveldb
+
+    if [ ! -d $LEVELDB_PREFIX ]; then
+        cd $EXTERNAL_FOLDER
+        $GIT clone $LEVELDB_GIT
+    fi
+
+    cd $LEVELDB_PREFIX
+    make clean
+    git pull
+    make CXX=$CLANGPP $BUILD_OPTS
+}
+
+build_gtest() {
+    GTEST_FOLDER=$SRC_FOLDER/gtest
+    GTEST_SRC_FOLDER=$GTEST_FOLDER/build
+    GTEST_PREFIX=$EXTERNAL_FOLDER/gtest
+
     cd $SRC_FOLDER
-    $GIT clone $SNAPPY_LINK
-fi
+    if [ ! -d $GTEST_FOLDER ]; then
+        svn checkout http://googletest.googlecode.com/svn/trunk/ gtest
+    fi
 
-cd $SNAPPY_SRC
-$GIT pull
-sh autogen.sh
-./configure --prefix=$SNAPPY_PREFIX CXXFLAGS="$CXXFLAGS -O4 -Wall"
-make -j5
-make install
+    cd $GTEST_FOLDER
+    svn update
 
-# LevelDB
-LEVELDB_GIT=https://github.com/google/leveldb
-LEVELDB_PREFIX=$EXTERNAL_FOLDER/leveldb
+    rm -rf $GTEST_SRC_FOLDER
+    mkdir -p $GTEST_SRC_FOLDER
+    cd $GTEST_SRC_FOLDER
+    $CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$GTEST_PREFIX $CMAKE_RELEASE_BUILD $GTEST_FOLDER
+    make $BUILD_OPTS
 
-if [ ! -d $LEVELDB_PREFIX ]; then
-    cd $EXTERNAL_FOLDER
-    $GIT clone $LEVELDB_GIT
-fi
+    # We need to install gtest manually.
+    rm -rf $GTEST_PREFIX
+    mkdir -p $GTEST_PREFIX
+    mkdir -p $GTEST_PREFIX/include
+    mkdir -p $GTEST_PREFIX/lib
+    cp -r $GTEST_FOLDER/include/gtest $GTEST_PREFIX/include
+    cp lib*.a $GTEST_PREFIX/lib/
+}
 
-cd $LEVELDB_PREFIX
-make clean
-git pull
-make CXX=$CLANGPP $BUILD_OPTS
+build_hashmap() {
+    SPARSEHASH_LINK=http://sparsehash.googlecode.com/svn/trunk/
+    SPARSEHASH_FOLDER=$SRC_FOLDER/sparsehash
+    SPARSEHASH_PREFIX=$EXTERNAL_FOLDER/sparsehash
 
-# Google test
-GTEST_FOLDER=$SRC_FOLDER/gtest
-GTEST_SRC_FOLDER=$GTEST_FOLDER/build
-GTEST_PREFIX=$EXTERNAL_FOLDER/gtest
-
-cd $SRC_FOLDER
-if [ ! -d $GTEST_FOLDER ]; then
-    svn checkout http://googletest.googlecode.com/svn/trunk/ gtest
-fi
-
-cd $GTEST_FOLDER
-svn update
-
-rm -rf $GTEST_SRC_FOLDER
-mkdir -p $GTEST_SRC_FOLDER
-cd $GTEST_SRC_FOLDER
-$CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$GTEST_PREFIX $CMAKE_RELEASE_BUILD $GTEST_FOLDER
-make $BUILD_OPTS
-
-# We need to install gtest manually.
-rm -rf $GTEST_PREFIX
-mkdir -p $GTEST_PREFIX
-mkdir -p $GTEST_PREFIX/include
-mkdir -p $GTEST_PREFIX/lib
-cp -r $GTEST_FOLDER/include/gtest $GTEST_PREFIX/include
-cp lib*.a $GTEST_PREFIX/lib/
-
-# Google hash map
-SPARSEHASH_LINK=http://sparsehash.googlecode.com/svn/trunk/
-SPARSEHASH_FOLDER=$SRC_FOLDER/sparsehash
-SPARSEHASH_PREFIX=$EXTERNAL_FOLDER/sparsehash
-
-cd $SRC_FOLDER
-echo $SPARSEHASH_FOLDER
-echo $SPARSEHASH_LINK
-if [ ! -d $SPARSEHASH_FOLDER ]; then
-    svn checkout $SPARSEHASH_LINK sparsehash
+    cd $SRC_FOLDER
+    echo $SPARSEHASH_FOLDER
     echo $SPARSEHASH_LINK
-fi
-cd $SPARSEHASH_FOLDER
-svn update
+    if [ ! -d $SPARSEHASH_FOLDER ]; then
+        svn checkout $SPARSEHASH_LINK sparsehash
+        echo $SPARSEHASH_LINK
+    fi
+    cd $SPARSEHASH_FOLDER
+    svn update
 
-./configure --prefix=$SPARSEHASH_PREFIX
-make $BUILD_OPTS
-make install
+    ./configure --prefix=$SPARSEHASH_PREFIX
+    make $BUILD_OPTS
+    make install
+}
 
-# Micro-benchmark
-BENCHMARK_GIT=https://github.com/google/benchmark.git
-BENCHMARK_SRC=$SRC_FOLDER/benchmark
-BENCHMARK_BUILD=$TMP_FOLDER/benchmark
-BENCHMARK_PREFIX=$EXTERNAL_FOLDER/benchmark
+build_micro_benchmark() {
+    BENCHMARK_GIT=https://github.com/google/benchmark.git
+    BENCHMARK_SRC=$SRC_FOLDER/benchmark
+    BENCHMARK_BUILD=$TMP_FOLDER/benchmark
+    BENCHMARK_PREFIX=$EXTERNAL_FOLDER/benchmark
 
-if [ ! -d $BENCHMARK_SRC ]; then
-    cd $SRC_FOLDER
-    $GIT clone $BENCHMARK_GIT
-fi
+    if [ ! -d $BENCHMARK_SRC ]; then
+        cd $SRC_FOLDER
+        $GIT clone $BENCHMARK_GIT
+    fi
 
-rm -rf $BENCHMARK_BUILD
-mkdir $BENCHMARK_BUILD
-cd $BENCHMARK_BUILD
+    rm -rf $BENCHMARK_BUILD
+    mkdir $BENCHMARK_BUILD
+    cd $BENCHMARK_BUILD
 
-# Use gcc to make sure that we can build in old systems.
-$CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$BENCHMARK_PREFIX $CMAKE_RELEASE_BUILD $BENCHMARK_SRC
-make $BUILD_OPTS
-rm -rf $BENCHMARK_BUILD
+    # Use gcc to make sure that we can build in old systems.
+    $CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$BENCHMARK_PREFIX $CMAKE_RELEASE_BUILD $BENCHMARK_SRC
+    make $BUILD_OPTS
+    rm -rf $BENCHMARK_BUILD
+}
+
+# Build all required packages
+build_snappy
+build_leveldb
+build_gtest
+build_hashmap
+build_micro_benchmark
