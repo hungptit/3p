@@ -9,7 +9,7 @@
 (require 'setup)
 (require 'setup_helm)
 (require 'extra_features)
-;;(require 'setup_magit)
+(require 'setup_magit)
 
 (provide 'init)
 ;;; init.el ends here

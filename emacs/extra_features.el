@@ -18,7 +18,7 @@
 ;; (put 'upcase-region 'disabled nil)
 
 ;; Enable zenburn
-(add-to-list 'load-path (concat emacs-setup-root-path "zenburn-emacs"))
+(add-to-list 'load-path (concat emacs-setup-root-path "zenburn"))
 (require 'zenburn-theme)
 (load-theme 'zenburn t)
 
@@ -87,16 +87,16 @@
   (font-lock-add-keywords nil doxymacs-doxygen-keywords))
 
 ;; json-mode, json-reformat, and json-snatcher
-(add-to-list 'load-path (concat emacs-setup-root-path "json-mode"))
-(add-to-list 'load-path (concat emacs-setup-root-path "json-snatcher"))
-(add-to-list 'load-path (concat emacs-setup-root-path "json-reformat"))
+(add-to-list 'load-path (concat emacs-setup-root-path "json_mode"))
+(add-to-list 'load-path (concat emacs-setup-root-path "json_snatcher"))
+(add-to-list 'load-path (concat emacs-setup-root-path "json_reformat"))
 
 (require 'json-mode)
 (require 'json-reformat)
 (require 'json-snatcher)
 
 ;; Markdown
-(add-to-list 'load-path (concat emacs-setup-root-path "markdown-mode"))
+(add-to-list 'load-path (concat emacs-setup-root-path "markdown_mode"))
 (autoload 'markdown-mode "markdown-mode"
   "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
@@ -109,11 +109,11 @@
 (require 'flycheck)
 
 ;; rainbow-delimiters
-(add-to-list 'load-path (concat emacs-setup-root-path "rainbow-delimiters"))
+(add-to-list 'load-path (concat emacs-setup-root-path "rainbow_delimiters"))
 (require 'rainbow-delimiters)
 
 ;; undo-tree
-(add-to-list 'load-path (concat emacs-setup-root-path "undo-tree"))
+(add-to-list 'load-path (concat emacs-setup-root-path "undo_tree"))
 (require 'undo-tree)
 (global-undo-tree-mode)
 

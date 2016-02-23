@@ -1,58 +1,86 @@
 #!/bin/bash
-# Setup build environment
-EXTERNAL_FOLDER=$PWD
-SRC_FOLDER=$EXTERNAL_FOLDER/src
-TMP_FOLDER=/tmp/build/
 
-mkdir -p $TMP_FOLDER
-mkdir -p $SRC_FOLDER
+setup() {
+    EXTERNAL_FOLDER=$PWD
+    SRC_FOLDER=$EXTERNAL_FOLDER/src
+    TMP_FOLDER=/tmp/build/
 
-NCPUS=$(grep -c ^processor /proc/cpuinfo)
-BUILD_OPTS=-j$((NCPUS+1))
+    mkdir -p $TMP_FOLDER
+    mkdir -p $SRC_FOLDER
 
-# Setup clang
-CLANG=$EXTERNAL_FOLDER/llvm/bin/clang
-CLANGPP=$EXTERNAL_FOLDER/llvm/bin/clang++
-if [ ! -f $CLANGPP ]; then
-    # Fall back to gcc if we do not have clang installed.
-    CLANG=gcc
-    CLANGPP=g++
-fi
+    NCPUS=$(grep -c ^processor /proc/cpuinfo)
+    BUILD_OPTS=-j$((NCPUS+1))
 
-# Setup CMake
-CMAKE_PREFIX=$EXTERNAL_FOLDER/cmake
-CMAKE=$CMAKE_PREFIX/bin/cmake
-echo $CMAKE
-if [ ! -f $CMAKE ]; then
-    # Use system CMake if we could not find the customized CMake.
-    CMAKE=cmake
-fi
-
-# Setup git
-GIT_PREFIX=$EXTERNAL_FOLDER/git
-GIT=$GIT_PREFIX/bin/git
-if [ ! -f $GIT ]; then
-    # Use system CMake if we could not find the customized CMake.
-    GIT=git
-fi
-
-build_snappy() {
-    SNAPPY_LINK=https://github.com/google/snappy.git
-    SNAPPY_PREFIX=$EXTERNAL_FOLDER/snappy
-    SNAPPY_SRC=$SRC_FOLDER/snappy
-    SNAPPY_BUILD=$TMP_FOLDER/snappy
-
-    if [ ! -d $SNAPPY_SRC ]; then
-        cd $SRC_FOLDER
-        $GIT clone $SNAPPY_LINK
+    # Setup clang
+    CLANG=$EXTERNAL_FOLDER/llvm/bin/clang
+    CLANGPP=$EXTERNAL_FOLDER/llvm/bin/clang++
+    if [ ! -f $CLANGPP ]; then
+        # Fall back to gcc if we do not have clang installed.
+        CLANG=gcc
+        CLANGPP=g++
     fi
 
-    cd $SNAPPY_SRC
+    # Setup CMake
+    CMAKE_PREFIX=$EXTERNAL_FOLDER/cmake
+    CMAKE=$CMAKE_PREFIX/bin/cmake
+    if [ ! -f $CMAKE ]; then
+        # Use system CMake if we could not find the customized CMake.
+        CMAKE=cmake
+    fi
+
+    # Setup git
+    GIT_PREFIX=$EXTERNAL_FOLDER/git
+    GIT=$GIT_PREFIX/bin/git
+    if [ ! -f $GIT ]; then
+        # Use system CMake if we could not find the customized CMake.
+        GIT=git
+    fi
+}
+
+build_pkg() {
+    PKG=$1
+    PKG_LINK=$2    
+    PKG_PREFIX=$EXTERNAL_FOLDER/$PKG
+    PKG_SRC=$SRC_FOLDER/$PKG
+    PKG_BUILD=$TMP_FOLDER/$PKG
+
+    if [ ! -d $PKG_SRC ]; then
+        cd $SRC_FOLDER
+        $GIT clone $PKG_LINK
+    fi
+
+    cd $PKG_SRC
     $GIT pull
     sh autogen.sh
-    ./configure --prefix=$SNAPPY_PREFIX CXXFLAGS="$CXXFLAGS -O4 -Wall"
-    make -j5
+    echo $PWD
+    ./configure --prefix=$PKG_PREFIX CXXFLAGS="$CXXFLAGS -O4 -Wall"
+    make $BUILD_OPTS
     make install
+}
+
+build_cmake() {
+    PKG=$1
+    PKG_GIT=$2    
+    PKG_SRC=$SRC_FOLDER/$PKG
+    PKG_BUILD=$TMP_FOLDER/$PKG
+    PKG_PREFIX=$EXTERNAL_FOLDER/$PKG
+
+    echo $PKG_SRC
+    echo $SRC_FOLDER
+    if [ ! -d $PKG_SRC ]; then
+        cd $SRC_FOLDER
+        $GIT clone $PKG_GIT
+        echo $PKG_GIT
+    fi
+
+    rm -rf $PKG_BUILD
+    mkdir $PKG_BUILD
+    cd $PKG_BUILD
+
+    # Use gcc to make sure that we can build in old systems.
+    $CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$PKG_PREFIX $CMAKE_RELEASE_BUILD $PKG_SRC
+    make $BUILD_OPTS
+    rm -rf $PKG_BUILD
 }
 
 build_leveldb() {
@@ -104,11 +132,8 @@ build_hashmap() {
     SPARSEHASH_PREFIX=$EXTERNAL_FOLDER/sparsehash
 
     cd $SRC_FOLDER
-    echo $SPARSEHASH_FOLDER
-    echo $SPARSEHASH_LINK
     if [ ! -d $SPARSEHASH_FOLDER ]; then
         svn checkout $SPARSEHASH_LINK sparsehash
-        echo $SPARSEHASH_LINK
     fi
     cd $SPARSEHASH_FOLDER
     svn update
@@ -118,30 +143,12 @@ build_hashmap() {
     make install
 }
 
-build_micro_benchmark() {
-    BENCHMARK_GIT=https://github.com/google/benchmark.git
-    BENCHMARK_SRC=$SRC_FOLDER/benchmark
-    BENCHMARK_BUILD=$TMP_FOLDER/benchmark
-    BENCHMARK_PREFIX=$EXTERNAL_FOLDER/benchmark
-
-    if [ ! -d $BENCHMARK_SRC ]; then
-        cd $SRC_FOLDER
-        $GIT clone $BENCHMARK_GIT
-    fi
-
-    rm -rf $BENCHMARK_BUILD
-    mkdir $BENCHMARK_BUILD
-    cd $BENCHMARK_BUILD
-
-    # Use gcc to make sure that we can build in old systems.
-    $CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$BENCHMARK_PREFIX $CMAKE_RELEASE_BUILD $BENCHMARK_SRC
-    make $BUILD_OPTS
-    rm -rf $BENCHMARK_BUILD
-}
+# Setup build environment
+setup 
 
 # Build all required packages
-build_snappy
+build_pkg snappy https://github.com/google/snappy.git
 build_leveldb
 build_gtest
 build_hashmap
-build_micro_benchmark
+build_cmake benchmark https://github.com/google/benchmark.git

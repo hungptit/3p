@@ -28,14 +28,14 @@
 (setq helm-M-x-fuzzy-match t)
 
 ;; helm-ag
-(add-to-list 'load-path (concat emacs-setup-root-path "emacs-helm-ag/"))
+(add-to-list 'load-path (concat emacs-setup-root-path "helm_ag/"))
 (require 'helm-ag)
 (setq helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
 (setq helm-ag-command-option "--all-text")
 (setq helm-ag-insert-at-point 'symbol)
 
 ;; function-args package
-(add-to-list 'load-path (concat emacs-setup-root-path "function-args/"))
+(add-to-list 'load-path (concat emacs-setup-root-path "function_args/"))
 (require 'function-args)
 (fa-config-default)
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
@@ -73,12 +73,12 @@
 (substitute-key-definition 'find-tag 'helm-etags-select global-map)
 
 ;; helm-gtags
-(add-to-list 'load-path (concat emacs-setup-root-path "emacs-helm-gtags"))
+(add-to-list 'load-path (concat emacs-setup-root-path "helm_gtags"))
 (require 'helm-gtags)
 
 ;; helm-projectile
-;; (add-to-list 'load-path (concat emacs-setup-root-path "helm-projectile"))
-;; (require 'helm-projectile)
+(add-to-list 'load-path (concat emacs-setup-root-path "helm_projectile"))
+(require 'helm-projectile)
 
 (provide 'setup_helm)
 ;;; setup_helm ends here

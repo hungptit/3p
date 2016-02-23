@@ -62,7 +62,7 @@
 (define-key ac-complete-mode-map "\r" nil)
 
 ;; Setup async
-(add-to-list 'load-path (concat emacs-setup-root-path "emacs-async/"))
+(add-to-list 'load-path (concat emacs-setup-root-path "async/"))
 (when (require 'dired-aux)
   (require 'dired-async))
 

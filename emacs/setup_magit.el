@@ -1,6 +1,6 @@
 ;; Setup required packages
 (add-to-list 'load-path (concat emacs-setup-root-path "dash/"))
-(add-to-list 'load-path (concat emacs-setup-root-path "with-editor/"))
+(add-to-list 'load-path (concat emacs-setup-root-path "with_editor/"))
 (require 'dash)
 
 ;; Setup magit
