@@ -118,9 +118,12 @@ install_cedet http://git.code.sf.net/p/cedet/git
 install_pkg autocomplete https://github.com/auto-complete/auto-complete.git
 install_pkg helm https://github.com/emacs-helm/helm.git
 make_pkg helm "-j3"
-install_pkg async https://github.com/jwiegley/emacs-async.git
 install_pkg ag https://github.com/Wilfred/ag.el.git
 install_pkg helm_ag https://github.com/syohex/emacs-helm-ag.git
+install_pkg projectile https://github.com/bbatsov/projectile.git
+install_pkg helm_projectile https://github.com/bbatsov/helm-projectile.git
+install_pkg helm_gtags https://github.com/syohex/emacs-helm-gtags
+install_pkg async https://github.com/jwiegley/emacs-async.git
 install_pkg function_args https://github.com/abo-abo/function-args.git
 install_pkg git_modes https://github.com/magit/git-modes.git
 install_pkg dash https://github.com/magnars/dash.el
@@ -129,8 +132,6 @@ make_pkg with_editor ""
 install_pkg magit git://github.com/magit/magit.git
 make_pkg magit "lisp docs"
 install_pkg yasnippet https://github.com/capitaomorte/yasnippet.git
-install_pkg projectile https://github.com/bbatsov/projectile.git
-install_pkg helm_projectile https://github.com/bbatsov/helm-projectile.git
 install_pkg json_mode https://github.com/joshwnj/json-mode.git
 install_pkg json_reformat https://github.com/gongo/json-reformat.git
 install_pkg json_snatcher https://github.com/Sterlingg/json-snatcher.git
@@ -138,7 +139,6 @@ install_doxymacs;
 install_pkg flycheck https://github.com/flycheck/flycheck.git;
 install_let_alist;              # Install let-alist to flycheck folder.
 install_pkg seq https://github.com/NicolasPetton/seq.el
-install_pkg helm_gtags https://github.com/syohex/emacs-helm-gtags
 install_pkg rainbow_delimiters https://github.com/Fanael/rainbow-delimiters.git
 install_pkg undo_tree http://www.dr-qubit.org/git/undo-tree.git
 install_pkg smartparens https://github.com/Fuco1/smartparens.git

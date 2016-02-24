@@ -3,11 +3,7 @@ This is a collection of scripts that automatically build tools and packages for 
 
 # Emacs #
 
-First we need to run `build_emacs_bin.sh` to get all commands required by Emacs packages such as `the_silver_seracher` etc. After that we need to update the environment variables and path. Below is the sample from my `.cshrc.mine`.
-
-`set LLVM_DIR = /local/projects/3p/llvm/bin`
-
-`set DOXYGEN_DIR = /local/projects/3p/doxygen/bin`
+First we need to run **build_emacs_bin.sh** to get all utilities required by Emacs packages such as **the_silver_seracher**, **global**, and **ctags**. After that we need to update path. Below is the sample from my `.cshrc.mine`.
 
 `set AG_DIR = /local/projects/3p/emacs/the_silver_searcher/bin`
 
@@ -17,38 +13,54 @@ First we need to run `build_emacs_bin.sh` to get all commands required by Emacs 
 
 `set IRONY_MODE = /local/projects/3p/emacs/irony-mode/build/bin`
 
-`set CMAKE_DIR = /local/projects/3p/cmake/bin`
-
 `set DOXYMACS_DIR = /local/projects/3p/emacs/doxymacs/bin`
 
-`set path = ($LLVM_DIR $AG_DIR $CASH_DIR $ST_GIT $DOXYGEN_DIR $JAVA_HOME $NODE_FOLDER $CMAKE_DIR $SQLITEBROWSER_DIR $DOXYMACS_DIR $path)`
+`set path = ($AG_DIR $CASH_DIR $ST_GIT $IRONY_MODE $DOXYMACS_DIR $path)`
 
-After your path is updated (using source command or open a new terminal) we can run `build_emacs.sh` to install useful Emacs extensions such has `Helm` mode, `auto-complete`, and `CEDET` etc. Then remember to update the `.emacs` file to use all installed Emacs extensions. This is an example of my `.emacs`.
+<!-- And this is my **.bashrc** file -->
 
-`(setq emacs-setup-root-path (file-name-as-directory "/local/projects/3p/emacs/"))`
+<!-- PROJECTS_FOLDER=$HOME/projects/ -->
+<!-- EXTERNAL_FOLDER=$PROJECTS_FOLDER/3p -->
+<!-- EMACS_FOLDER=$EXTERNAL_FOLDER/emacs -->
+<!-- CASK_FOLDER=$EMACS_FOLDER/cask/bin -->
+<!-- AG_FOLDER=$EMACS_FOLDER/the_silver_searcher/bin -->
+<!-- ELASTICSEARCH=$EXTERNAL_FOLDER/elasticsearch/bin -->
+<!-- ATOM_FOLDER=$EXTERNAL_FOLDER/atom/bin -->
+<!-- NODE_FOLDER=$EXTERNAL_FOLDER/node/bin -->
+<!-- LLVM=$EXTERNAL_FOLDER/llvm/bin -->
+<!-- GLOBAL=$EXTERNAL_FOLDER/global/bin -->
+<!-- CTAGS=$EXTERNAL_FOLDER/ctags/bin -->
+<!-- SQLITEBROWSER=$EXTERNAL_FOLDER/sqlitebrowser/bin -->
+<!-- TOOLS=$PROJECTS_FOLDER/tools/testing -->
 
-`(load-file (concat emacs-setup-root-path "setup_cedet.el"))`
+<!-- # Update paths -->
+<!-- PATH=$CTAGS:$GLOBAL:$LLVM:${NODE_FOLDER}:${ELASTICSEARCH}:${ATOM_FOLDER}:${CASK_FOLDER}:${AG_FOLDER}:${PATH}:${TOOLS}:${SQLITEBROWSER} -->
 
-`(load-file (concat emacs-setup-root-path "setup.el"))`
 
-`(load-file (concat emacs-setup-root-path "setup_helm.el"))`
+Run **build_emacs.sh** after your path is updated (using source command or open a new terminal) to install required Emacs extensions such has **Helm**, **auto-complete**, and **CEDET**. Then remember to update the `.emacs` file to use all installed Emacs extensions. This is an example of my `.emacs`.
 
-`(load-file (concat emacs-setup-root-path "extra_features.el"))`
+`(setq emacs-setup-root-path "/home/hungptit/projects/3p/emacs/")`
+
+`(add-to-list 'load-path (concat emacs-setup-root-path))`
+
+`(require 'init)`
+
+*Tip: You can comment out some options in init.el to fit the default settings for your need.*
 
 # Basic tools #
-build_tools.sh will build all required tools for C++ development including **git**, **CMake** etc.
+**build_tools.sh** will build all required tools for C++ development including **git**, **CMake** etc.
 
 # Userfull C++ libraries #
-build_cpptools.sh will build useful packages that I often use for my personal work.
+**build_cpptools.sh** will build useful packages that I often use for my personal work.
 
 # LLVM #
-build_llvm.sh will automatically build the latest **LLVM** tooling from latest source. 
+**build_llvm.sh** will automatically build **LLVM** from source. 
 
 # Boost #
-build_boost.sh will automatically build all latest **Boost** libraries from the git source.
+**build_boost.sh** will automatically build **Boost** libraries from the git source.
 
 # Google packages #
-build_google.sh will build **leveldb**, **gtest**, **sparsehash** etc.
+**build_google.sh** will build **leveldb**, **gtest**, **sparsehash** etc.
 
 # Facebook packages #
-build_rockssb.sh will autmatically build the latest version of **rocksdb**.
+**build_rockssb.sh** will autmatically build the latest version of **rocksdb** and **folly**.
