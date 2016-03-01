@@ -1,30 +1,8 @@
-;; (custom-set-faces
-;;  '(semantic-decoration-on-unknown-includes ((((class color) (background light)) (:background "#ffF0F0")))))
+;;; package --- Summary: Setup extra features
+;;; Commentary:
+;; 
 
-;; ;; Set cursor and mouse-pointer colours
-;; (set-cursor-color "red")
-;; (set-mouse-color "goldenrod")
-
-;; ;; Set region background colour
-;; (set-face-background 'region "blue")
-
-;; ;; Set emacs background colour
-;; (set-background-color "black")
-;; (set-foreground-color "white")
-
-;; ;; Set fonts
-;; (set-default-font "-bitstream-Bitstream Vera Sans Mono-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1")
-(set-default-font "Bitstream Vera Sans Mono:pixelsize=20:foundry=Bits:weight=normal:slant=normal:width=normal:scalable=true")
-;; (put 'upcase-region 'disabled nil)
-
-;; Enable zenburn
-(add-to-list 'load-path (concat emacs-setup-root-path "zenburn"))
-(require 'zenburn-theme)
-(load-theme 'zenburn t)
-
-;; CMake
-(flymake-mode 1)
-(require 'cmake-mode)
+;;; Code:
 
 ;; Org-mode
 (require 'org-install)
@@ -85,28 +63,6 @@
 (defun doxymacs-font-lock ()
   (interactive)
   (font-lock-add-keywords nil doxymacs-doxygen-keywords))
-
-;; json-mode, json-reformat, and json-snatcher
-(add-to-list 'load-path (concat emacs-setup-root-path "json_mode"))
-(add-to-list 'load-path (concat emacs-setup-root-path "json_snatcher"))
-(add-to-list 'load-path (concat emacs-setup-root-path "json_reformat"))
-
-(require 'json-mode)
-(require 'json-reformat)
-(require 'json-snatcher)
-
-;; Markdown
-(add-to-list 'load-path (concat emacs-setup-root-path "markdown_mode"))
-(autoload 'markdown-mode "markdown-mode"
-  "Major mode for editing Markdown files" t)
-(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-
-;; Enable flycheck
-(add-to-list 'load-path (concat emacs-setup-root-path "flycheck"))
-(add-to-list 'load-path (concat emacs-setup-root-path "seq"))
-(require 'flycheck)
 
 ;; rainbow-delimiters
 (add-to-list 'load-path (concat emacs-setup-root-path "rainbow_delimiters"))
