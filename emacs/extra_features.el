@@ -1,6 +1,6 @@
 ;;; package --- Summary: Setup extra features
 ;;; Commentary:
-;; 
+;;
 
 ;;; Code:
 
@@ -10,22 +10,6 @@
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
-
-;; MATLAB
-(autoload 'matlab-eei-connect "matlab-eei"
-  "Connects Emacs to MATLAB's external editor interface.")
-
-(autoload 'matlab-mode "matlab" "Enter Matlab mode." t)
-(setq auto-mode-alist (cons '("\\.m\\'" . matlab-mode) auto-mode-alist))
-(autoload 'matlab-shell "matlab" "Interactive Matlab mode." t)
-
-(setq matlab-indent-function t)		; if you want function bodies indented
-(setq matlab-verify-on-save-flag nil)	; turn off auto-verify on save
-
-(defun my-matlab-mode-hook ()
-  (setq fill-column 108)
-  (imenu-add-to-menubar "Find"))		; where auto-fill should wrap
-(add-hook 'matlab-mode-hook 'my-matlab-mode-hook)
 
 ;; ;; irony-mode
 ;; (add-to-list 'load-path (concat emacs-setup-root-path "irony-mode/"))
@@ -57,13 +41,6 @@
 
 ;; (add-hook 'irony-mode-hook 'my-ac-irony-setup)
 
-;; doxymacs.
-(add-to-list 'load-path (concat emacs-setup-root-path "doxymacs/share/emacs/site-lisp/"))
-(require 'doxymacs)
-(defun doxymacs-font-lock ()
-  (interactive)
-  (font-lock-add-keywords nil doxymacs-doxygen-keywords))
-
 ;; rainbow-delimiters
 (add-to-list 'load-path (concat emacs-setup-root-path "rainbow_delimiters"))
 (require 'rainbow-delimiters)
@@ -80,5 +57,5 @@
 (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
 (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
 
-(provide 'extra_features) 
+(provide 'extra_features)
 ;;; extra_features.el ends here

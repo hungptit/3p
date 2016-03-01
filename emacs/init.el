@@ -14,7 +14,6 @@
 (require 'setup_json)
 (require 'setup_markdown)
 (require 'setup_doxymacs)
-
 (require 'extra_features)
 
 ;; Might require the latest version of Emacs
