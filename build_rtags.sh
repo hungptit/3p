@@ -3,9 +3,6 @@ EXTERNAL_FOLDER=$PWD
 SRC_FOLDER=$EXTERNAL_FOLDER/src
 TMP_FOLDER=/tmp/build/
 
-mkdir -p $TMP_FOLDER
-mkdir -p $SRC_FOLDER
-
 NCPUS=$(grep -c ^processor /proc/cpuinfo)
 BUILD_OPTS=-j$((NCPUS+1))
 
@@ -26,6 +23,7 @@ if [ ! -f $CMAKE ]; then
     CMAKE=cmake
 fi
 CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE:STRING=Release"
+CMAKE_USE_CLANG="-DCMAKE_CXX_COMPILER=${CLANGPP} -DCMAKE_C_COMPILER=${CLANG}"
 
 # Setup git
 GIT_PREFIX=$EXTERNAL_FOLDER/git
@@ -35,36 +33,29 @@ if [ ! -f $GIT ]; then
     GIT=git
 fi
 
-# Build given package
-PKGNAME=$1
-PKGGIT=$2
-CMAKE_OPTIONS=$3
+mkdir -p $SRC_FOLDER
+mkdir -p $TMP_FOLDER
 
-APKG_SRC=$SRC_FOLDER/$PKGNAME
-APKG_BUILD_FOLDER=$TMP_FOLDER/$PKGNAME
-APKG_PREFIX=$EXTERNAL_FOLDER/$PKGNAME
-cd $SRC_FOLDER
-if [ ! -d $APKG_SRC ]; then
-    $GIT clone $PKGGIT $PKGNAME
+EMACS_PREFIX=$EXTERNAL_FOLDER/emacs
+mkdir -p $EMACS_PREFIX
+
+# Setup RTags
+RTAGS_GIT=https://github.com/Andersbakken/rtags.git
+RTAGS_SRC=$SRC_FOLDER/rtags
+RTAGS_BUILD=$TMP_FOLDER/rtags
+
+if [ ! -d $RTAGS_SRC ]; then
+    cd $SRC_FOLDER
+    $GIT clone --recursive $RTAGS_GIT
+    cd $RTAGS_SRC
+    git submodule init
+    git submodule update
 fi
 
-echo "Src folder: " $APKG_SRC
-echo "Build folder: " $APKG_BUILD_FOLDER
-echo "Prefix folder: " $APKG_PREFIX
-echo "Clang: " $CLANG
-echo "CMake: " $CMAKE
+git pull
 
-# Pull the latest version
-cd $APKG_SRC
-$GIT pull
-
-# Build a given package
-rm -rf $APKG_BUILD_FOLDER
-mkdir -p $APKG_BUILD_FOLDER
-cd $APKG_BUILD_FOLDER
-$CMAKE $APKG_SRC -DCMAKE_INSTALL_PREFIX=$APKG_PREFIX $CMAKE_RELEASE_BUILD $CMAKE_OPTIONS 
-make $BUILD_OPTS $EXTRA_MAKE_OPTIONS
-rm -rf $APKG_PREFIX
-make install
-cd $EXTERNAL_FOLDER
-rm -rf $APKG_BUILD_FOLDER
+rm -rf $RTAGS_BUILD
+mkdir -p $RTAGS_BUILD
+cd $RTAGS_BUILD
+$CMAKE $RTAGS_SRC -DCMAKE_EXPORT_COMPILE_COMMANDS=1 $CMAKE_RELEASE_BUILD
+make $BUILD_OPTS
