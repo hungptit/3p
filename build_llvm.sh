@@ -30,7 +30,7 @@ CMAKE_USE_CLANG="-DCMAKE_CXX_COMPILER=${CXX} -DCMAKE_C_COMPILER=${CC}"
 
 # Install clang
 LLVM_FOLDER=$SRC_FOLDER/llvm
-LLVM_SRC_FOLDER=$LLVM_FOLDER/build
+LLVM_BUILD_FOLDER=$LLVM_FOLDER/build
 LLVM_PROJECTS_FOLDER=$LLVM_FOLDER/projects
 LLVM_TOOLS_FOLDER=$LLVM_FOLDER/tools
 LLVM_CLANG_FOLDER=$LLVM_FOLDER/clang
@@ -39,25 +39,40 @@ LLVM_PREFIX=$EXTERNAL_FOLDER/llvm
 
 # Get all required source code
 cd $SRC_FOLDER
-svn co http://llvm.org/svn/llvm-project/llvm/trunk llvm # Get LLVM source code
+if [ ! -d $LLVM_FOLDER ]; then
+    git clone http://llvm.org/git/llvm.git
+fi
 
-cd $LLVM_TOOLS_FOLDER
-svn co http://llvm.org/svn/llvm-project/cfe/trunk clang # Get clang source code
+cd $LLVM_FOLDER
+git pull
 
-mkdir -p $LLVM_CLANG_TOOLS_FOLDER
-cd $LLVM_CLANG_TOOLS_FOLDER
-svn co http://llvm.org/svn/llvm-project/clang-tools-extra/trunk extra # Get extra feature
+# svn co http://llvm.org/svn/llvm-project/llvm/trunk llvm # Get LLVM source code
+
+# cd $LLVM_TOOLS_FOLDER
+# svn co http://llvm.org/svn/llvm-project/cfe/trunk clang # Get clang source code
+
+# mkdir -p $LLVM_CLANG_TOOLS_FOLDER
+# cd $LLVM_CLANG_TOOLS_FOLDER
+# git clone http://llvm.org/git/clang.git
+# svn co http://llvm.org/svn/llvm-project/clang-tools-extra/trunk extra # Get extra feature
 
 # Check out libraries
 cd $LLVM_PROJECTS_FOLDER
-svn co http://llvm.org/svn/llvm-project/compiler-rt/trunk compiler-rt
-svn co http://llvm.org/svn/llvm-project/libcxx/trunk libcxx
-svn co http://llvm.org/svn/llvm-project/libcxxabi/trunk libcxxabi
+# git clone http://llvm.org/git/openmp.git
+# git clone http://llvm.org/git/compiler-rt.git
+# git clone http://llvm.org/git/libcxx.git
+# git clone http://llvm.org/git/libcxxabi.git
+# git clone http://llvm.org/git/test-suite.git
 
-rm -rf $LLVM_SRC_FOLDER
-mkdir -p $LLVM_SRC_FOLDER
-cd $LLVM_SRC_FOLDER
-$CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$LLVM_PREFIX -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_TESTING:BOOL=OFF $CMAKE_USE_CLANG $LLVM_FOLDER 
+# svn co http://llvm.org/svn/llvm-project/compiler-rt/trunk compiler-rt
+# svn co http://llvm.org/svn/llvm-project/libcxx/trunk libcxx
+# svn co http://llvm.org/svn/llvm-project/libcxxabi/trunk libcxxabi
+
+rm -rf $LLVM_BUILD_FOLDER
+mkdir -p $LLVM_BUILD_FOLDER
+cd $LLVM_BUILD_FOLDER
+# $CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$LLVM_PREFIX -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_TESTING:BOOL=OFF $CMAKE_USE_CLANG $LLVM_FOLDER 
+$CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$LLVM_PREFIX -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_TESTING:BOOL=OFF $LLVM_FOLDER 
 make $BUILD_OPTS
 rm $LLVM_PREFIX
 make $BUILD_OPTS install 
