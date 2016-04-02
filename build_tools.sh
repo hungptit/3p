@@ -78,12 +78,12 @@ build_python() {
     make install
 }
 
-# Build packages
+# # Build packages
 # echo "Build CMake"
 # sh build_using_configure.sh cmake git://cmake.org/cmake.git > /dev/null
 
-# echo "Build Git"
-# sh build_using_make.sh git https://github.com/git/git.git "" "profile" "PROFILE=BUILD install" > /dev/null
+# # echo "Build Git"
+# # sh build_using_make.sh git https://github.com/git/git.git "" "profile" "PROFILE=BUILD install" > /dev/null
 
 # echo "Build sqlitebrowser"
 # sh build_using_cmake.sh sqlitebrowser https://github.com/sqlitebrowser/sqlitebrowser "$CMAKE_USE_CLANG" > /dev/null
@@ -103,8 +103,8 @@ build_python() {
 # echo "Build bzip2"
 # build_bzip2 > /dev/null;
 
-# echo "Install xdot"
-# sh install_pkg.sh xdot https://github.com/jrfonseca/xdot.py.git
+echo "Install xdot"
+sh install_pkg.sh xdot https://github.com/jrfonseca/xdot.py.git
 
 # echo "Build python3"
-build_python;
+# build_python;

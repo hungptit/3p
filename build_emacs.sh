@@ -144,3 +144,4 @@ install_pkg undo_tree http://www.dr-qubit.org/git/undo-tree.git
 install_pkg smartparens https://github.com/Fuco1/smartparens.git
 install_pkg zenburn https://github.com/bbatsov/zenburn-emacs.git
 install_pkg markdown_mode https://github.com/defunkt/markdown-mode/
+install_pkg graphviz_dot_mode https://github.com/ppareit/graphviz-dot-mode.git
