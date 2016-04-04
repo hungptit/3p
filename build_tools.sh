@@ -1,5 +1,4 @@
 #!/bin/bash
-# Setup build environment
 EXTERNAL_FOLDER=$PWD
 SRC_FOLDER=$EXTERNAL_FOLDER/src
 TMP_FOLDER=/tmp/build/
@@ -18,8 +17,25 @@ if [ ! -f $CLANGPP ]; then
     CLANG=gcc
     CLANGPP=g++
 fi
-CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE:STRING=Release"
+
+# Setup CMake
+CMAKE_PREFIX=$EXTERNAL_FOLDER/cmake
+CMAKE=$CMAKE_PREFIX/bin/cmake
+if [ ! -f $CMAKE ]; then
+    # Use system CMake if we could not find the customized CMake.
+    CMAKE=cmake
+fi
+# CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE:STRING=Release"
+CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE=Release"
 CMAKE_USE_CLANG="-DCMAKE_CXX_COMPILER=${CLANGPP} -DCMAKE_C_COMPILER=${CLANG}"
+
+# Setup git
+GIT_PREFIX=$EXTERNAL_FOLDER/git
+GIT=$GIT_PREFIX/bin/git
+if [ ! -f $GIT ]; then
+    # Use system CMake if we could not find the customized CMake.
+    GIT=git
+fi
 
 build_mercurial() {          
     cd $SRC_FOLDER
@@ -78,30 +94,30 @@ build_python() {
     make install
 }
 
-# # Build packages
-# echo "Build CMake"
-# sh build_using_configure.sh cmake git://cmake.org/cmake.git > /dev/null
+# Build packages
+echo "Build CMake"
+sh build_using_configure.sh cmake git://cmake.org/cmake.git > /dev/null
 
-# # echo "Build Git"
-# # sh build_using_make.sh git https://github.com/git/git.git "" "profile" "PROFILE=BUILD install" > /dev/null
+echo "Build Git"
+sh build_using_make.sh git https://github.com/git/git.git "" "profile" "PROFILE=BUILD install" > /dev/null
 
-# echo "Build sqlitebrowser"
-# sh build_using_cmake.sh sqlitebrowser https://github.com/sqlitebrowser/sqlitebrowser "$CMAKE_USE_CLANG" > /dev/null
+echo "Build sqlitebrowser"
+sh build_using_cmake.sh sqlitebrowser https://github.com/sqlitebrowser/sqlitebrowser "$CMAKE_USE_CLANG" > /dev/null
 
-# echo "Build graphviz"
-# sh build_using_autogen.sh graphviz https://github.com/ellson/graphviz.git "$USE_CLANG"  > /dev/null
+echo "Build graphviz"
+sh build_using_autogen.sh graphviz https://github.com/ellson/graphviz.git "$USE_CLANG"  > /dev/null
 
-# echo "Build lz4"
-# sh build_using_make.sh lz4 https://github.com/Cyan4973/lz4 "" "$USE_CLANG"  > /dev/null
+echo "Build lz4"
+sh build_using_make.sh lz4 https://github.com/Cyan4973/lz4 "" "$USE_CLANG"  > /dev/null
 
-# echo "Build zlib"
-# sh build_using_configure_notmpdir.sh zlib https://github.com/madler/zlib "" "$USE_CLANG"  > /dev/null
+echo "Build zlib"
+sh build_using_configure_notmpdir.sh zlib https://github.com/madler/zlib "" "$USE_CLANG"  > /dev/null
 
-# echo "Build mercurial"
-# build_mercurial > /dev/null;
+echo "Build mercurial"
+build_mercurial > /dev/null;
 
-# echo "Build bzip2"
-# build_bzip2 > /dev/null;
+echo "Build bzip2"
+build_bzip2 > /dev/null;
 
 echo "Install xdot"
 sh install_pkg.sh xdot https://github.com/jrfonseca/xdot.py.git
