@@ -37,42 +37,39 @@ LLVM_CLANG_FOLDER=$LLVM_FOLDER/clang
 LLVM_CLANG_TOOLS_FOLDER=$LLVM_CLANG_FOLDER/tools
 LLVM_PREFIX=$EXTERNAL_FOLDER/llvm
 
+get_source_code() {
+    ROOT_DIR=$1
+    PACKAGE_NAME=$2
+    GIT_LINK=$3
+    
+    cd $ROOT_DIR
+    if [ ! -d $PACKAGE_NAME ]; then
+        git clone $GIT_LINK
+    fi
+    cd $ROOT_DIR/$PACKAGE_NAME
+    git pull
+}
+
 # Get all required source code
-cd $SRC_FOLDER
-if [ ! -d $LLVM_FOLDER ]; then
-    git clone http://llvm.org/git/llvm.git
-fi
+LLVM_SRC=$SRC_FOLDER/llvm
+get_source_code $SRC_FOLDER llvm http://llvm.org/git/llvm.git
 
-cd $LLVM_FOLDER
-git pull
+mkdir -p $LLVM_SRC/llvm/tools
+get_source_code $LLVM_SRC/tools clang http://llvm.org/git/clang.git
 
-# svn co http://llvm.org/svn/llvm-project/llvm/trunk llvm # Get LLVM source code
+mkdir $LLVM_SRC/llvm/projects
+get_source_code $LLVM_SRC/projects compiler-rt http://llvm.org/git/compiler-rt.git
+get_source_code $LLVM_SRC/projects openmp http://llvm.org/git/openmp.git
+get_source_code $LLVM_SRC/projects libcxx http://llvm.org/git/libcxx.git
+get_source_code $LLVM_SRC/projects libcxxabi http://llvm.org/git/libcxxabi.git
+get_source_code $LLVM_SRC/projects test-suite http://llvm.org/git/test-suite.git
 
-# cd $LLVM_TOOLS_FOLDER
-# svn co http://llvm.org/svn/llvm-project/cfe/trunk clang # Get clang source code
-
-# mkdir -p $LLVM_CLANG_TOOLS_FOLDER
-# cd $LLVM_CLANG_TOOLS_FOLDER
-# git clone http://llvm.org/git/clang.git
-# svn co http://llvm.org/svn/llvm-project/clang-tools-extra/trunk extra # Get extra feature
-
-# Check out libraries
-cd $LLVM_PROJECTS_FOLDER
-# git clone http://llvm.org/git/openmp.git
-# git clone http://llvm.org/git/compiler-rt.git
-# git clone http://llvm.org/git/libcxx.git
-# git clone http://llvm.org/git/libcxxabi.git
-# git clone http://llvm.org/git/test-suite.git
-
-# svn co http://llvm.org/svn/llvm-project/compiler-rt/trunk compiler-rt
-# svn co http://llvm.org/svn/llvm-project/libcxx/trunk libcxx
-# svn co http://llvm.org/svn/llvm-project/libcxxabi/trunk libcxxabi
-
-rm -rf $LLVM_BUILD_FOLDER
-mkdir -p $LLVM_BUILD_FOLDER
-cd $LLVM_BUILD_FOLDER
-# $CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$LLVM_PREFIX -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_TESTING:BOOL=OFF $CMAKE_USE_CLANG $LLVM_FOLDER 
-$CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$LLVM_PREFIX -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_TESTING:BOOL=OFF $LLVM_FOLDER 
-make $BUILD_OPTS
-rm $LLVM_PREFIX
-make $BUILD_OPTS install 
+# Build LLVM
+# rm -rf $LLVM_BUILD_FOLDER
+# mkdir -p $LLVM_BUILD_FOLDER
+# cd $LLVM_BUILD_FOLDER
+# # $CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$LLVM_PREFIX -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_TESTING:BOOL=OFF $CMAKE_USE_CLANG $LLVM_FOLDER 
+# $CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$LLVM_PREFIX -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_TESTING:BOOL=OFF $LLVM_FOLDER 
+# make $BUILD_OPTS
+# rm $LLVM_PREFIX
+# make $BUILD_OPTS install 
