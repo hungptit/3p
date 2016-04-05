@@ -1,36 +1,68 @@
 #!/bin/bash
-EXTERNAL_FOLDER=$PWD
-SRC_FOLDER=$EXTERNAL_FOLDER/src
-TMP_FOLDER=/tmp/build/
 
-mkdir -p $TMP_FOLDER
-mkdir -p $SRC_FOLDER
+# Setup build environment
+setup() {
+    EXTERNAL_FOLDER=$PWD
+    SRC_FOLDER=$EXTERNAL_FOLDER/src
+    TMP_FOLDER=/tmp/build/
 
-NCPUS=$(grep -c ^processor /proc/cpuinfo)
-BUILD_OPTS=-j$((NCPUS+1))
+    mkdir -p $TMP_FOLDER
+    mkdir -p $SRC_FOLDER
 
-# Comment these lines to use the 
-CC=$EXTERNAL_FOLDER/llvm/bin/clang
-CXX=$EXTERNAL_FOLDER/llvm/bin/clang++
-if [ ! -f $CXX ]; then
-    # Fall back to gcc if we do not have clang installed.
-    CC=gcc
-    CXX=g++
-fi
+    NCPUS=$(grep -c ^processor /proc/cpuinfo)
+    BUILD_OPTS=-j$((NCPUS+1))
 
-CMAKE_PREFIX=$EXTERNAL_FOLDER/cmake
-CMAKE=$CMAKE_PREFIX/bin/cmake
-if [ ! -f $CMAKE ]; then
-    CMAKE=cmake                 # Use system CMake
-fi
+    # Setup clang
+    CLANG=$EXTERNAL_FOLDER/llvm/bin/clang
+    CLANGPP=$EXTERNAL_FOLDER/llvm/bin/clang++
+    if [ ! -f $CLANGPP ]; then
+        # Fall back to gcc if we do not have clang installed.
+        CLANG=gcc
+        CLANGPP=g++
+    fi
+    CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE:STRING=Release"
+    CMAKE_USE_CLANG="-DCMAKE_CXX_COMPILER=${CLANGPP} -DCMAKE_C_COMPILER=${CLANG}"
 
-# Specify build type and other related parameters.
-CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE:STRING=Release"
-CMAKE_USE_CLANG="-DCMAKE_CXX_COMPILER=${CXX} -DCMAKE_C_COMPILER=${CC}"
+    # Setup CMake
+    CMAKE_PREFIX=$EXTERNAL_FOLDER/cmake
+    CMAKE=$CMAKE_PREFIX/bin/cmake
+    if [ ! -f $CMAKE ]; then
+        # Use system CMake if we could not find the customized CMake.
+        CMAKE=cmake
+    fi
+    # CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE:STRING=Release"
+    CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE=Release"
+    CMAKE_USE_CLANG="-DCMAKE_CXX_COMPILER=${CLANGPP} -DCMAKE_C_COMPILER=${CLANG}"
 
+    # Setup git
+    GIT_PREFIX=$EXTERNAL_FOLDER/git
+    GIT=$GIT_PREFIX/bin/git
+    if [ ! -f $GIT ]; then
+        # Use system CMake if we could not find the customized CMake.
+        GIT=git
+    fi
+
+}
+
+download_pkg() {
+    ROOT_FOLDER=$1
+    PKG_NAME=$2
+    PKG_LINK=$3
+    mkdir -p $ROOT_FOLDER
+    cd $ROOT_FOLDER
+    if [ ! -d $PKG_NAME ]; then
+        $GIT clone $PKG_LINK
+    fi
+    cd $ROOT_FOLDER/$PKG_NAME
+    git pull
+}
+
+setup
 # Install clang
 LLVM_FOLDER=$SRC_FOLDER/llvm
 LLVM_BUILD_FOLDER=$LLVM_FOLDER/build
+download_pkg $SRC_FOLDER llvm 
+
 LLVM_PROJECTS_FOLDER=$LLVM_FOLDER/projects
 LLVM_TOOLS_FOLDER=$LLVM_FOLDER/tools
 LLVM_CLANG_FOLDER=$LLVM_FOLDER/clang
@@ -50,6 +82,7 @@ get_source_code() {
     git pull
 }
 
+<<<<<<< HEAD
 # Get all required source code
 LLVM_SRC=$SRC_FOLDER/llvm
 get_source_code $SRC_FOLDER llvm http://llvm.org/git/llvm.git

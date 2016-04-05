@@ -49,7 +49,7 @@ cd $BOOST_SRC
 rm -rf $BOOST_PREFIX
 git fetch
 git pull
-./bootstrap.sh --prefix=$BOOST_PREFIX
+./bootstrap.sh --prefix=$BOOST_PREFIX --without-icu
 ./b2 clean
 ./b2 headers
-./b2 $BUILD_OPTS --ignore-site-config variant=release threading=multi install
+./b2 $BUILD_OPTS --disable-icu --ignore-site-config variant=release threading=multi install

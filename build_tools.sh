@@ -1,5 +1,4 @@
 #!/bin/bash
-# Setup build environment
 EXTERNAL_FOLDER=$PWD
 SRC_FOLDER=$EXTERNAL_FOLDER/src
 TMP_FOLDER=/tmp/build/
@@ -18,8 +17,25 @@ if [ ! -f $CLANGPP ]; then
     CLANG=gcc
     CLANGPP=g++
 fi
-CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE:STRING=Release"
+
+# Setup CMake
+CMAKE_PREFIX=$EXTERNAL_FOLDER/cmake
+CMAKE=$CMAKE_PREFIX/bin/cmake
+if [ ! -f $CMAKE ]; then
+    # Use system CMake if we could not find the customized CMake.
+    CMAKE=cmake
+fi
+# CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE:STRING=Release"
+CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE=Release"
 CMAKE_USE_CLANG="-DCMAKE_CXX_COMPILER=${CLANGPP} -DCMAKE_C_COMPILER=${CLANG}"
+
+# Setup git
+GIT_PREFIX=$EXTERNAL_FOLDER/git
+GIT=$GIT_PREFIX/bin/git
+if [ ! -f $GIT ]; then
+    # Use system CMake if we could not find the customized CMake.
+    GIT=git
+fi
 
 build_mercurial() {          
     cd $SRC_FOLDER
