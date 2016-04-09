@@ -1,62 +1,59 @@
 #!/bin/bash
-# Setup required variables
-EXTERNAL_FOLDER=$(pwd)
-SRC_FOLDER=$EXTERNAL_FOLDER/src
-TMP_FOLDER=/tmp/build/
+setup() {
+    EXTERNAL_FOLDER=$(pwd)
+    SRC_FOLDER=$EXTERNAL_FOLDER/src
+    TMP_FOLDER=/tmp/build/
 
-mkdir -p $TMP_FOLDER
-mkdir -p $SRC_FOLDER
+    mkdir -p $TMP_FOLDER
+    mkdir -p $SRC_FOLDER
 
-NCPUS=$(grep -c ^processor /proc/cpuinfo)
-BUILD_OPTS=-j$((NCPUS+1))
+    NCPUS=$(grep -c ^processor /proc/cpuinfo)
+    BUILD_OPTS=-j$((NCPUS+1))
 
-CLANG=$EXTERNAL_FOLDER/llvm/bin/clang
-CLANGPP=$EXTERNAL_FOLDER/llvm/bin/clang++
+    CLANG=$EXTERNAL_FOLDER/llvm/bin/clang
+    CLANGPP=$EXTERNAL_FOLDER/llvm/bin/clang++
+}
 
-CMAKE_PREFIX=$EXTERNAL_FOLDER/cmake
-CMAKE=$CMAKE_PREFIX/bin/cmake
-CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE:STRING=Release"
-CMAKE_USE_CLANG="-DCMAKE_CXX_COMPILER=${CLANGPP} -DCMAKE_C_COMPILER=${CLANG}"
-BOOST_PREFIX=$EXTERNAL_FOLDER/boost
+get_source_code() {
+    ROOT_DIR=$1
+    PACKAGE_NAME=$2
+    GIT_LINK=$3
+    
+    cd $ROOT_DIR
+    echo $ROOT_DIR
+    if [ ! -d $PACKAGE_NAME ]; then
+        git clone $GIT_LINK $PACKAGE_NAME
+    fi
+    PKG_DIR=$ROOT_DIR/$PACKAGE_NAME
+    cd $PKG_DIR
+    git pull
+}
+
+# Get the source code
+setup
+get_source_code $SRC_FOLDER libsodium https://github.com/jedisct1/libsodium.git
+get_source_code $SRC_FOLDER libzmq https://github.com/zeromq/libzmq.git
+get_source_code $EXTERNAL_FOLDER cppzmq https://github.com/zeromq/cppzmq.git 
 
 # Install libsodium
 LIBSODIUM_GIT=https://github.com/jedisct1/libsodium.git
 LIBSODIUM_SRC=$SRC_FOLDER/libsodium
-LIBSODIUM_PREFIX=$EXTERNAL_FOLDER/libsodium
-
-if [ ! -d $LIBSODIUM_SRC ]; then
-    cd $SRC_FOLDER
-    git clone $LIBSODIUM_GIT
-fi
+LIBSODIUM_PREFIX=$EXTERNAL_FOLDER/libsodium 
 cd $LIBSODIUM_SRC
 git pull
 ./autogen.sh
-./configure --prefix=$LIBSODIUM_PREFIX
+./configure --prefix=$LIBSODIUM_PREFIX CC=$CLANG CXX=$CLANG++
 make $BUILD_OPTS
 make install
 
-# ZeroMQ
-ZEROMQ_GIT=https://github.com/zeromq/libzmq
+# Install ZeroMQ
 ZEROMQ_SRC=$SRC_FOLDER/libzmq
 ZEROMQ_PREFIX=$EXTERNAL_FOLDER/libzmq
 
-if [ ! -d $ZEROMQ_SRC ]; then
-    cd $SRC_FOLDER
-    git clone $ZEROMQ_GIT
-fi
 cd $ZEROMQ_SRC
 git pull
 ./autogen.sh
-./configure --prefix=$ZEROMQ_PREFIX --with-libsodium=no CC=clang CXX=clang++
+./configure --prefix=$ZEROMQ_PREFIX --with-libsodium=no CC=$CLANG CXX=$CLANG++
 make $BUILD_OPTS
 make install
 
-# ZeroMQPP
-CPPZMQ_GIT=https://github.com/zeromq/cppzmq.git
-CPPZMQ_PREFIX=$EXTERNAL_FOLDER/cppzmq
-if [ ! -d $CPPZMQ_PREFIX ]; then
-    cd $EXTERNAL_FOLDER
-    git clone $CPPZMQ_GIT
-fi
-cd $CPPZMQ_PREFIX
-git pull
