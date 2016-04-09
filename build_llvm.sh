@@ -44,29 +44,9 @@ setup() {
 
 }
 
-download_pkg() {
-    ROOT_FOLDER=$1
-    PKG_NAME=$2
-    PKG_LINK=$3
-    mkdir -p $ROOT_FOLDER
-    cd $ROOT_FOLDER
-    if [ ! -d $PKG_NAME ]; then
-        $GIT clone $PKG_LINK
-    fi
-    cd $ROOT_FOLDER/$PKG_NAME
-    git pull
-}
-
 setup
-# Install clang
 LLVM_FOLDER=$SRC_FOLDER/llvm
-LLVM_BUILD_FOLDER=$LLVM_FOLDER/build
-download_pkg $SRC_FOLDER llvm 
-
-LLVM_PROJECTS_FOLDER=$LLVM_FOLDER/projects
-LLVM_TOOLS_FOLDER=$LLVM_FOLDER/tools
-LLVM_CLANG_FOLDER=$LLVM_FOLDER/clang
-LLVM_CLANG_TOOLS_FOLDER=$LLVM_CLANG_FOLDER/tools
+LLVM_BUILD_FOLDER=$TMP_FOLDER/llvm
 LLVM_PREFIX=$EXTERNAL_FOLDER/llvm
 
 get_source_code() {
@@ -75,22 +55,24 @@ get_source_code() {
     GIT_LINK=$3
     
     cd $ROOT_DIR
+    echo $ROOT_DIR
     if [ ! -d $PACKAGE_NAME ]; then
-        git clone $GIT_LINK
+        git clone $GIT_LINK $PACKAGE_NAME
     fi
-    cd $ROOT_DIR/$PACKAGE_NAME
+    PKG_DIR=$ROOT_DIR/$PACKAGE_NAME
+    cd $PKG_DIR
     git pull
 }
 
-<<<<<<< HEAD
 # Get all required source code
 LLVM_SRC=$SRC_FOLDER/llvm
 get_source_code $SRC_FOLDER llvm http://llvm.org/git/llvm.git
 
-mkdir -p $LLVM_SRC/llvm/tools
+mkdir -p $LLVM_SRC/tools
 get_source_code $LLVM_SRC/tools clang http://llvm.org/git/clang.git
+get_source_code $LLVM_SRC/tools/clang/tools extra http://llvm.org/git/clang-tools-extra.git 
 
-mkdir $LLVM_SRC/llvm/projects
+mkdir $LLVM_SRC/projects
 get_source_code $LLVM_SRC/projects compiler-rt http://llvm.org/git/compiler-rt.git
 get_source_code $LLVM_SRC/projects openmp http://llvm.org/git/openmp.git
 get_source_code $LLVM_SRC/projects libcxx http://llvm.org/git/libcxx.git
@@ -99,10 +81,10 @@ get_source_code $LLVM_SRC/projects test-suite http://llvm.org/git/test-suite.git
 
 # Build LLVM
 # rm -rf $LLVM_BUILD_FOLDER
-# mkdir -p $LLVM_BUILD_FOLDER
-# cd $LLVM_BUILD_FOLDER
-# # $CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$LLVM_PREFIX -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_TESTING:BOOL=OFF $CMAKE_USE_CLANG $LLVM_FOLDER 
+mkdir -p $LLVM_BUILD_FOLDER
+cd $LLVM_BUILD_FOLDER
+$CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$LLVM_PREFIX -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_TESTING:BOOL=OFF $CMAKE_USE_CLANG $LLVM_FOLDER 
 # $CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$LLVM_PREFIX -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_TESTING:BOOL=OFF $LLVM_FOLDER 
-# make $BUILD_OPTS
-# rm $LLVM_PREFIX
-# make $BUILD_OPTS install 
+make $BUILD_OPTS
+rm $LLVM_PREFIX
+make $BUILD_OPTS install 
