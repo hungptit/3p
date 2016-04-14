@@ -46,7 +46,8 @@ setup() {
 
 setup
 LLVM_FOLDER=$SRC_FOLDER/llvm
-LLVM_BUILD_FOLDER=$TMP_FOLDER/llvm
+# LLVM_BUILD_FOLDER=$TMP_FOLDER/llvm
+LLVM_BUILD_FOLDER=$LLVM_FOLDER/build
 LLVM_PREFIX=$EXTERNAL_FOLDER/llvm
 
 get_source_code() {
@@ -72,7 +73,7 @@ mkdir -p $LLVM_SRC/tools
 get_source_code $LLVM_SRC/tools clang http://llvm.org/git/clang.git
 get_source_code $LLVM_SRC/tools/clang/tools extra http://llvm.org/git/clang-tools-extra.git 
 
-mkdir $LLVM_SRC/projects
+mkdir -p $LLVM_SRC/projects
 get_source_code $LLVM_SRC/projects compiler-rt http://llvm.org/git/compiler-rt.git
 get_source_code $LLVM_SRC/projects openmp http://llvm.org/git/openmp.git
 get_source_code $LLVM_SRC/projects libcxx http://llvm.org/git/libcxx.git
