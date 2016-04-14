@@ -12,6 +12,11 @@ setup() {
 
     CLANG=$EXTERNAL_FOLDER/llvm/bin/clang
     CLANGPP=$EXTERNAL_FOLDER/llvm/bin/clang++
+    if [ ! -f $CLANGPP ]; then
+        # Fall back to gcc if we do not have clang installed.
+        CLANG=gcc
+        CLANGPP=g++
+    fi
 }
 
 get_source_code() {
@@ -42,7 +47,7 @@ LIBSODIUM_PREFIX=$EXTERNAL_FOLDER/libsodium
 cd $LIBSODIUM_SRC
 git pull
 ./autogen.sh
-./configure --prefix=$LIBSODIUM_PREFIX CC=$CLANG CXX=$CLANG++
+./configure --prefix=$LIBSODIUM_PREFIX
 make $BUILD_OPTS
 make install
 
@@ -53,7 +58,7 @@ ZEROMQ_PREFIX=$EXTERNAL_FOLDER/libzmq
 cd $ZEROMQ_SRC
 git pull
 ./autogen.sh
-./configure --prefix=$ZEROMQ_PREFIX --with-libsodium=no CC=$CLANG CXX=$CLANG++
+./configure --prefix=$ZEROMQ_PREFIX --with-libsodium=no
 make $BUILD_OPTS
 make install
 

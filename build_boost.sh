@@ -52,4 +52,5 @@ git pull
 ./bootstrap.sh --prefix=$BOOST_PREFIX --without-icu
 ./b2 clean
 ./b2 headers
+./b2 --build-dir=$TMPDIR/boost toolset=gcc stage
 ./b2 $BUILD_OPTS --disable-icu --ignore-site-config variant=release threading=multi install

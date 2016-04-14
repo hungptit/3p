@@ -17,7 +17,7 @@
 (require 'extra_features)
 
 ;; Might require the latest version of Emacs
-(require 'setup_magit)
+;; (require 'setup_magit)
 
 (provide 'init)
 ;;; init.el ends here

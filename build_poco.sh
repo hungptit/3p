@@ -44,7 +44,6 @@ get_source_code() {
     GIT_LINK=$3
     
     cd $ROOT_DIR
-    echo $ROOT_DIR
     if [ ! -d $PACKAGE_NAME ]; then
         git clone $GIT_LINK $PACKAGE_NAME
     fi
