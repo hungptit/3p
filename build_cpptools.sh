@@ -63,7 +63,7 @@ install_tbb() {
 install_eigen() {
     EIGEN_SRC=$SRC_FOLDER/eigen
     EIGEN_BUILD_FOLDER=$TMP_FOLDER/eigen/
-    EIGEN_PREFIX=$TMP_FOLDER/eigen
+    EIGEN_PREFIX=$EXTERNAL_FOLDER/eigen
 
     MERCURIAL_VERSION=3.2.4
     MERCURIAL_PREFIX=$EXTERNAL_FOLDER/mercurial
@@ -157,7 +157,7 @@ echo "Install TBB"
 install_tbb > /dev/null
 
 echo "Install eigen"
-sh install_eigen > /dev/null
+install_eigen > /dev/null
 
 # echo "Install libevent and memcached"
 # sh build_using_autogen.sh libevent git://levent.git.sourceforge.net/gitroot/levent/libevent > /dev/null

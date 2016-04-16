@@ -18,6 +18,8 @@ if [ ! -f $CLANGPP ]; then
     CLANGPP=g++
 fi
 
+USE_CLANG="CC=$CLANG CXX=$CLANGPP CFLAGS=-O4 CXXFLAGS=-O4"
+
 # Setup CMake
 CMAKE_PREFIX=$EXTERNAL_FOLDER/cmake
 CMAKE=$CMAKE_PREFIX/bin/cmake
@@ -53,8 +55,6 @@ build_mercurial() {
     cd $MERCURIAL_PREFIX-$MERCURIAL_VERSION
     make local $BUILD_OPTS
 }
-
-USE_CLANG="CC=clang CXX=clang++ CFLAGS=-O4 CXXFLAGS=-O4"
 
 build_bzip2() {
     BZIP2_FILE=bzip2-1.0.6.tar.gz
@@ -121,6 +121,9 @@ build_bzip2 > /dev/null;
 
 echo "Install xdot"
 sh install_pkg.sh xdot https://github.com/jrfonseca/xdot.py.git
+
+echo "Install html-tidy"
+sh build_using_cmake.sh tidy-html5 https://github.com/htacg/tidy-html5.git ""
 
 # echo "Build python3"
 # build_python;
