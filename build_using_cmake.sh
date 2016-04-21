@@ -1,5 +1,10 @@
 #!/bin/bash
-EXTERNAL_FOLDER=$PWD
+# Build given package
+EXTERNAL_FOLDER=$1
+PKGNAME=$2
+PKGGIT=$3
+CMAKE_OPTIONS=$4
+
 SRC_FOLDER=$EXTERNAL_FOLDER/src
 TMP_FOLDER=/tmp/build/
 
@@ -34,11 +39,6 @@ if [ ! -f $GIT ]; then
     # Use system CMake if we could not find the customized CMake.
     GIT=git
 fi
-
-# Build given package
-PKGNAME=$1
-PKGGIT=$2
-CMAKE_OPTIONS=$3
 
 APKG_SRC=$SRC_FOLDER/$PKGNAME
 APKG_BUILD_FOLDER=$TMP_FOLDER/$PKGNAME

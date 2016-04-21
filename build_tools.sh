@@ -54,6 +54,7 @@ build_mercurial() {
     tar -xf $SRC_FOLDER/$MERCURIAL_FILE -C $EXTERNAL_FOLDER
     cd $MERCURIAL_PREFIX-$MERCURIAL_VERSION
     make local $BUILD_OPTS
+    cd $EXTERNAL_FOLDER;
 }
 
 build_bzip2() {
@@ -77,6 +78,7 @@ build_bzip2() {
     make $BUILD_OPTS CC=$CLANG CXX=$CLANGPP CFLAGS="-O4 -Wall" CXXFLAGS="-O4 -Wall" 
     rm -rf $BZIP2_PREFIX
     make install PREFIX=$BZIP2_PREFIX
+    cd $EXTERNAL_FOLDER;
 }
 
 build_python() {    
@@ -96,34 +98,34 @@ build_python() {
 
 # Build packages
 echo "Build CMake"
-sh build_using_configure.sh cmake git://cmake.org/cmake.git > /dev/null
+sh build_using_configure.sh $EXTERNAL_FOLDER cmake git://cmake.org/cmake.git > /dev/null
 
 echo "Build Git"
-sh build_using_make.sh git https://github.com/git/git.git "" "profile" "PROFILE=BUILD install" > /dev/null
+# sh build_using_make.sh $EXTERNAL_FOLDER git https://github.com/git/git.git "" "profile" "PROFILE=BUILD install" > /dev/null
 
 echo "Build sqlitebrowser"
-sh build_using_cmake.sh sqlitebrowser https://github.com/sqlitebrowser/sqlitebrowser "$CMAKE_USE_CLANG" > /dev/null
+sh build_using_cmake.sh $EXTERNAL_FOLDER sqlitebrowser https://github.com/sqlitebrowser/sqlitebrowser "$CMAKE_USE_CLANG" > /dev/null
 
 echo "Build graphviz"
 sh build_using_autogen.sh graphviz https://github.com/ellson/graphviz.git "$USE_CLANG"  > /dev/null
 
 echo "Build lz4"
-sh build_using_make.sh lz4 https://github.com/Cyan4973/lz4 "" "$USE_CLANG"  > /dev/null
+sh build_using_make.sh $EXTERNAL_FOLDER lz4 https://github.com/Cyan4973/lz4 "" "$USE_CLANG"  > /dev/null
 
 echo "Build zlib"
-sh build_using_configure_notmpdir.sh zlib https://github.com/madler/zlib "" "$USE_CLANG"  > /dev/null
+sh build_using_configure_notmpdir.sh $EXTERNAL_FOLDER zlib https://github.com/madler/zlib "" "$USE_CLANG"  > /dev/null
+
+echo "Install xdot"
+sh install_pkg.sh $EXTERNAL_FOLDER xdot https://github.com/jrfonseca/xdot.py.git  > /dev/null;
+
+echo "Install html-tidy"
+sh build_using_cmake.sh $EXTERNAL_FOLDER tidy-html5 https://github.com/htacg/tidy-html5.git ""  > /dev/null;
+
+# echo "Build python3"
+# build_python;
 
 echo "Build mercurial"
 build_mercurial > /dev/null;
 
 echo "Build bzip2"
 build_bzip2 > /dev/null;
-
-echo "Install xdot"
-sh install_pkg.sh xdot https://github.com/jrfonseca/xdot.py.git
-
-echo "Install html-tidy"
-sh build_using_cmake.sh tidy-html5 https://github.com/htacg/tidy-html5.git ""
-
-# echo "Build python3"
-# build_python;

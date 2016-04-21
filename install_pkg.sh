@@ -1,5 +1,7 @@
 #!/bin/bash
-EXTERNAL_FOLDER=$PWD
+EXTERNAL_FOLDER=$1
+PKGNAME=$2
+PKGGIT=$3
 SRC_FOLDER=$EXTERNAL_FOLDER/src
 TMP_FOLDER=/tmp/build/
 
@@ -18,9 +20,6 @@ if [ ! -f $GIT ]; then
 fi
 
 # Build given package
-PKGNAME=$1
-PKGGIT=$2
-
 APKG_PREFIX=$EXTERNAL_FOLDER/$PKGNAME
 cd $EXTERNAL_FOLDER
 if [ ! -d $APKG_PREFIX ]; then

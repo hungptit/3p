@@ -139,19 +139,19 @@ build_casablanca() {
 }
 
 echo "Install doxygen"
-sh build_using_cmake.sh doxygen https://github.com/doxygen/doxygen.git "$CMAKE_USE_CLANG" > /dev/null
+sh build_using_cmake.sh $EXTERNAL_FOLDER doxygen https://github.com/doxygen/doxygen.git "$CMAKE_USE_CLANG" > /dev/null
 
 echo "Install cereal"
-sh install_pkg.sh cereal https://github.com/USCiLab/cereal > /dev/null
+sh install_pkg.sh $EXTERNAL_FOLDER cereal https://github.com/USCiLab/cereal > /dev/null
 
 echo "Install rapidjson"
-sh install_pkg.sh rapidjson https://github.com/miloyip/rapidjson > /dev/null
+sh install_pkg.sh $EXTERNAL_FOLDER rapidjson https://github.com/miloyip/rapidjson > /dev/null
 
 echo "Install splog"
-sh install_pkg.sh splog https://github.com/gabime/spdlog.git > /dev/null
+sh install_pkg.sh $EXTERNAL_FOLDER splog https://github.com/gabime/spdlog.git > /dev/null
 
 echo "Install cppformat"
-sh build_using_cmake.sh cppformat https://github.com/cppformat/cppformat.git "$CMAKE_USE_CLANG" > /dev/null
+sh build_using_cmake.sh $EXTERNAL_FOLDER cppformat https://github.com/cppformat/cppformat.git "$CMAKE_USE_CLANG" > /dev/null
 
 echo "Install TBB"
 install_tbb > /dev/null
