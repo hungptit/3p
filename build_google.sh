@@ -95,7 +95,7 @@ build_leveldb() {
     cd $LEVELDB_PREFIX
     make clean
     git pull
-    make CXX=$CLANGPP $BUILD_OPTS
+    make $BUILD_OPTS
 }
 
 build_gtest() {

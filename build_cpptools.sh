@@ -83,7 +83,7 @@ install_eigen() {
     rm -rf $EIGEN_BUILD_FOLDER
     mkdir $EIGEN_BUILD_FOLDER
     cd $EIGEN_BUILD_FOLDER
-    $CMAKE $EIGEN_SRC -DCMAKE_INSTALL_PREFIX=$EIGEN_PREFIX $CMAKE_RELEASE_BUILD $CMAKE_USE_CLANG
+    $CMAKE $EIGEN_SRC -DCMAKE_INSTALL_PREFIX=$EIGEN_PREFIX $CMAKE_RELEASE_BUILD
     make install $BUILD_OPTS
     rm -rf $EIGEN_BUILD_FOLDER    
 }
@@ -128,7 +128,7 @@ build_casablanca() {
     cd $CPPRESTSDK_BUILD
 
     # Use customized boost libraries
-    $CMAKE $CPPRESTSDK_SRC/Release -DCMAKE_INSTALL_PREFIX=$CPPRESTSDK_PREFIX $CMAKE_RELEASE_BUILD $CMAKE_USE_CLANG -DBOOST_ROOT=/local/projects/3p/boost/ -DBoost_USE_MULTITHREADED=ON -DBUILD_SHARED_LIBS=0
+    $CMAKE $CPPRESTSDK_SRC/Release -DCMAKE_INSTALL_PREFIX=$CPPRESTSDK_PREFIX $CMAKE_RELEASE_BUILD -DBOOST_ROOT=/local/projects/3p/boost/ -DBoost_USE_MULTITHREADED=ON -DBUILD_SHARED_LIBS=0
 
     # Use system boost libraries
     # $CMAKE $CPPRESTSDK_SRC/Release -DCMAKE_INSTALL_PREFIX=$CPPRESTSDK_PREFIX $CMAKE_RELEASE_BUILD $CMAKE_USE_CLANG -DBoost_USE_MULTITHREADED=ON -DBUILD_SHARED_LIBS=0
@@ -139,7 +139,7 @@ build_casablanca() {
 }
 
 echo "Install doxygen"
-sh build_using_cmake.sh $EXTERNAL_FOLDER doxygen https://github.com/doxygen/doxygen.git "$CMAKE_USE_CLANG" > /dev/null
+sh build_using_cmake.sh $EXTERNAL_FOLDER doxygen https://github.com/doxygen/doxygen.git "" > /dev/null
 
 echo "Install cereal"
 sh install_pkg.sh $EXTERNAL_FOLDER cereal https://github.com/USCiLab/cereal > /dev/null
@@ -151,7 +151,7 @@ echo "Install splog"
 sh install_pkg.sh $EXTERNAL_FOLDER splog https://github.com/gabime/spdlog.git > /dev/null
 
 echo "Install cppformat"
-sh build_using_cmake.sh $EXTERNAL_FOLDER cppformat https://github.com/cppformat/cppformat.git "$CMAKE_USE_CLANG" > /dev/null
+sh build_using_cmake.sh $EXTERNAL_FOLDER cppformat https://github.com/cppformat/cppformat.git "" > /dev/null
 
 echo "Install TBB"
 install_tbb > /dev/null
@@ -159,10 +159,10 @@ install_tbb > /dev/null
 echo "Install eigen"
 install_eigen > /dev/null
 
-# echo "Install libevent and memcached"
-# sh build_using_autogen.sh libevent git://levent.git.sourceforge.net/gitroot/levent/libevent > /dev/null
-# sh build_using_autogen.sh memcached git://github.com/memcached/memcached.git "--with-libevent=$EXTERNAL_FOLDER/libevent" > /dev/null
-# build_libmemcached > /dev/null
+echo "Install libevent and memcached"
+sh build_using_autogen.sh libevent git://levent.git.sourceforge.net/gitroot/levent/libevent > /dev/null
+sh build_using_autogen.sh memcached git://github.com/memcached/memcached.git "--with-libevent=$EXTERNAL_FOLDER/libevent" > /dev/null
+build_libmemcached > /dev/null
 
 # echo "Build Casablanca"
 # build_casablanca;
