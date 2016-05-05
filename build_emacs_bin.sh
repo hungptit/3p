@@ -59,7 +59,7 @@ git pull
 
 # Now build and install the_silver_searcher
 sh build.sh
-./configure --prefix=$SILVER_SEARCH_PREFIX CC=$CLANG CFLAGS="-O4 -Wall"
+./configure --prefix=$SILVER_SEARCH_PREFIX CFLAGS="-O4 -Wall"
 make $BUILD_OPTS
 make install
 
