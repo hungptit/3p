@@ -38,7 +38,7 @@ if [ ! -f $GIT ]; then
 fi
 
 # Rocksdb
-ROCKSDB_GIT=https://github.com/facebook/rocksdb/
+ROCKSDB_GIT=https://github.com/hungptit/rocksdb.git
 ROCKSDB_PREFIX=$EXTERNAL_FOLDER/rocksdb
 
 if [ ! -d $ROCKSDB_PREFIX ]; then

@@ -9,9 +9,9 @@
 (add-to-list 'load-path (concat emacs-setup-root-path "seq"))
 (require 'flycheck)
 
-;; Use C++11 by default
-(setq-default flycheck-clang-language-standard "c++11"
-              flycheck-gcc-language-standard   "c++11")
+;; Use C++14 by default
+(setq-default flycheck-clang-language-standard "c++14"
+              flycheck-gcc-language-standard   "c++14")
 
 
 ;; flycheck setup for MathWorks sandbox
