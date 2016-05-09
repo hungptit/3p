@@ -104,7 +104,7 @@ echo "Build Git"
 # sh build_using_make.sh $EXTERNAL_FOLDER git https://github.com/git/git.git "" "profile" "PROFILE=BUILD install" > /dev/null
 
 echo "Build sqlitebrowser"
-sh build_using_cmake.sh $EXTERNAL_FOLDER sqlitebrowser https://github.com/sqlitebrowser/sqlitebrowser "$CMAKE_USE_CLANG" > /dev/null
+sh build_using_cmake.sh $EXTERNAL_FOLDER sqlitebrowser https://github.com/sqlitebrowser/sqlitebrowser "" > /dev/null
 
 echo "Build graphviz"
 sh build_using_autogen.sh graphviz https://github.com/ellson/graphviz.git "$USE_CLANG"  > /dev/null

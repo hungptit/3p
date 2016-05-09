@@ -49,7 +49,7 @@ fi
 cd $ROCKSDB_PREFIX
 $GIT pull
 make clean
-make DEBUG_LEVEL=0 $BUILD_OPTS static_lib EXTRA_CXXFLAGS="-O4" EXTRA_CFLAGS="-O4" CC=$CLANG CXX=$CLANGPP
+make DEBUG_LEVEL=0 $BUILD_OPTS static_lib EXTRA_CXXFLAGS="-O4" EXTRA_CFLAGS="-O4"
 # make all $BUILD_OPTS
 
 # Get folly
