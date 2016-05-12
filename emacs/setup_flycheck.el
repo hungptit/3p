@@ -10,8 +10,8 @@
 (require 'flycheck)
 
 ;; Use C++11 by default
-(setq-default flycheck-clang-language-standard "c++11"
-              flycheck-gcc-language-standard   "c++11")
+(setq-default flycheck-clang-language-standard "c++14"
+              flycheck-gcc-language-standard   "c++14")
 
 
 ;; flycheck setup for MathWorks sandbox

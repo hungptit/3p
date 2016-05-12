@@ -43,6 +43,7 @@ mkdir -p $EMACS_PREFIX
 RTAGS_GIT=https://github.com/Andersbakken/rtags.git
 RTAGS_SRC=$SRC_FOLDER/rtags
 RTAGS_BUILD=$TMP_FOLDER/rtags
+RTAGS_PREFIX=$EMACS_PREFIX/rtags
 
 if [ ! -d $RTAGS_SRC ]; then
     cd $SRC_FOLDER
@@ -52,10 +53,15 @@ if [ ! -d $RTAGS_SRC ]; then
     git submodule update
 fi
 
+# Pull the latest version
+cd $SRC_FOLDER
 git pull
 
-rm -rf $RTAGS_BUILD
+# Build rtags
 mkdir -p $RTAGS_BUILD
 cd $RTAGS_BUILD
-$CMAKE $RTAGS_SRC -DCMAKE_EXPORT_COMPILE_COMMANDS=1 $CMAKE_RELEASE_BUILD
+$CMAKE $RTAGS_SRC -DCMAKE_INSTALL_PREFIX=$RTAGS_PREFIX -DCMAKE_EXPORT_COMPILE_COMMANDS=1 $CMAKE_RELEASE_BUILD
 make $BUILD_OPTS
+rm -rf $RTAGS_PREFIX
+make install $BUILD_OPTS
+rm -rf $RTAGS_BUILD
