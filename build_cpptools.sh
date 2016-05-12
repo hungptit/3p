@@ -128,7 +128,9 @@ build_casablanca() {
     cd $CPPRESTSDK_BUILD
 
     # Use customized boost libraries
-    $CMAKE $CPPRESTSDK_SRC/Release -DCMAKE_INSTALL_PREFIX=$CPPRESTSDK_PREFIX $CMAKE_RELEASE_BUILD -DBOOST_ROOT=/local/projects/3p/boost/ -DBoost_USE_MULTITHREADED=ON -DBUILD_SHARED_LIBS=0
+    # $CMAKE $CPPRESTSDK_SRC/Release -DCMAKE_INSTALL_PREFIX=$CPPRESTSDK_PREFIX $CMAKE_RELEASE_BUILD -DBOOST_ROOT=$EXTERNAL_FOLDER/boost/ -DBoost_USE_MULTITHREADED=ON -DBUILD_SHARED_LIBS=0 $CMAKE_USE_CLANG 
+
+    $CMAKE $CPPRESTSDK_SRC/Release -DCMAKE_INSTALL_PREFIX=$CPPRESTSDK_PREFIX $CMAKE_RELEASE_BUILD -DBOOST_ROOT=$EXTERNAL_FOLDER/boost/ -DBoost_USE_MULTITHREADED=ON -DBUILD_SHARED_LIBS=0
 
     # Use system boost libraries
     # $CMAKE $CPPRESTSDK_SRC/Release -DCMAKE_INSTALL_PREFIX=$CPPRESTSDK_PREFIX $CMAKE_RELEASE_BUILD $CMAKE_USE_CLANG -DBoost_USE_MULTITHREADED=ON -DBUILD_SHARED_LIBS=0
@@ -151,7 +153,7 @@ echo "Install splog"
 sh install_pkg.sh $EXTERNAL_FOLDER splog https://github.com/gabime/spdlog.git > /dev/null
 
 echo "Install cppformat"
-sh build_using_cmake.sh $EXTERNAL_FOLDER cppformat https://github.com/cppformat/cppformat.git "" > /dev/null
+sh build_using_cmake.sh $EXTERNAL_FOLDER fmt https://github.com/fmtlib/fmt.git "" > /dev/null
 
 echo "Install TBB"
 install_tbb > /dev/null
@@ -167,22 +169,22 @@ build_libmemcached > /dev/null
 # echo "Build Casablanca"
 # build_casablanca;
 
-# # Build HDF5
-# # HDF5_FILE=hdf5-1.8.10
-# # HDF5_GIT=https://gitorious.org/hdf5/hdf5-v18.git
-# # HDF5_SRC=$SRC_FOLDER/hdf5-v18
-# # HDF5_PREFIX=$EXTERNAL_FOLDER/hdf5
+# Build HDF5
+# HDF5_FILE=hdf5-1.8.10
+# HDF5_GIT=https://gitorious.org/hdf5/hdf5-v18.git
+# HDF5_SRC=$SRC_FOLDER/hdf5-v18
+# HDF5_PREFIX=$EXTERNAL_FOLDER/hdf5
 
-# # if [ ! -d $HDF5_SRC  ]; then
-# #     git clone $HDF5_GIT
-# # fi
+# if [ ! -d $HDF5_SRC  ]; then
+#     git clone $HDF5_GIT
+# fi
 
-# # # Check out the latest version
-# # cd $HDF5_SRC
-# # git pull;
+# # Check out the latest version
+# cd $HDF5_SRC
+# git pull;
 
-# # # Now build and install the library
-# # ./configure --prefix=$HDF5_PREFIX --with-zlib=$ZLIB_PREFIX --enable-hl --enable-production --enable-cxx --enable-static-exec --enable-shared=0
-# # make $BUILD_OPTS
-# # rm -rf $HDF5_PREFIX
-# # make install
+# # Now build and install the library
+# ./configure --prefix=$HDF5_PREFIX --with-zlib=$ZLIB_PREFIX --enable-hl --enable-production --enable-cxx --enable-static-exec --enable-shared=0
+# make $BUILD_OPTS
+# rm -rf $HDF5_PREFIX
+# make install

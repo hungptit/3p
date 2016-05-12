@@ -30,39 +30,38 @@ setup() {
         # Use system CMake if we could not find the customized CMake.
         CMAKE=cmake
     fi
-    # CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE:STRING=Release"
-    CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE=Release"
-    CMAKE_USE_CLANG="-DCMAKE_CXX_COMPILER=${CLANGPP} -DCMAKE_C_COMPILER=${CLANG}"
 
     # Setup git
     GIT_PREFIX=$EXTERNAL_FOLDER/git
     GIT=$GIT_PREFIX/bin/git
     if [ ! -f $GIT ]; then
-        # Use system CMake if we could not find the customized CMake.
+        # Use system git if we could not find the customized git.
         GIT=git
     fi
     
     LLVM_FOLDER=$SRC_FOLDER/llvm
-    # LLVM_BUILD_FOLDER=$TMP_FOLDER/llvm
     LLVM_BUILD_FOLDER=$LLVM_FOLDER/build
     LLVM_PREFIX=$EXTERNAL_FOLDER/llvm
+    LLVM_TAG="release_38"
 }
 
 get_source_code() {
     ROOT_DIR=$1
     PACKAGE_NAME=$2
     GIT_LINK=$3
-    
+
     cd $ROOT_DIR
     if [ ! -d $PACKAGE_NAME ]; then
         git clone $GIT_LINK $PACKAGE_NAME
     fi
     PKG_DIR=$ROOT_DIR/$PACKAGE_NAME
     cd $PKG_DIR
-    
-    # Make sure that we can compile this on Debian 7.4
+
+    # Cannot go higher in Debian 7.4
+    LLVM_TAG="release_38"       
+            
     git clean -df
-    git checkout release_38
+    git checkout $LLVM_TAG
     git pull
 }
 
@@ -77,15 +76,16 @@ mkdir -p $LLVM_SRC/tools
 mkdir -p $LLVM_SRC/projects
 
 # Get clang and clang-extra-tools
-get_source_code $LLVM_SRC/tools clang http://llvm.org/git/clang.git
-get_source_code $LLVM_SRC/tools/clang/tools extra http://llvm.org/git/clang-tools-extra.git 
+get_source_code $LLVM_SRC/tools clang http://llvm.org/git/clang.git $LLVM_TAG
+get_source_code $LLVM_SRC/tools/clang/tools extra http://llvm.org/git/clang-tools-extra.git $LLVM_TAG
 
+# TODO: Cannot compile these packages in Debian 7.4 because of old STL libraries.
 # Get other libraries
-# get_source_code $LLVM_SRC/projects compiler-rt http://llvm.org/git/compiler-rt.git
-# get_source_code $LLVM_SRC/projects openmp http://llvm.org/git/openmp.git
-# get_source_code $LLVM_SRC/projects libcxx http://llvm.org/git/libcxx.git
-# get_source_code $LLVM_SRC/projects libcxxabi http://llvm.org/git/libcxxabi.git
-# get_source_code $LLVM_SRC/projects test-suite http://llvm.org/git/test-suite.git
+get_source_code $LLVM_SRC/projects compiler-rt http://llvm.org/git/compiler-rt.git $LLVM_TAG
+get_source_code $LLVM_SRC/projects openmp http://llvm.org/git/openmp.git $LLVM_TAG
+# get_source_code $LLVM_SRC/projects libcxx http://llvm.org/git/libcxx.git $LLVM_TAG
+# get_source_code $LLVM_SRC/projects libcxxabi http://llvm.org/git/libcxxabi.git $LLVM_TAG
+# get_source_code $LLVM_SRC/projects test-suite http://llvm.org/git/test-suite.git $LLVM_TAG
 
 # Build LLVM
 # rm -rf $LLVM_BUILD_FOLDER
