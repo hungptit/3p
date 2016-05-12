@@ -81,8 +81,8 @@ get_source_code $LLVM_SRC/tools/clang/tools extra http://llvm.org/git/clang-tool
 
 # TODO: Cannot compile these packages in Debian 7.4 because of old STL libraries.
 # Get other libraries
-# get_source_code $LLVM_SRC/projects compiler-rt http://llvm.org/git/compiler-rt.git $LLVM_TAG
-# get_source_code $LLVM_SRC/projects openmp http://llvm.org/git/openmp.git $LLVM_TAG
+get_source_code $LLVM_SRC/projects compiler-rt http://llvm.org/git/compiler-rt.git $LLVM_TAG
+get_source_code $LLVM_SRC/projects openmp http://llvm.org/git/openmp.git $LLVM_TAG
 # get_source_code $LLVM_SRC/projects libcxx http://llvm.org/git/libcxx.git $LLVM_TAG
 # get_source_code $LLVM_SRC/projects libcxxabi http://llvm.org/git/libcxxabi.git $LLVM_TAG
 # get_source_code $LLVM_SRC/projects test-suite http://llvm.org/git/test-suite.git $LLVM_TAG
