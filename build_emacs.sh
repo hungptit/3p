@@ -146,4 +146,4 @@ install_pkg zenburn https://github.com/bbatsov/zenburn-emacs.git
 install_pkg markdown_mode https://github.com/defunkt/markdown-mode/
 install_pkg graphviz_dot_mode https://github.com/ppareit/graphviz-dot-mode.git
 install_pkg helm-themes https://github.com/syohex/emacs-helm-themes
-
+install_pkg matlab-mode git://git.code.sf.net/p/matlab-emacs/src matlab-emacs-src
