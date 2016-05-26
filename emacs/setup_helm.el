@@ -80,5 +80,8 @@
 (add-to-list 'load-path (concat emacs-setup-root-path "helm_projectile"))
 (require 'helm-projectile)
 
+(add-to-list 'load-path (concat emacs-setup-root-path "helm-themes"))
+(require 'helm-themes)
+
 (provide 'setup_helm)
 ;;; setup_helm ends here
