@@ -127,4 +127,4 @@ git checkout master
 git pull
 ./configure --prefix=$EMACS_PREFIX --with-x CFLAGS="-O4"
 make $BUILD_OPTS
-# make install
+make install $BUILD_OPTS
