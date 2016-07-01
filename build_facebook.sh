@@ -38,47 +38,36 @@ if [ ! -f $GIT ]; then
 fi
 
 # Rocksdb
-ROCKSDB_GIT=https://github.com/facebook/rocksdb/
-ROCKSDB_PREFIX=$EXTERNAL_FOLDER/rocksdb
-
-if [ ! -d $ROCKSDB_PREFIX ]; then
-    cd $EXTERNAL_FOLDER
-    $GIT clone $ROCKSDB_GIT
-fi
-
-cd $ROCKSDB_PREFIX
-$GIT pull
-make clean
-make DEBUG_LEVEL=0 $BUILD_OPTS static_lib EXTRA_CXXFLAGS="-O4" EXTRA_CFLAGS="-O4" CC=$CLANG CXX=$CLANGPP
+# sh install_pkg.sh rocksdb https://github.com/facebook/rocksdb
+# ROCKSDB_PREFIX=$EXTERNAL_FOLDER/rocksdb
+# cd $ROCKSDB_PREFIX
+# make clean
+# make DEBUG_LEVEL=0 $BUILD_OPTS static_lib EXTRA_CXXFLAGS="-O4" EXTRA_CFLAGS="-O4" CC=$CLANG CXX=$CLANGPP
 # make all $BUILD_OPTS
 
-# Get folly
-FOLLY_GIT=https://github.com/facebook/folly
-FOLLY_PREFIX=$EXTERNAL_FOLDER/folly
+# HHVM
+sh install_pkg.sh folly https://github.com/facebook/folly
+sh install_pkg.sh hhvm https://github.com/facebook/hhvm.git
+sh install_pkg.sh proxygen https://github.com/facebook/proxygen.git
 
-if [ ! -d $FOLLY_PREFIX ]; then
-    cd $EXTERNAL_FOLDER
-    $GIT clone $FOLLY_GIT
-fi
+# # get jemalloc
+# JEMALLOC_GIT=https://github.com/jemalloc/jemalloc.git
+# JEMALLOC_PREFIX=$EXTERNAL_FOLDER/jemalloc
+# JEMALLOC_SRC=$SRC_FOLDER/jemalloc
+# JEMALLOC_BUILD=$SRC_FOLDER/jemalloc
 
-# get jemalloc
-JEMALLOC_GIT=https://github.com/jemalloc/jemalloc.git
-JEMALLOC_PREFIX=$EXTERNAL_FOLDER/jemalloc
-JEMALLOC_SRC=$SRC_FOLDER/jemalloc
-JEMALLOC_BUILD=$SRC_FOLDER/jemalloc
+# if [ ! -d $JEMALLOC_SRC ]; then
+#     cd $SRC_FOLDER
+#     $GIT clone $JEMALLOC_GIT
+# fi
 
-if [ ! -d $JEMALLOC_SRC ]; then
-    cd $SRC_FOLDER
-    $GIT clone $JEMALLOC_GIT
-fi
+# cd $JEMALLOC_SRC
+# git pull
 
-cd $JEMALLOC_SRC
-git pull
-
-# Build jemalloc
-sh autogen.sh
-cd $JEMALLOC_BUILD
-$JEMALLOC_SRC/configure --prefix=$JEMALLOC_PREFIX
-make build_lib_static build_doc $BUILD_OPTS 
-rm -rf $JEMALLOC_PREFIX
-make install
+# # Build jemalloc
+# sh autogen.sh
+# cd $JEMALLOC_BUILD
+# $JEMALLOC_SRC/configure --prefix=$JEMALLOC_PREFIX
+# make build_lib_static build_doc $BUILD_OPTS 
+# rm -rf $JEMALLOC_PREFIX
+# make install

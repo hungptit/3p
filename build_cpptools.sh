@@ -142,16 +142,19 @@ echo "Install doxygen"
 sh build_using_cmake.sh doxygen https://github.com/doxygen/doxygen.git "$CMAKE_USE_CLANG" > /dev/null
 
 echo "Install cereal"
-sh install_pkg cereal https://github.com/USCiLab/cereal > /dev/null
+sh install_pkg.sh cereal https://github.com/USCiLab/cereal > /dev/null
 
 echo "Install rapidjson"
-sh install_pkg rapidjson https://github.com/miloyip/rapidjson > /dev/null
+sh install_pkg.sh rapidjson https://github.com/miloyip/rapidjson > /dev/null
 
 echo "Install splog"
-sh install_pkg splog https://github.com/gabime/spdlog.git > /dev/null
+sh install_pkg.sh splog https://github.com/gabime/spdlog.git > /dev/null
 
 echo "Install cppformat"
 sh build_using_cmake.sh cppformat https://github.com/cppformat/cppformat.git "$CMAKE_USE_CLANG" > /dev/null
+
+echo "Install doxypress"
+# sh build_using_cmake.sh doxypress https://github.com/copperspice/doxypress.git "$CMAKE_USE_CLANG" > /dev/null
 
 echo "Install TBB"
 install_tbb > /dev/null
@@ -159,13 +162,18 @@ install_tbb > /dev/null
 echo "Install eigen"
 sh install_eigen > /dev/null
 
-echo "Install libevent and memcached"
-sh build_using_autogen.sh libevent git://levent.git.sourceforge.net/gitroot/levent/libevent > /dev/null
-sh build_using_autogen.sh memcached git://github.com/memcached/memcached.git "--with-libevent=$EXTERNAL_FOLDER/libevent" > /dev/null
-build_libmemcached > /dev/null
+# echo "Install libevent and memcached"
+# sh build_using_autogen.sh libevent git://levent.git.sourceforge.net/gitroot/levent/libevent > /dev/null
+# sh build_using_autogen.sh memcached git://github.com/memcached/memcached.git "--with-libevent=$EXTERNAL_FOLDER/libevent" > /dev/null
+# build_libmemcached > /dev/null
 
-echo "Build Casablanca"
-build_casablanca;
+# echo "Build Casablanca"
+# build_casablanca;
+
+echo "Install libcuckoo and junction"
+sh install_pkg.sh libcuckoo https://github.com/efficient/libcuckoo
+sh install_pkg.sh junction https://github.com/preshing/junction.git
+sh install_pkg.sh turf https://github.com/preshing/turf.git
 
 # # Build HDF5
 # # HDF5_FILE=hdf5-1.8.10
