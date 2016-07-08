@@ -15,6 +15,7 @@
 (require 'setup_markdown)
 (require 'setup_doxymacs)
 (require 'extra_features)
+(require 'setup_xml)
 
 ;; Might require the latest version of Emacs
 ;; (require 'setup_magit)
