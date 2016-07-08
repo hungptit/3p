@@ -56,9 +56,13 @@ install_junction() {
     sh install_pkg.sh $EXTERNAL_FOLDER $PKG_NAME https://github.com/preshing/junction.git $SRC_FOLDER
 }
 
+cd $EXTERNAL_FOLDER
 install_libcuckoo;
+
+cd $EXTERNAL_FOLDER
 sh build_using_cmake.sh $EXTERNAL_FOLDER tuft https://github.com/preshing/turf.git
 
+cd $EXTERNAL_FOLDER
 CMAKE_OPTIONS=""
 sh build_using_cmake.sh $EXTERNAL_FOLDER junction https://github.com/preshing/junction.git $CMAKE_OPTIONS
 

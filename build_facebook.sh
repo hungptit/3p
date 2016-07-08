@@ -52,9 +52,9 @@ make clean
 make DEBUG_LEVEL=0 $BUILD_OPTS static_lib EXTRA_CXXFLAGS="-O4" EXTRA_CFLAGS="-O4"
 
 # HHVM
-sh install_pkg.sh folly https://github.com/facebook/folly
-sh install_pkg.sh hhvm https://github.com/facebook/hhvm.git
-sh install_pkg.sh proxygen https://github.com/facebook/proxygen.git
+sh install_pkg.sh $EXTERNAL_FOLDER folly https://github.com/facebook/folly $SRC_FOLDER
+sh install_pkg.sh $EXTERNAL_FOLDER hhvm https://github.com/facebook/hhvm.git $SRC_FOLDER
+sh install_pkg.sh $EXTERNAL_FOLDER proxygen https://github.com/facebook/proxygen.git $SRC_FOLDER
 
 # # get jemalloc
 # JEMALLOC_GIT=https://github.com/jemalloc/jemalloc.git

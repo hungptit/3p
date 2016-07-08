@@ -72,4 +72,4 @@ Run **build_emacs.sh** after your path is updated (using source command or open 
 **build_google.sh** will build **leveldb**, **gtest**, **sparsehash** etc.
 
 # Facebook packages #
-**build_rockssb.sh** will autmatically build the latest version of **rocksdb** and **folly**.
+**build_facebook.sh** will autmatically build the latest version of **rocksdb** and **folly**.
