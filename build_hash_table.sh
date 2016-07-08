@@ -49,4 +49,16 @@ install_libcuckoo() {
     make install
 }
 
+install_junction() {
+    PKG_NAME=junction
+    PKG_SRC=$SRC_FOLDER/$PKG_NAME
+    PKG_PREFIX=$EXTERNAL_FOLDER/$PKG_NAME
+    sh install_pkg.sh $EXTERNAL_FOLDER $PKG_NAME https://github.com/preshing/junction.git $SRC_FOLDER
+}
+
 install_libcuckoo;
+sh build_using_cmake.sh $EXTERNAL_FOLDER tuft https://github.com/preshing/turf.git
+
+CMAKE_OPTIONS=""
+sh build_using_cmake.sh $EXTERNAL_FOLDER junction https://github.com/preshing/junction.git $CMAKE_OPTIONS
+
