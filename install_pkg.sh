@@ -1,9 +1,14 @@
 #!/bin/bash
 EXTERNAL_FOLDER=$1
-PKGNAME=$2
+PKG_NAME=$2
 PKGGIT=$3
-SRC_FOLDER=$EXTERNAL_FOLDER/src
+SRC_FOLDER=$4
+PKG_SRC=$SRC_FOLDER/$PKG_NAME
 TMP_FOLDER=/tmp/build/
+
+echo $EXTERNAL_FOLDER
+echo $PKG_NAME
+echo $PKGGIT
 
 mkdir -p $TMP_FOLDER
 mkdir -p $SRC_FOLDER
@@ -20,14 +25,11 @@ if [ ! -f $GIT ]; then
 fi
 
 # Build given package
-APKG_PREFIX=$EXTERNAL_FOLDER/$PKGNAME
-cd $EXTERNAL_FOLDER
-if [ ! -d $APKG_PREFIX ]; then
-    $GIT clone $PKGGIT $PKGNAME
+cd $SRC_FOLDER
+if [ ! -d $PKG_SRC ]; then
+    $GIT clone $PKGGIT $PKG_NAME
 fi
 
-echo "Prefix folder: " $APKG_PREFIX
-
 # Pull the latest version
-cd $APKG_PREFIX
+cd $PKG_SRC
 $GIT pull

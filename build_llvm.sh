@@ -58,7 +58,10 @@ get_source_code() {
     cd $PKG_DIR
 
     # Cannot go higher in Debian 7.4
-    LLVM_TAG="release_38"       
+    # LLVM_TAG="release_38"
+
+    # Enable this to fix gcc-5.xx ABI issues.
+    LLVM_TAG="master"       
             
     git clean -df
     git checkout $LLVM_TAG
