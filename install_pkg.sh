@@ -33,3 +33,6 @@ fi
 # Pull the latest version
 cd $PKG_SRC
 $GIT pull
+
+# Return to the external folder.
+cd $EXTERNAL_FOLDER

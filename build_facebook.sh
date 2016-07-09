@@ -50,30 +50,22 @@ cd $ROCKSDB_PREFIX
 $GIT pull
 make clean
 make DEBUG_LEVEL=0 $BUILD_OPTS static_lib EXTRA_CXXFLAGS="-O4" EXTRA_CFLAGS="-O4"
+cd $EXTERNAL_FOLDER
 
 # HHVM
 sh install_pkg.sh $EXTERNAL_FOLDER folly https://github.com/facebook/folly $SRC_FOLDER
 sh install_pkg.sh $EXTERNAL_FOLDER hhvm https://github.com/facebook/hhvm.git $SRC_FOLDER
 sh install_pkg.sh $EXTERNAL_FOLDER proxygen https://github.com/facebook/proxygen.git $SRC_FOLDER
+sh install_pkg.sh $EXTERNAL_FOLDER jemalloc https://github.com/jemalloc/jemalloc.git $SRC_FOLDER
 
-# # get jemalloc
-# JEMALLOC_GIT=https://github.com/jemalloc/jemalloc.git
-# JEMALLOC_PREFIX=$EXTERNAL_FOLDER/jemalloc
-# JEMALLOC_SRC=$SRC_FOLDER/jemalloc
-# JEMALLOC_BUILD=$SRC_FOLDER/jemalloc
-
-# if [ ! -d $JEMALLOC_SRC ]; then
-#     cd $SRC_FOLDER
-#     $GIT clone $JEMALLOC_GIT
-# fi
-
-# cd $JEMALLOC_SRC
-# git pull
-
-# # Build jemalloc
-# sh autogen.sh
-# cd $JEMALLOC_BUILD
-# $JEMALLOC_SRC/configure --prefix=$JEMALLOC_PREFIX
-# make build_lib_static build_doc $BUILD_OPTS 
-# rm -rf $JEMALLOC_PREFIX
-# make install
+# Build jemalloc
+JEMALLOC_PREFIX=$EXTERNAL_FOLDER/jemalloc
+JEMALLOC_SRC=$SRC_FOLDER/jemalloc
+JEMALLOC_BUILD=$SRC_FOLDER/jemalloc
+cd $JEMALLOC_SRC
+sh autogen.sh
+cd $JEMALLOC_BUILD
+$JEMALLOC_SRC/configure --prefix=$JEMALLOC_PREFIX
+make build_lib_static build_doc $BUILD_OPTS 
+rm -rf $JEMALLOC_PREFIX
+make install

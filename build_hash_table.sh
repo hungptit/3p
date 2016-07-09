@@ -57,10 +57,10 @@ install_junction() {
 }
 
 cd $EXTERNAL_FOLDER
-install_libcuckoo;
+# install_libcuckoo;
 
 cd $EXTERNAL_FOLDER
-sh build_using_cmake.sh $EXTERNAL_FOLDER tuft https://github.com/preshing/turf.git
+sh build_using_cmake.sh $EXTERNAL_FOLDER turf https://github.com/preshing/turf.git
 
 cd $EXTERNAL_FOLDER
 CMAKE_OPTIONS=""

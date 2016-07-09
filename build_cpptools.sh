@@ -166,8 +166,6 @@ sh build_using_autogen.sh libevent git://levent.git.sourceforge.net/gitroot/leve
 sh build_using_autogen.sh memcached git://github.com/memcached/memcached.git "--with-libevent=$EXTERNAL_FOLDER/libevent" > /dev/null
 build_libmemcached > /dev/null
 
-sh build_using_cmake.sh $EXTERNAL_FOLDER pugixml https://github.com/zeux/pugixml
-
 # echo "Build Casablanca"
 # build_casablanca;
 
