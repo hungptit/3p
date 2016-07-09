@@ -57,12 +57,14 @@ install_junction() {
 }
 
 cd $EXTERNAL_FOLDER
-# install_libcuckoo;
+install_libcuckoo;
 
+# Get tuft source code
+cd $EXTERNAL_FOLDER
+sh install_pkg.sh $EXTERNAL_FOLDER turf https://github.com/preshing/turf.git $SRC_FOLDER
 
+# Install tuft and junction
 cd $EXTERNAL_FOLDER
 CMAKE_OPTIONS="-DTURF_PREFER_CPP11=1 "
-sh install_pkg.sh $EXTERNAL_FOLDER turf https://github.com/preshing/turf.git $SRC_FOLDER
-cd $EXTERNAL_FOLDER
 sh build_using_cmake.sh $EXTERNAL_FOLDER junction https://github.com/preshing/junction.git $CMAKE_OPTIONS
 
