@@ -115,9 +115,6 @@ sh build_using_make.sh $EXTERNAL_FOLDER lz4 https://github.com/Cyan4973/lz4 "" "
 echo "Build zlib"
 sh build_using_configure_notmpdir.sh $EXTERNAL_FOLDER zlib https://github.com/madler/zlib "" "$USE_CLANG"  > /dev/null
 
-echo "Install xdot"
-sh install_pkg.sh $EXTERNAL_FOLDER xdot https://github.com/jrfonseca/xdot.py.git  > /dev/null;
-
 echo "Install html-tidy"
 sh build_using_cmake.sh $EXTERNAL_FOLDER tidy-html5 https://github.com/htacg/tidy-html5.git ""  > /dev/null;
 
