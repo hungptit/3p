@@ -57,7 +57,7 @@ install_junction() {
 }
 
 cd $EXTERNAL_FOLDER
-# install_libcuckoo;
+install_libcuckoo;
 
 
 cd $EXTERNAL_FOLDER

@@ -140,20 +140,20 @@ build_casablanca() {
     make install
 }
 
-echo "Install doxygen"
-sh build_using_cmake.sh $EXTERNAL_FOLDER doxygen https://github.com/doxygen/doxygen.git "" > /dev/null
+# echo "Install doxygen"
+# sh build_using_cmake.sh $EXTERNAL_FOLDER doxygen https://github.com/doxygen/doxygen.git "" > /dev/null
 
-echo "Install cereal"
-sh install_pkg.sh $EXTERNAL_FOLDER cereal https://github.com/USCiLab/cereal > /dev/null
+# echo "Install cereal"
+# sh install_pkg.sh $EXTERNAL_FOLDER cereal https://github.com/USCiLab/cereal $EXTERNAL_FOLDER > /dev/null
 
-echo "Install rapidjson"
-sh install_pkg.sh $EXTERNAL_FOLDER rapidjson https://github.com/miloyip/rapidjson > /dev/null
+# # echo "Install rapidjson"
+# sh install_pkg.sh $EXTERNAL_FOLDER rapidjson https://github.com/miloyip/rapidjson $EXTERNAL_FOLDER > /dev/null
 
-echo "Install splog"
-sh install_pkg.sh $EXTERNAL_FOLDER splog https://github.com/gabime/spdlog.git > /dev/null
+# # echo "Install splog"
+# sh install_pkg.sh $EXTERNAL_FOLDER splog https://github.com/gabime/spdlog.git  $EXTERNAL_FOLDER > /dev/null
 
-echo "Install cppformat"
-sh build_using_cmake.sh $EXTERNAL_FOLDER fmt https://github.com/fmtlib/fmt.git "" > /dev/null
+# echo "Install cppformat"
+# sh build_using_cmake.sh $EXTERNAL_FOLDER fmt https://github.com/fmtlib/fmt.git "" > /dev/null
 
 echo "Install TBB"
 install_tbb > /dev/null
@@ -161,10 +161,10 @@ install_tbb > /dev/null
 echo "Install eigen"
 install_eigen > /dev/null
 
-echo "Install libevent and memcached"
-sh build_using_autogen.sh libevent git://levent.git.sourceforge.net/gitroot/levent/libevent > /dev/null
-sh build_using_autogen.sh memcached git://github.com/memcached/memcached.git "--with-libevent=$EXTERNAL_FOLDER/libevent" > /dev/null
-build_libmemcached > /dev/null
+# echo "Install libevent and memcached"
+# sh build_using_autogen.sh libevent git://levent.git.sourceforge.net/gitroot/levent/libevent > /dev/null
+# sh build_using_autogen.sh memcached git://github.com/memcached/memcached.git "--with-libevent=$EXTERNAL_FOLDER/libevent" > /dev/null
+# build_libmemcached > /dev/null
 
 # echo "Build Casablanca"
 # build_casablanca;

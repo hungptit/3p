@@ -68,3 +68,6 @@ rm -rf $APKG_PREFIX
 make install
 cd $EXTERNAL_FOLDER
 rm -rf $APKG_BUILD_FOLDER
+
+# Return to the external folder.
+cd $EXTERNAL_FOLDER

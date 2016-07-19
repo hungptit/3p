@@ -6,9 +6,10 @@ SRC_FOLDER=$4
 PKG_SRC=$SRC_FOLDER/$PKG_NAME
 TMP_FOLDER=/tmp/build/
 
-echo $EXTERNAL_FOLDER
-echo $PKG_NAME
-echo $PKGGIT
+echo "External folder: " $EXTERNAL_FOLDER
+echo "Source folder: " $SRC_FOLDER
+echo "Package name: " $PKG_NAME
+echo "Git source: " $PKGGIT
 
 mkdir -p $TMP_FOLDER
 mkdir -p $SRC_FOLDER

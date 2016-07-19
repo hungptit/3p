@@ -100,9 +100,6 @@ build_python() {
 echo "Build CMake"
 sh build_using_configure.sh $EXTERNAL_FOLDER cmake git://cmake.org/cmake.git > /dev/null
 
-echo "Build Git"
-sh build_using_make.sh $EXTERNAL_FOLDER git https://github.com/git/git.git "" "profile" "PROFILE=BUILD install" > /dev/null
-
 echo "Build sqlitebrowser"
 sh build_using_cmake.sh $EXTERNAL_FOLDER sqlitebrowser https://github.com/sqlitebrowser/sqlitebrowser "" > /dev/null
 
@@ -115,17 +112,11 @@ sh build_using_make.sh $EXTERNAL_FOLDER lz4 https://github.com/Cyan4973/lz4 "" "
 echo "Build zlib"
 sh build_using_configure_notmpdir.sh $EXTERNAL_FOLDER zlib https://github.com/madler/zlib "" "$USE_CLANG"  > /dev/null
 
-echo "Install xdot"
-sh install_pkg.sh $EXTERNAL_FOLDER xdot https://github.com/jrfonseca/xdot.py.git  > /dev/null;
-
-echo "Install html-tidy"
-sh build_using_cmake.sh $EXTERNAL_FOLDER tidy-html5 https://github.com/htacg/tidy-html5.git ""  > /dev/null;
-
-# echo "Build python3"
-# build_python;
-
 echo "Build mercurial"
 build_mercurial > /dev/null;
 
 echo "Build bzip2"
 build_bzip2 > /dev/null;
+
+echo "Build Git"
+# sh build_using_make.sh $EXTERNAL_FOLDER git https://github.com/git/git.git "" "profile" "PROFILE=BUILD install" > /dev/null
