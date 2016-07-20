@@ -53,3 +53,6 @@ make clean
 make $BUILD_OPTS $EXTRA_MAKE_OPTIONS
 rm -rf $APKG_PREFIX
 make PREFIX=$APKG_PREFIX install
+
+# Return to the external folder.
+cd $EXTERNAL_FOLDER 

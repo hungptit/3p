@@ -111,6 +111,7 @@ install_irony() {
 
 # Install required packages.
 setup;
+
 install_pkg cask https://github.com/cask/cask
 install_pkg popup https://github.com/auto-complete/popup-el.git;
 install_pkg fuzzy https://github.com/auto-complete/fuzzy-el.git;
@@ -125,12 +126,15 @@ install_pkg helm_projectile https://github.com/bbatsov/helm-projectile.git
 install_pkg helm_gtags https://github.com/syohex/emacs-helm-gtags
 install_pkg async https://github.com/jwiegley/emacs-async.git
 install_pkg function_args https://github.com/abo-abo/function-args.git
-install_pkg git_modes https://github.com/magit/git-modes.git
 install_pkg dash https://github.com/magnars/dash.el
+
+# Magit
+install_pkg git_modes https://github.com/magit/git-modes.git
 install_pkg with_editor https://github.com/magit/with-editor.git
 make_pkg with_editor ""
 install_pkg magit git://github.com/magit/magit.git
 make_pkg magit "lisp docs"
+
 install_pkg yasnippet https://github.com/capitaomorte/yasnippet.git
 install_pkg json_mode https://github.com/joshwnj/json-mode.git
 install_pkg json_reformat https://github.com/gongo/json-reformat.git

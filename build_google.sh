@@ -58,31 +58,6 @@ build_pkg() {
     make install
 }
 
-build_cmake() {
-    PKG=$1
-    PKG_GIT=$2    
-    PKG_SRC=$SRC_FOLDER/$PKG
-    PKG_BUILD=$TMP_FOLDER/$PKG
-    PKG_PREFIX=$EXTERNAL_FOLDER/$PKG
-
-    echo $PKG_SRC
-    echo $SRC_FOLDER
-    if [ ! -d $PKG_SRC ]; then
-        cd $SRC_FOLDER
-        $GIT clone $PKG_GIT
-        echo $PKG_GIT
-    fi
-
-    rm -rf $PKG_BUILD
-    mkdir $PKG_BUILD
-    cd $PKG_BUILD
-
-    # Use gcc to make sure that we can build in old systems.
-    $CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$PKG_PREFIX $CMAKE_RELEASE_BUILD $PKG_SRC
-    make $BUILD_OPTS
-    rm -rf $PKG_BUILD
-}
-
 build_leveldb() {
     LEVELDB_GIT=https://github.com/google/leveldb
     LEVELDB_PREFIX=$EXTERNAL_FOLDER/leveldb
@@ -96,34 +71,7 @@ build_leveldb() {
     make clean
     git pull
     make $BUILD_OPTS
-}
-
-build_gtest() {
-    GTEST_FOLDER=$SRC_FOLDER/gtest
-    GTEST_SRC_FOLDER=$GTEST_FOLDER/build
-    GTEST_PREFIX=$EXTERNAL_FOLDER/gtest
-
-    cd $SRC_FOLDER
-    if [ ! -d $GTEST_FOLDER ]; then
-        svn checkout http://googletest.googlecode.com/svn/trunk/ gtest
-    fi
-
-    cd $GTEST_FOLDER
-    svn update
-
-    rm -rf $GTEST_SRC_FOLDER
-    mkdir -p $GTEST_SRC_FOLDER
-    cd $GTEST_SRC_FOLDER
-    $CMAKE -DCMAKE_INSTALL_PREFIX:PATH=$GTEST_PREFIX $CMAKE_RELEASE_BUILD $GTEST_FOLDER
-    make $BUILD_OPTS
-
-    # We need to install gtest manually.
-    rm -rf $GTEST_PREFIX
-    mkdir -p $GTEST_PREFIX
-    mkdir -p $GTEST_PREFIX/include
-    mkdir -p $GTEST_PREFIX/lib
-    cp -r $GTEST_FOLDER/include/gtest $GTEST_PREFIX/include
-    cp lib*.a $GTEST_PREFIX/lib/
+    cd $EXTERNAL_FOLDER
 }
 
 build_hashmap() {
@@ -147,8 +95,8 @@ build_hashmap() {
 setup 
 
 # Build all required packages
-build_pkg snappy https://github.com/google/snappy.git
-build_leveldb
-build_gtest
-build_hashmap
-build_cmake benchmark https://github.com/google/benchmark.git
+cd $EXTERNAL_FOLDER
+build_pkg snappy https://github.com/google/snappy.git > /dev/null
+build_leveldb > /dev/null
+sh build_using_cmake.sh $EXTERNAL_FOLDER gtest https://github.com/google/googletest.git  > /dev/null
+sh build_using_cmake.sh $EXTERNAL_FOLDER benchmark https://github.com/google/benchmark.git  > /dev/null
