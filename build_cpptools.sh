@@ -140,20 +140,20 @@ build_casablanca() {
     make install
 }
 
-# echo "Install doxygen"
-# sh build_using_cmake.sh $EXTERNAL_FOLDER doxygen https://github.com/doxygen/doxygen.git "" > /dev/null
+echo "Install doxygen"
+sh build_using_cmake.sh $EXTERNAL_FOLDER doxygen https://github.com/doxygen/doxygen.git "" > /dev/null
 
-# echo "Install cereal"
-# sh install_pkg.sh $EXTERNAL_FOLDER cereal https://github.com/USCiLab/cereal $EXTERNAL_FOLDER > /dev/null
+echo "Install cereal"
+sh install_pkg.sh $EXTERNAL_FOLDER cereal https://github.com/USCiLab/cereal $EXTERNAL_FOLDER > /dev/null
 
-# # echo "Install rapidjson"
-# sh install_pkg.sh $EXTERNAL_FOLDER rapidjson https://github.com/miloyip/rapidjson $EXTERNAL_FOLDER > /dev/null
+# echo "Install rapidjson"
+sh install_pkg.sh $EXTERNAL_FOLDER rapidjson https://github.com/miloyip/rapidjson $EXTERNAL_FOLDER > /dev/null
 
-# # echo "Install splog"
-# sh install_pkg.sh $EXTERNAL_FOLDER splog https://github.com/gabime/spdlog.git  $EXTERNAL_FOLDER > /dev/null
+# echo "Install splog"
+sh install_pkg.sh $EXTERNAL_FOLDER splog https://github.com/gabime/spdlog.git  $EXTERNAL_FOLDER > /dev/null
 
-# echo "Install cppformat"
-# sh build_using_cmake.sh $EXTERNAL_FOLDER fmt https://github.com/fmtlib/fmt.git "" > /dev/null
+echo "Install cppformat"
+sh build_using_cmake.sh $EXTERNAL_FOLDER fmt https://github.com/fmtlib/fmt.git "" > /dev/null
 
 echo "Install TBB"
 install_tbb > /dev/null

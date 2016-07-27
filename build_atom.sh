@@ -36,37 +36,40 @@ if [ ! -f $GIT ]; then
     GIT=git
 fi
 
-# Node.js
-NODE_GIT=https://github.com/joyent/node.git
-NODE_FOLDER=$SRC_FOLDER/node
-NODE_PREFIX=$EXTERNAL_FOLDER/node
+install_node() {
+    # Node.js
+    NODE_GIT=https://github.com/nodejs/node.git
+    NODE_FOLDER=$SRC_FOLDER/node
+    NODE_PREFIX=$EXTERNAL_FOLDER/node
 
-cd $SRC_FOLDER
-if [ ! -d $NODE_FOLDER ]; then
-    git clone $NODE_GIT
-fi
-cd $NODE_FOLDER
-git pull
-git checkout v0.12.7
+    cd $EXTERNAL_FOLDER
+    sh install_pkg.sh $EXTERNAL_FOLDER node $NODE_GIT $SRC_FOLDER
+    
+    cd $NODE_FOLDER
+    ./configure --prefix=$NODE_PREFIX --dest-cpu=x64 --dest-os=linux CC=$CLANG CXX=$CLANGPP
+    make $BUILD_OPTS
+    make install 
+}
 
-./configure --prefix=$NODE_PREFIX --dest-cpu=x64 --dest-os=linux CC=$CLANG CXX=$CLANGPP
-make $BUILD_OPTS
-make install
+install_atom() {
+    ATOM_GIT=https://github.com/atom/atom
+    ATOM_FOLDER=$SRC_FOLDER/atom
+    ATOM_PREFIX=$EXTERNAL_FOLDER/atom
 
-# Atom
-ATOM_GIT=https://github.com/atom/atom
-ATOM_FOLDER=$SRC_FOLDER/atom
-ATOM_PREFIX=$EXTERNAL_FOLDER/atom
+    cd $SRC_FOLDER
+    if [ ! -d $ATOM_FOLDER ]; then
+        git clone $ATOM_GIT
+    fi
+    cd $ATOM_FOLDER
+    git pull
 
-cd $SRC_FOLDER
-if [ ! -d $ATOM_FOLDER ]; then
-    git clone $ATOM_GIT
-fi
-cd $ATOM_FOLDER
-git pull
+    # Build atom
+    # Note: Need to install libgnome-keyring-dev before building atom.
+    script/build
+    script/grunt install --install-dir $ATOM_PREFIX
+}
 
-# Build atom
-# Note: Need to install libgnome-keyring-dev before building atom.
-script/build
-script/grunt install --install-dir $ATOM_PREFIX
+# install_node
+install_atom
+
 

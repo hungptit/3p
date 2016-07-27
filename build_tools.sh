@@ -119,4 +119,4 @@ echo "Build bzip2"
 build_bzip2 > /dev/null;
 
 echo "Build Git"
-# sh build_using_make.sh $EXTERNAL_FOLDER git https://github.com/git/git.git "" "profile" "PROFILE=BUILD install" > /dev/null
+sh build_using_make.sh $EXTERNAL_FOLDER git https://github.com/git/git.git "" "profile" "PROFILE=BUILD install" > /dev/null

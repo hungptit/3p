@@ -56,12 +56,6 @@ get_source_code() {
     fi
     PKG_DIR=$ROOT_DIR/$PACKAGE_NAME
     cd $PKG_DIR
-
-    # Cannot go higher in Debian 7.4
-    # LLVM_TAG="release_38"
-
-    # Enable this to fix gcc-5.xx ABI issues.
-    LLVM_TAG="master"       
             
     git clean -df
     git checkout $LLVM_TAG
@@ -72,7 +66,10 @@ get_source_code() {
 setup
 
 # Get LLVM source code
-get_source_code $SRC_FOLDER llvm http://llvm.org/git/llvm.git
+LLVM_TAG="release_39"
+# LLVM_TAG="master"
+
+get_source_code $SRC_FOLDER llvm http://llvm.org/git/llvm.git $LLVM_TAG
 
 LLVM_SRC=$SRC_FOLDER/llvm
 mkdir -p $LLVM_SRC/tools
@@ -82,10 +79,9 @@ mkdir -p $LLVM_SRC/projects
 get_source_code $LLVM_SRC/tools clang http://llvm.org/git/clang.git $LLVM_TAG
 get_source_code $LLVM_SRC/tools/clang/tools extra http://llvm.org/git/clang-tools-extra.git $LLVM_TAG
 
-# TODO: Cannot compile these packages in Debian 7.4 because of old STL libraries.
-# Get other libraries
+# Comment below lines if the build process is failed.
 get_source_code $LLVM_SRC/projects compiler-rt http://llvm.org/git/compiler-rt.git $LLVM_TAG
-get_source_code $LLVM_SRC/projects openmp http://llvm.org/git/openmp.git $LLVM_TAG
+# get_source_code $LLVM_SRC/projects openmp http://llvm.org/git/openmp.git $LLVM_TAG
 # get_source_code $LLVM_SRC/projects libcxx http://llvm.org/git/libcxx.git $LLVM_TAG
 # get_source_code $LLVM_SRC/projects libcxxabi http://llvm.org/git/libcxxabi.git $LLVM_TAG
 # get_source_code $LLVM_SRC/projects test-suite http://llvm.org/git/test-suite.git $LLVM_TAG
