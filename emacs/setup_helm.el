@@ -83,5 +83,7 @@
 (add-to-list 'load-path (concat emacs-setup-root-path "helm-themes"))
 (require 'helm-themes)
 
+(require 'helm-font)
+
 (provide 'setup_helm)
 ;;; setup_helm ends here
