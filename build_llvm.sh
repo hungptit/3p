@@ -42,7 +42,6 @@ setup() {
     LLVM_FOLDER=$SRC_FOLDER/llvm
     LLVM_BUILD_FOLDER=$LLVM_FOLDER/build
     LLVM_PREFIX=$EXTERNAL_FOLDER/llvm
-    LLVM_TAG="release_38"
 }
 
 get_source_code() {
@@ -66,8 +65,8 @@ get_source_code() {
 setup
 
 # Get LLVM source code
-LLVM_TAG="release_39"
-# LLVM_TAG="master"
+# LLVM_TAG="release_39"
+LLVM_TAG="master"
 
 get_source_code $SRC_FOLDER llvm http://llvm.org/git/llvm.git $LLVM_TAG
 
