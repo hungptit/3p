@@ -38,26 +38,33 @@ if [ ! -f $GIT ]; then
 fi
 
 install_tbb() {
-    TBB_LINK=https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb43_20150316oss_src.tgz
+    TBB_RELEASE="tbb44_20160316oss_src"
+    TBB_FOLDER="tbb44_20160316oss"
+    TBB_LINK=https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/${TBB_RELEASE}.tgz
     TBB_PREFIX=$EXTERNAL_FOLDER/tbb
-    TBB_FILE=tbb43_20150316oss_src.tgz
+    TBB_FILE=${TBB_RELEASE}.tgz
 
+    cd $SRC_FOLDER
     if [ ! -f $TBB_FILE ]; then
         wget $TBB_LINK
     fi
 
     # Install TBB
-    TBB_LINK=https://www.threadingbuildingblocks.org/sites/default/files/software_releases/linux/tbb43_20150316oss_lin.tgz
-    TBB_PREFIX=$EXTERNAL_FOLDER/tbb
-    TBB_FILE=tbb43_20150316oss_lin.tgz
-
     if [ ! -f $TBB_FILE ]; then
         wget --no-check-certificate $TBB_LINK
     fi
 
+    cd $EXTERNAL_FOLDER
     rm -rf $TBB_PREFIX
-    tar xf $TBB_FILE
-    mv tbb43_20150316oss $TBB_PREFIX
+    tar xf $SRC_FOLDER/$TBB_FILE
+    mv $TBB_FOLDER $TBB_PREFIX
+
+    cd $TBB_PREFIX
+    make clean
+    make $BUILD_OPTS CXXFLAGS="-O3"
+    mkdir lib
+    cp build/linux_intel64_gcc_cc4.9.2_libc2.19_kernel4.4.0_release/*.so* lib/
+    cd $EXTERNAL_FOLDER
 }
 
 install_eigen() {

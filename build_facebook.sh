@@ -38,19 +38,19 @@ if [ ! -f $GIT ]; then
 fi
 
 # Rocksdb
-# ROCKSDB_GIT=https://github.com/hungptit/rocksdb.git
-# ROCKSDB_PREFIX=$EXTERNAL_FOLDER/rocksdb
+ROCKSDB_GIT=https://github.com/hungptit/rocksdb.git
+ROCKSDB_PREFIX=$EXTERNAL_FOLDER/rocksdb
 
-# if [ ! -d $ROCKSDB_PREFIX ]; then
-#     cd $EXTERNAL_FOLDER
-#     $GIT clone $ROCKSDB_GIT
-# fi
+if [ ! -d $ROCKSDB_PREFIX ]; then
+    cd $EXTERNAL_FOLDER
+    $GIT clone $ROCKSDB_GIT
+fi
 
-# cd $ROCKSDB_PREFIX
-# $GIT pull
-# make clean
-# make DEBUG_LEVEL=0 $BUILD_OPTS static_lib EXTRA_CXXFLAGS="-O4" EXTRA_CFLAGS="-O4"
-# cd $EXTERNAL_FOLDER
+cd $ROCKSDB_PREFIX
+$GIT pull
+make clean
+make DEBUG_LEVEL=0 $BUILD_OPTS static_lib EXTRA_CXXFLAGS="-O4" EXTRA_CFLAGS="-O4"
+cd $EXTERNAL_FOLDER
 
 # HHVM
 sh install_pkg.sh $EXTERNAL_FOLDER folly https://github.com/facebook/folly $SRC_FOLDER
