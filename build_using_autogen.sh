@@ -9,15 +9,6 @@ mkdir -p $SRC_FOLDER
 NCPUS=$(grep -c ^processor /proc/cpuinfo)
 BUILD_OPTS=-j$((NCPUS+1))
 
-# Setup clang
-CLANG=$EXTERNAL_FOLDER/llvm/bin/clang
-CLANGPP=$EXTERNAL_FOLDER/llvm/bin/clang++
-if [ ! -f $CLANGPP ]; then
-    # Fall back to gcc if we do not have clang installed.
-    CLANG=gcc
-    CLANGPP=g++
-fi
-
 # Setup git
 GIT_PREFIX=$EXTERNAL_FOLDER/git
 GIT=$GIT_PREFIX/bin/git
@@ -39,6 +30,10 @@ APKG_PREFIX=$EXTERNAL_FOLDER/$PKGNAME
 echo "Src folder: " $APKG_SRC
 echo "Build folder: " $APKG_BUILD_FOLDER
 echo "Prefix folder: " $APKG_PREFIX
+
+echo "Extra config options: " $EXTRA_CONFIG_OPTIONS
+echo "Extra make options: " $EXTRA_MAKE_OPTIONS
+echo "Extra installation options: " $EXTRA_INSTALL_OPTIONS
 
 cd $SRC_FOLDER
 if [ ! -d $APKG_SRC ]; then
