@@ -52,5 +52,5 @@ setup
 cd $EXTERNAL_FOLDER
 sh build_using_autogen.sh snappy https://github.com/google/snappy.git "" "" "" > /dev/null
 build_leveldb
-# sh build_using_cmake.sh $EXTERNAL_FOLDER gtest https://github.com/google/googletest.git  > /dev/null
-# sh build_using_cmake.sh $EXTERNAL_FOLDER benchmark https://github.com/google/benchmark.git  > /dev/null
+sh build_using_cmake.sh $EXTERNAL_FOLDER gtest https://github.com/google/googletest.git
+sh build_using_cmake.sh $EXTERNAL_FOLDER benchmark https://github.com/google/benchmark.git  > /dev/null
