@@ -4,14 +4,12 @@ PKG_NAME=$2
 PKGGIT=$3
 SRC_FOLDER=$4
 PKG_SRC=$SRC_FOLDER/$PKG_NAME
-TMP_FOLDER=/tmp/build/
 
 echo "External folder: " $EXTERNAL_FOLDER
 echo "Source folder: " $SRC_FOLDER
 echo "Package name: " $PKG_NAME
 echo "Git source: " $PKGGIT
 
-mkdir -p $TMP_FOLDER
 mkdir -p $SRC_FOLDER
 
 NCPUS=$(grep -c ^processor /proc/cpuinfo)
@@ -33,7 +31,8 @@ fi
 
 # Pull the latest version
 cd $PKG_SRC
-$GIT pull
+$GIT fetch --all
+$GIT merge master
 
 # Return to the external folder.
 cd $EXTERNAL_FOLDER
