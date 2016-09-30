@@ -5,9 +5,7 @@ PKGGIT=$3
 EXTRA_CONFIG_OPTIONS=$4
 EXTRA_MAKE_OPTIONS=$5
 SRC_FOLDER=$EXTERNAL_FOLDER/src
-TMP_FOLDER=/tmp/build/
 
-mkdir -p $TMP_FOLDER
 mkdir -p $SRC_FOLDER
 
 NCPUS=$(grep -c ^processor /proc/cpuinfo)

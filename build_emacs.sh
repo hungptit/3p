@@ -152,3 +152,4 @@ install_pkg graphviz_dot_mode https://github.com/ppareit/graphviz-dot-mode.git
 install_pkg helm-themes https://github.com/syohex/emacs-helm-themes
 install_pkg matlab-mode git://git.code.sf.net/p/matlab-emacs/src matlab-emacs-src
 install_pkg web-beautify https://github.com/yasuyk/web-beautify
+install_pkg cmake-ide https://github.com/atilaneves/cmake-ide.git

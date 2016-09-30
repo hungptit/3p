@@ -25,7 +25,8 @@ if [ ! -f $CMAKE ]; then
     # Use system CMake if we could not find the customized CMake.
     CMAKE=cmake
 fi
-CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE:STRING=Release"
+# CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE:STRING=Release"
+CMAKE_RELEASE_BUILD="-DCMAKE_BUILD_TYPE=Release"
 CMAKE_USE_CLANG="-DCMAKE_CXX_COMPILER=${CLANGPP} -DCMAKE_C_COMPILER=${CLANG}"
 
 # Setup git
@@ -36,21 +37,24 @@ if [ ! -f $GIT ]; then
     GIT=git
 fi
 
-# Build boost from git source
-BOOST_GIT=https://github.com/boostorg/boost.git
-BOOST_SRC=$SRC_FOLDER/boost
-BOOST_PREFIX=$EXTERNAL_FOLDER/boost
-cd $SRC_FOLDER
-if [ ! -d $BOOST_SRC ]; then
-    git clone --recursive $BOOST_GIT
-    cd $BOOST_SRC
-fi
-cd $BOOST_SRC
-rm -rf $BOOST_PREFIX
-git fetch
-git pull
-./bootstrap.sh --prefix=$BOOST_PREFIX --without-icu
-./b2 clean
-./b2 headers
-./b2 --build-dir=$TMPDIR/boost toolset=clang stage
-./b2 $BUILD_OPTS --disable-icu --ignore-site-config variant=release threading=multi install
+build_celero() {
+    PKGNAME="Celero"
+    PKGGIT="https://github.com/DigitalInBlue/Celero.git"
+    sh install_pkg.sh $EXTERNAL_FOLDER $PKGNAME $PKGGIT $EXTERNAL_FOLDER
+    APKG_SRC=$EXTERNAL_FOLDER/$PKGNAME
+    APKG_BUILD_FOLDER=$TMP_FOLDER/$PKGNAME
+    APKG_PREFIX=$EXTERNAL_FOLDER/$PKGNAME
+
+    # Build Celero
+    rm -rf $APKG_BUILD_FOLDER
+    mkdir -p $APKG_BUILD_FOLDER
+    cd $APKG_BUILD_FOLDER
+    $CMAKE $APKG_SRC -DCMAKE_INSTALL_PREFIX=$APKG_PREFIX $CMAKE_RELEASE_BUILD $CMAKE_USE_CLANG 
+    make $BUILD_OPTS
+    make install
+    cd $EXTERNAL_FOLDER
+    rm -rf $APKG_BUILD_FOLDER
+}
+
+echo "Install Celero"
+build_celero;

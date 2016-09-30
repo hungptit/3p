@@ -38,26 +38,33 @@ if [ ! -f $GIT ]; then
 fi
 
 install_tbb() {
-    TBB_LINK=https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb43_20150316oss_src.tgz
+    TBB_RELEASE="tbb44_20160316oss_src"
+    TBB_FOLDER="tbb44_20160316oss"
+    TBB_LINK=https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/${TBB_RELEASE}.tgz
     TBB_PREFIX=$EXTERNAL_FOLDER/tbb
-    TBB_FILE=tbb43_20150316oss_src.tgz
+    TBB_FILE=${TBB_RELEASE}.tgz
 
+    cd $SRC_FOLDER
     if [ ! -f $TBB_FILE ]; then
         wget $TBB_LINK
     fi
 
     # Install TBB
-    TBB_LINK=https://www.threadingbuildingblocks.org/sites/default/files/software_releases/linux/tbb43_20150316oss_lin.tgz
-    TBB_PREFIX=$EXTERNAL_FOLDER/tbb
-    TBB_FILE=tbb43_20150316oss_lin.tgz
-
     if [ ! -f $TBB_FILE ]; then
         wget --no-check-certificate $TBB_LINK
     fi
 
+    cd $EXTERNAL_FOLDER
     rm -rf $TBB_PREFIX
-    tar xf $TBB_FILE
-    mv tbb43_20150316oss $TBB_PREFIX
+    tar xf $SRC_FOLDER/$TBB_FILE
+    mv $TBB_FOLDER $TBB_PREFIX
+
+    cd $TBB_PREFIX
+    make clean
+    make $BUILD_OPTS CXXFLAGS="-O3"
+    mkdir lib
+    cp build/linux_intel64_gcc_cc4.9.2_libc2.19_kernel4.4.0_release/*.so* lib/
+    cd $EXTERNAL_FOLDER
 }
 
 install_eigen() {
@@ -140,20 +147,20 @@ build_casablanca() {
     make install
 }
 
-# echo "Install doxygen"
-# sh build_using_cmake.sh $EXTERNAL_FOLDER doxygen https://github.com/doxygen/doxygen.git "" > /dev/null
+echo "Install doxygen"
+sh build_using_cmake.sh $EXTERNAL_FOLDER doxygen https://github.com/doxygen/doxygen.git "" > /dev/null
 
-# echo "Install cereal"
-# sh install_pkg.sh $EXTERNAL_FOLDER cereal https://github.com/USCiLab/cereal $EXTERNAL_FOLDER > /dev/null
+echo "Install cereal"
+sh install_pkg.sh $EXTERNAL_FOLDER cereal https://github.com/USCiLab/cereal $EXTERNAL_FOLDER > /dev/null
 
-# # echo "Install rapidjson"
-# sh install_pkg.sh $EXTERNAL_FOLDER rapidjson https://github.com/miloyip/rapidjson $EXTERNAL_FOLDER > /dev/null
+# echo "Install rapidjson"
+sh install_pkg.sh $EXTERNAL_FOLDER rapidjson https://github.com/miloyip/rapidjson $EXTERNAL_FOLDER > /dev/null
 
-# # echo "Install splog"
-# sh install_pkg.sh $EXTERNAL_FOLDER splog https://github.com/gabime/spdlog.git  $EXTERNAL_FOLDER > /dev/null
+# echo "Install splog"
+sh install_pkg.sh $EXTERNAL_FOLDER splog https://github.com/gabime/spdlog.git  $EXTERNAL_FOLDER > /dev/null
 
-# echo "Install cppformat"
-# sh build_using_cmake.sh $EXTERNAL_FOLDER fmt https://github.com/fmtlib/fmt.git "" > /dev/null
+echo "Install cppformat"
+sh build_using_cmake.sh $EXTERNAL_FOLDER fmt https://github.com/fmtlib/fmt.git "" > /dev/null
 
 echo "Install TBB"
 install_tbb > /dev/null

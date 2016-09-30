@@ -11,9 +11,9 @@ APKG_SRC=$SRC_FOLDER/$PKGNAME
 APKG_BUILD_FOLDER=$TMP_FOLDER/$PKGNAME
 APKG_PREFIX=$EXTERNAL_FOLDER/$PKGNAME
 
-echo "Src folder: " $APKG_SRC
-echo "Build folder: " $APKG_BUILD_FOLDER
-echo "Prefix folder: " $APKG_PREFIX
+echo "====> Src folder: " $APKG_SRC
+echo "====> Build folder: " $APKG_BUILD_FOLDER
+echo "====> Prefix folder: " $APKG_PREFIX
 
 mkdir -p $TMP_FOLDER
 mkdir -p $SRC_FOLDER
@@ -52,7 +52,7 @@ rm -rf $APKG_BUILD_FOLDER
 mkdir $APKG_BUILD_FOLDER
 cd $APKG_BUILD_FOLDER
 
-echo "Build folder: " $APKG_BUILD_FOLDER
+echo "====> Build folder: " $APKG_BUILD_FOLDER
 
 $APKG_SRC/configure --prefix=$APKG_PREFIX $EXTRA_CONFIG_OPTIONS
 make $BUILD_OPTS $EXTRA_MAKE_OPTIONS

@@ -19,6 +19,7 @@
 
 ;; Might require the latest version of Emacs
 (require 'setup_magit)
+;; (require 'setup_cmake)
 
 (provide 'init)
 ;;; init.el ends here
