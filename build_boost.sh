@@ -47,8 +47,12 @@ if [ ! -d $BOOST_SRC ]; then
 fi
 cd $BOOST_SRC
 rm -rf $BOOST_PREFIX
+
+# Update all modules
 git fetch
 git pull
+git submodule update --recursive
+
 ./bootstrap.sh --prefix=$BOOST_PREFIX --without-icu
 ./b2 clean
 ./b2 headers
